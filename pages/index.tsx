@@ -62,7 +62,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     <>
       {/* Content */}
       <div
-        className={`flex w-screen overflow-hidden mt-24 max-w-[1600px] flex-col items-center content-center ${
+        className={`flex w-screen overflow-hidden sm:mt-24 max-w-[1600px] flex-col items-center content-center ${
           loading && `cursor-progress`
         }`}
       >
@@ -82,7 +82,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
                 // Otherwise, show the listings
                 listings.length && (
                   <>
-                    <div className="flex font-ibmPlex text-xs mx-4 lg:mx-8 mb-5">
+                    <div className="flex font-ibmPlex text-xs mx-4 lg:mx-8 mb-5 mt-20 sm:mt-0">
                       <button
                         onClick={() => setIsCollection(false)}
                         className={`${
@@ -147,33 +147,11 @@ const Home: NextPage = ({ user, users, auth }: any) => {
 export const getServerSideProps = async ({ req, res }: any) => {
   let auth = getCookie("auth", { req, res }) || null;
 
-  // console.log(auth);
   await connectDB();
   const json = await Users.findOne({ address: auth });
   let user = JSON.parse(JSON.stringify(json));
   const jsonUsers = await Users.find({});
   let users = JSON.parse(JSON.stringify(jsonUsers));
-
-  // // NFT fetch
-  // const nftFetch = async () => {
-  //   const provider = new ethers.providers.JsonRpcProvider(
-  //     process.env.NEXT_APP_INFURA_ID
-  //   );
-
-  //   const contract = new ethers.Contract(
-  //     ContractAddress,
-  //     ContractAbi,
-  //     provider
-  //   );
-
-  //   const listingTx = await contract.fetchListingItem();
-
-  //   const res = await fetchListings({ contract, listingTx });
-  //   // console.log(res);
-
-  //   return res;
-  // };
-  // let listings = await nftFetch();
 
   return { props: { user, users } };
 };

@@ -28,13 +28,15 @@ export default function Header() {
   };
   const pathname = usePathname();
   const bg = pathname === "/apply" ? "bg-transparent" : "bg-black";
+
   return (
     <Popover className="relative z-20">
       {({ open }) => (
+        //Desktop
         <>
           <div className="px-2 sm:px-6 uppercase text-green">
             <div
-              className={`absolute lg:fixed flex h-20  xl:max-w-[1600px] left-[50%] translate-x-[-50%]  top-0 
+              className={`fixed flex h-20  xl:max-w-[1600px] left-[50%] translate-x-[-50%]  top-0 
                w-screen px-4 md:px-5 
               lg:px-0 items-center justify-center ${bg}`}
             >

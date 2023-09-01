@@ -3,8 +3,7 @@ import { Menu, Transition } from "@headlessui/react";
 import Link from "next/link";
 import axios from "axios";
 import { useAuthedProfile } from "../../context/UserContext";
-import Web3 from "web3";
-import router from "next/router";
+
 import { ConnectButton, useAccountModal } from "@rainbow-me/rainbowkit";
 import { useWalletClient, useDisconnect, useAccount } from "wagmi";
 
@@ -15,121 +14,20 @@ function classNames(...classes: string[]) {
 export default function ProfileMenu() {
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
   const [address, setAddress] = useState<string>("");
-  const { isConnected, isDisconnected } = useAccount();
+  const { isConnected, isDisconnected, isConnecting } = useAccount();
 
   const { disconnect } = useDisconnect({
     onSuccess(data) {
       axios
         .delete("/api/signIn")
         .then((res) => {
-          console.log(res);
-          setAuthedProfile(res.data.user);
+          setAddress("");
         })
         .catch((err) => {
           console.log(err);
         });
     },
   });
-
-  // const reg = (userData: any) => {
-  //   axios
-  //     .post("/api/signIn", userData)
-  //     .then((res) => {
-  //       console.log(res);
-  //       setAuthedProfile(res.data.user);
-  //     })
-  //     .catch((err) => {
-  //       console.log(err);
-  //     });
-  // };
-
-  // const connectWallet = async () => {
-  //   try {
-  //     let web3;
-  //     web3 = new Web3(window.ethereum);
-  //     // Request account access
-  //     await (window.ethereum as any).enable();
-  //     const accounts = await web3.eth.getAccounts();
-  //     const accountAddress = accounts[0];
-  //     console.log("Account address:", accountAddress);
-  //     setAddress(accountAddress);
-
-  //     const userData = {
-  //       address: accountAddress,
-  //     };
-  //     reg(userData);
-  //   } catch (error) {
-  //     console.error("Error:", error);
-  //   }
-  //   // Connect to an Ethereum provider
-  //   // Get the account address
-  // };
-  // const checkIfConnected = () => {
-  //   axios.get("/api/signIn").then((res) => {
-  //     let auth = res.data.auth;
-
-  //     if (auth) {
-  //       connectWallet();
-  //       refreshData();
-  //     } else {
-  //       console.log("not authed");
-  //     }
-  //   });
-  // };
-  // useEffect(() => {
-  //   checkIfConnected();
-  // }, []);
-  // // Rehydrate data from server
-  // const refreshData = () => {
-  //   router.replace(router.asPath);
-  // };
-  // const disconnectWalletAndUser = async () => {
-  //   if (typeof window !== "undefined") {
-  //     if (address) {
-  //       const web3 = new Web3(window.ethereum);
-  //       if (
-  //         typeof web3 !== "undefined" &&
-  //         typeof web3.currentProvider !== "undefined"
-  //       ) {
-  //         const accounts = await web3.eth.getAccounts();
-  //         const address = accounts[0];
-  //         // console.log(window.ethereum, window.ethereum.disconnect);
-
-  //         // if (window.ethereum && window.ethereum.disconnect) {
-  //         // window.ethereum
-  //         //   .disconnect()
-  //         //   .then(() => {
-  //         //     console.log("Disconnected from Ethereum.");
-  //         //   })
-  //         //   .catch((error: any) => {
-  //         //     console.error("Error while disconnecting:", error);
-  //         //   });
-  //         // } else {
-  //         //   console.warn(
-  //         //     "No web3 provider found or disconnect method not supported."
-  //         //   );
-
-  //         axios
-  //           .delete("/api/signIn")
-  //           .then((res) => {
-  //             console.log(res);
-  //             setAuthedProfile(res.data.user);
-  //             refreshData();
-  //           })
-  //           .catch((err) => {
-  //             console.log(err);
-  //           });
-  //         // web3.currentProvider.disconnect();
-  //         setAddress("");
-  //         // } else {
-  //         //   console.log("not passing");
-  //         // }
-  //       }
-  //       // }
-  //     }
-  //   }
-  //   setAuthedProfile(null);
-  // };
 
   const { data: walletClient } = useWalletClient();
 
@@ -151,7 +49,7 @@ export default function ProfileMenu() {
 
   return (
     <Menu as="div" className="relative inline-block">
-      {!isConnected ? (
+      {address === "" ? (
         <ConnectButton.Custom>
           {({
             account,
@@ -206,10 +104,10 @@ export default function ProfileMenu() {
 
                   return (
                     <div style={{ display: "flex", gap: 12 }}>
-                      <button
+                      <div
                         onClick={openChainModal}
                         style={{ display: "flex", alignItems: "center" }}
-                        type="button"
+                        // type="button"
                       >
                         {chain.hasIcon && (
                           <div
@@ -232,7 +130,7 @@ export default function ProfileMenu() {
                           </div>
                         )}
                         {chain.name}
-                      </button>
+                      </div>
 
                       <button onClick={openAccountModal} type="button">
                         {account.displayName}
@@ -320,7 +218,7 @@ export default function ProfileMenu() {
                     >
                       {">"}
                       {">"}
-                      {">"} help
+                      {">"} Help
                     </Link>
                   )}
                 </Menu.Item>

@@ -33,7 +33,7 @@ function DropDownMenu({ openMenu, closeMenu }: Props) {
   };
 
   return (
-    <div className="relative z-2 lg:hidden">
+    <div className="relative z-2  lg:hidden">
       <AnimatePresence>
         {openMenu && (
           <motion.div
