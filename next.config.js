@@ -19,7 +19,7 @@ const nextConfig = {
         hostname: "**",
       },
     ],
-    domains: ["*.ipfs.cf-ipfs.com"],
+    // domains: ["*.ipfs.cf-ipfs.com"],
   },
   eslint: {
     ignoreDuringBuilds: true,

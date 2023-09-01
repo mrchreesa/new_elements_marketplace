@@ -8,7 +8,7 @@ const readIPFSContent = async (hash) => {
     if (!response.data.length > 1) {
       throw new Error("Failed to fetch IPFS content");
     }
-    const image = `https://gateway.ipfscdn.io/ipfs/${response.data.image}`;
+    const image = `https://ipfs.io/ipfs/${response.data.image}`;
     const title = response.data.title;
     const description = response.data.description;
     return { image, title, description };
