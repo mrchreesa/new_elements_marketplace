@@ -4,7 +4,8 @@ import Image from "next/image";
 import { ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "../utils/constants";
 import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
-import { useBalance } from "wagmi";
+import { useBalance, useAccount } from "wagmi";
+import { useAuthedProfile } from "../../context/UserContext";
 
 type Props = {
   modalOpen: boolean;
@@ -23,6 +24,7 @@ const MakeOfferModal: FunctionComponent<Props> = ({
 }) => {
   // const [isOpenModal, setIsOpenModal] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
+  const { authedProfile } = useAuthedProfile();
 
   const customStyles = {
     overlay: {
@@ -44,72 +46,70 @@ const MakeOfferModal: FunctionComponent<Props> = ({
     },
   };
   // initializing state for balance
-  const [balance, setBalance] = useState<number>(0);
-  const [address, setAddress] = useState<string>("");
+  const [balance, setBalance] = useState<any>(0);
+  // const [address, setAddress] = useState<string>("");
   const [auth, setAuth] = useState<boolean>(false);
   const [offerAmount, setOfferAmount] = useState<string>("");
 
-  const getBalance = async () => {
-  
-    
-      // Return the first account address
-      const address = accounts[0];
-      setAddress(address);
-      if (listing.owner !== undefined) {
-        let listingAdrress = listing.owner;
-        listingAdrress = listingAdrress.toLowerCase();
-        setAuth(listingAdrress === address);
-      }
-      // console.log(mainaddress == "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 ");
+  const { address } = useAccount();
+  const { data, isError } = useBalance({
+    address,
+  });
 
-      // Get the balance of the specified address
-      const balance = await provider.getBalance(address);
+  // const getBalance = async () => {
 
-      // Convert the balance to Ether units
-      const bal = ethers.utils.formatEther(balance);
+  //     // Return the first account address
+  //     const address = accounts[0];
+  //     setAddress(address);
+  //     if (listing.owner !== undefined) {
+  //       let listingAdrress = listing.owner;
+  //       listingAdrress = listingAdrress.toLowerCase();
+  //       setAuth(listingAdrress === address);
+  //     }
+  //     // console.log(mainaddress == "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 ");
 
-      const balanceInEther = parseFloat(Number(bal).toFixed(3));
+  //     // Get the balance of the specified address
+  //     const balance = await provider.getBalance(address);
 
-      setBalance(balanceInEther);
-    
-  };
+  //     // Convert the balance to Ether units
+  //     const bal = ethers.utils.formatEther(balance);
 
-  useEffect(() => {
-    getBalance();
-  }, []);
+  //     const balanceInEther = parseFloat(Number(bal).toFixed(3));
+
+  //     setBalance(balanceInEther);
+
+  // };
+
+  // useEffect(() => {
+  //   getBalance();
+  // }, []);
 
   // Make Offer Function
   const makeOffer = async () => {
     setIsLoading(true);
     try {
-      // bidAmount // The offer amount the user entered
-      if (typeof window !== "undefined") {
-        const provider = new ethers.providers.Web3Provider(
-          (window as CustomWindow).ethereum as any
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.NEXT_PUBLIC_RPC_URL
+      );
+
+      if (listingId) {
+        const signer = provider.getSigner();
+        const contract = new ethers.Contract(
+          ContractAddress,
+          ContractAbi,
+          signer
         );
+        const id = Number(listingId);
+        const valueToSend = ethers.utils.parseEther(offerAmount); // Example: sending 1 Ether
 
-        if (listingId) {
-          await (window as CustomWindow)?.ethereum?.request({
-            method: "eth_requestAccounts",
-          });
-          const signer = provider.getSigner();
-          const contract = new ethers.Contract(
-            ContractAddress,
-            ContractAbi,
-            signer
-          );
-          const id = Number(listingId);
-          const valueToSend = ethers.utils.parseEther(offerAmount); // Example: sending 1 Ether
-
-          // Call the contract method with value
-          const listingTx = await contract.makeOffer(listing.id, {
-            value: valueToSend,
-          });
-          await listingTx.wait();
-          setIsLoading(false);
-          isModalClosed();
-          isSuccessfullOfferModalOpen();
-        }
+        // Call the contract method with value
+        const listingTx = await contract.makeOffer(listing.id, {
+          value: valueToSend,
+        });
+        await listingTx.wait();
+        setIsLoading(false);
+        isModalClosed();
+        isSuccessfullOfferModalOpen();
       }
     } catch (error) {
       console.error(error);
@@ -187,7 +187,7 @@ const MakeOfferModal: FunctionComponent<Props> = ({
                         Your <br /> Balance
                       </p>
                       <p className="font-bold">
-                        {balance} <br /> ETH
+                        {Number(data?.formatted).toFixed(3)} <br /> ETH
                       </p>
                     </div>
                   </div>
