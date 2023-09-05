@@ -37,60 +37,6 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const { listingId } = router.query as { listingId: string };
   console.log(listing);
 
-  // const fetchlisting = async () => {
-  //   const provider = new ethers.providers.Web3Provider(
-  //     (window as CustomWindow).ethereum as any
-  //   );
-
-  //   if (listingId) {
-  //     await (window as CustomWindow)?.ethereum?.request({
-  //       method: "eth_requestAccounts",
-  //     });
-  //     const signer = provider.getSigner();
-  //     try {
-  //       const contract = new ethers.Contract(
-  //         ContractAddress,
-  //         ContractAbi,
-  //         signer
-  //       );
-
-  //       // // Get the latest block number
-  //       // const toBlock = await provider.getBlockNumber();
-  //       // const fromBlock = 0;
-  //       // const tokenId = BigNumber.from(listingId);
-  //       // // console.log(tokenId);
-
-  //       // // Subscribe to the 'Bid' event
-  //       // contract
-  //       //   .queryFilter(contract.filters.Bid(), fromBlock, toBlock)
-  //       //   .then((events) => {
-  //       //     setBids((prevBids: any) => {
-  //       //       return events.slice(0, 4).map((event: any) => {
-  //       //         if (event.args.listingId == listingId) {
-  //       //           const { sender, amount } = event?.args;
-  //       //           const formattedAmount = Number(amount) / 1e18;
-  //       //           return { sender, amount: formattedAmount };
-  //       //         }
-  //       //       });
-  //       //     });
-  //       //   });
-
-  //       // setListing(res);
-  //     } catch (error) {
-  //       console.error(error);
-  //       alert(error);
-  //     }
-  //     // setloadingListing(false);
-  //     //  setLoadingListings(false);
-  //     //  console.log(res);
-  //     //  setMenuItems(res);
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     fetchlisting();
-  //   }
-  // }, []);
   getArtist(users, listing);
   console.log(bids);
 
@@ -242,7 +188,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       // Render a complete state
-      return null;
+      return <> {listing.timeElapse ? <span> Auction Ended</span> : null}</>;
     } else {
       // Render a countdown
       return (
@@ -368,14 +314,10 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                     </>
                   ) : (
                     <>
-                      {listing.endTime != 0 ? (
-                        <Countdown
-                          date={Date.now() + listing.endTime * 1000}
-                          renderer={renderer}
-                        />
-                      ) : (
-                        <p className="pr-5"> place bid</p>
-                      )}
+                      <Countdown
+                        date={Date.now() + listing.endTime * 1000}
+                        renderer={renderer}
+                      />
                     </>
                   )}
                 </div>

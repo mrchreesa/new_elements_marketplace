@@ -121,7 +121,7 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                 )}
 
                 <div className="flex flex-col w-full font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
-                  <h1 className="fontCompress tracking-wider font-compressed text-3xl mb-8">
+                  {/* <h1 className="fontCompress tracking-wider font-compressed text-3xl mb-8">
                     {listing.timeElapse
                       ? listing.sold
                         ? auth
@@ -131,7 +131,7 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                       : listing.endTime != 0
                       ? listing.endTime
                       : "place bid"}
-                  </h1>
+                  </h1> */}
                   <div className=" grid grid-cols-4 sm:grid-cols-5 gap-6 w-full mt-3">
                     <div className="flex text-left col-span-2">
                       {" "}
