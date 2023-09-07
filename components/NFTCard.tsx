@@ -12,6 +12,8 @@ import {
   artistProfilePic,
   owner,
 } from "../lib/functions";
+import ShareLinkModal from "./ShareLinkModal";
+import { useRouter } from "next/router";
 
 type Props = {
   listing: object | any;
@@ -27,9 +29,11 @@ const NFTCard: FunctionComponent<Props> = ({
   index,
   user,
 }) => {
+  const [modalOpen, setModalOpen] = useState<boolean>(false);
+
   getArtist(users, listing);
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
-  console.log(authedProfile);
+  const router = useRouter();
 
   const handleSaveToProfile = () => {
     setLoading(true);
@@ -46,6 +50,10 @@ const NFTCard: FunctionComponent<Props> = ({
         console.log(err);
       });
     setLoading(false);
+  };
+
+  const handleShareWithCommission = () => {
+    isModalOpen();
   };
   const { _id } = owner;
   // Countdown
@@ -68,6 +76,13 @@ const NFTCard: FunctionComponent<Props> = ({
         </span>
       );
     }
+  };
+  // Modal Share Link
+  const isModalOpen = () => {
+    setModalOpen(true);
+  };
+  const isModalClosed = () => {
+    setModalOpen(false);
   };
   return (
     <>
@@ -183,19 +198,34 @@ const NFTCard: FunctionComponent<Props> = ({
                 <div className="flex grow"></div>
 
                 <div className="font-bold flex">
-                  <Image
-                    className="ml-3 h-5"
-                    src={send}
-                    height={10}
-                    width={20}
-                    alt={""}
-                  />
+                  <button
+                    onClick={
+                      authedProfile
+                        ? () => handleShareWithCommission()
+                        : () => alert("Please Connect Wallet")
+                    }
+                    className="outline-none   transform active:scale-y-75 transition-transform flex"
+                  >
+                    <Image
+                      className="ml-3 h-5"
+                      src={send}
+                      height={10}
+                      width={20}
+                      alt={""}
+                    />
+                  </button>
                 </div>
               </div>
             </div>
           </div>
         </div>
       ) : null}
+      <ShareLinkModal
+        isModalClosed={isModalClosed}
+        modalOpen={modalOpen}
+        user={user}
+        listing={listing}
+      />
     </>
   );
 };

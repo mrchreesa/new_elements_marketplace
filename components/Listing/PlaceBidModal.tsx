@@ -53,6 +53,7 @@ const PlaceBidModal: FunctionComponent<Props> = ({
   const [balance, setBalance] = useState<number>(0);
   const [address, setAddress] = useState<string>("");
   const [auth, setAuth] = useState<boolean>(false);
+
   const getBalance = async () => {
     if ((window as CustomWindow).ethereum) {
       const provider = new ethers.providers.Web3Provider(
