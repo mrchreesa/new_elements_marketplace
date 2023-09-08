@@ -16,7 +16,7 @@ const ShareLinkModal = ({
       ? window.location.origin
       : "";
   const [value, setValue] = useState(
-    `${origin}/listing/${listing.id}/${user._id}`
+    `${origin}/listing/${listing?.id}/${user?._id}`
   );
   const [copied, setCopied] = useState(false);
 
