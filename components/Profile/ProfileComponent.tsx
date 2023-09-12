@@ -324,7 +324,7 @@ const ProfileComponent = ({
                 <div className="flex overflow-hidden md:w-[60%]">
                   <Link
                     href="/profile/mint"
-                    className=" text-green font-xCompressed w-full  font-bold border border-green tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-white bg-opacity-20 hover:bg-opacity-40 py-1 lg:py-[1.2vh] text-2xl  "
+                    className=" text-black font-xCompressed w-full font-bold  tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-green hover:bg-opacity-80 py-1 lg:py-[1.2vh] text-2xl  "
                   >
                     LIST NEW
                   </Link>
@@ -396,7 +396,7 @@ const ProfileComponent = ({
                 <div className="flex overflow-hidden md:w-[60%]">
                   <Link
                     href="/profile/mint"
-                    className=" text-green font-xCompressed w-full  font-bold border border-green tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-white bg-opacity-20 hover:bg-opacity-40 py-1 lg:py-[1.2vh] text-2xl  "
+                    className=" text-black font-xCompressed w-full font-bold  tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-green hover:bg-opacity-80 py-1 lg:py-[1.2vh] text-2xl  "
                   >
                     LIST NEW
                   </Link>
@@ -526,16 +526,16 @@ const ProfileComponent = ({
                         )
                       ) : (
                         <p className="text-red-600 text-xs">
-                          You currently have no saved items
+                          You currently have no sold items
                         </p>
                       )}
                     </div>
                   </div>
                 </>
               ) : null}
-              {/* COLLECTION */}
+              {/* Purchased */}
               <div className="flex flex-col">
-                <h3 className="font-bold">COLLECTION</h3>
+                <h3 className="font-bold">Purchased</h3>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4">
                   {collectedNfts?.length ? (
@@ -586,7 +586,7 @@ const ProfileComponent = ({
                     ))
                   ) : (
                     <p className="text-red-600 text-xs">
-                      You currently have no collected items
+                      You currently have no purchased items
                     </p>
                   )}
                 </div>

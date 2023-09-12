@@ -228,7 +228,7 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                         </div>
                       ) : (
                         <button
-                          className="fontCompress text-green mt-6 border border-green font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 bg-white bg-opacity-20 hover:bg-opacity-30 font-semibold text-xl  "
+                          className="fontCompress  mt-6  font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
                           onClick={createBidOrOffer}
                         >
                           Place Bid

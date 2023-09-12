@@ -282,7 +282,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                         {listing.timeElapse ? null : (
                           <button
                             onClick={isModalOpen}
-                            className=" text-green font-xCompressed  w-full border border-green uppercase tracking-[8px] py-1 bg-white bg-opacity-20 hover:bg-opacity-30 font-semibold text-xl  "
+                            className="font-xCompressed  w-full  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
                           >
                             place bid
                           </button>

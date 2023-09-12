@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthedProfile } from "../../context/UserContext";
 import router from "next/router";
@@ -9,13 +9,13 @@ type Props = {
   authedProfile: any;
 };
 
-const Username = ({ loading, setLoading, authedProfile }: Props) => {
+const Username = ({ loading, setLoading }: Props) => {
   const [username, setUsername] = React.useState<any>({
     username: "",
     open: false,
   });
 
-  const { setAuthedProfile } = useAuthedProfile();
+  const { authedProfile, setAuthedProfile } = useAuthedProfile();
 
   //Username change
 
@@ -75,7 +75,7 @@ const Username = ({ loading, setLoading, authedProfile }: Props) => {
         htmlFor="input-username"
         onClick={handleUsernameOpen}
       >
-        {authedProfile.username ? (
+        {authedProfile?.username ? (
           <h1 className="text-2xl mb-1 font-bold">
             {" "}
             {authedProfile?.username}

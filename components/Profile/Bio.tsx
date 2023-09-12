@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import axios from "axios";
 import { useAuthedProfile } from "../../context/UserContext";
 import router from "next/router";
@@ -9,14 +9,20 @@ type Props = {
   authedProfile: any;
 };
 
-const Bio = ({ loading, setLoading, authedProfile }: Props) => {
+const Bio = ({ loading, setLoading }: Props) => {
   const [bio, setBio] = React.useState<any>({
     bio: "",
     open: false,
   });
 
-  const { setAuthedProfile } = useAuthedProfile();
-
+  const { authedProfile, setAuthedProfile } = useAuthedProfile();
+  useEffect(() => {
+    if (authedProfile == null) {
+      setLoading(true);
+    } else {
+      setLoading(false);
+    }
+  }, [authedProfile]);
   //Username change
 
   const handleBioCancel = () => {
@@ -75,7 +81,7 @@ const Bio = ({ loading, setLoading, authedProfile }: Props) => {
       >
         {authedProfile?.bio ? (
           <p> {authedProfile?.bio}</p>
-        ) : (
+        ) : loading ? null : (
           <p>Add your bio here...</p>
         )}
       </label>

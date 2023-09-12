@@ -6,18 +6,32 @@ import ProfileMenu from "./ProfileMenu";
 import { usePathname } from "next/navigation";
 import DropDownMenu from "./DropDownMenu";
 
-const navigation = [
-  { name: "Marketplace", href: "/", current: true },
-  { name: "Apply to join", href: "/apply", current: false },
-  // { name: "Ranking", href: "/ranking", current: false },
-  { name: "About Us", href: "/about", current: false },
-];
 function classNames(...classes: string[]) {
   return classes.filter(Boolean).join(" ");
 }
 
 export default function Header() {
   const [openMenu, setOpen] = useState<boolean>(false);
+  const pathname = usePathname();
+
+  const navigation = [
+    {
+      name: "Marketplace",
+      href: "/",
+      current: pathname === "/" ? true : false,
+    },
+    {
+      name: "Apply to join",
+      href: "/apply",
+      current: pathname === "/apply" ? true : false,
+    },
+    // { name: "Ranking", href: "/ranking", current: false },
+    {
+      name: "About Us",
+      href: "/about",
+      current: pathname === "/about" ? true : false,
+    },
+  ];
 
   const isOpen = () => {
     setOpen(true);
@@ -26,8 +40,9 @@ export default function Header() {
   const closeMenu = () => {
     setOpen(false);
   };
-  const pathname = usePathname();
   const bg = pathname === "/apply" ? "bg-transparent" : "bg-black";
+
+  const navPath = pathname === "/apply" ? "opacity-100" : null;
 
   return (
     <Popover className="relative z-20">
@@ -66,7 +81,7 @@ export default function Header() {
                           key={item.name}
                           href={item.href}
                           className={classNames(
-                            "text-blue  hover:opacity-80",
+                            "text-blue opacity-70 hover:opacity-100 focus:opacity-100",
                             "px-3 rounded-md md:text-dynamic font-medium tracking-wide hidden md:flex"
                           )}
                           aria-current={item.current ? "page" : undefined}

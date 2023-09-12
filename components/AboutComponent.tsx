@@ -101,8 +101,8 @@ const AboutComponent = (props: Props) => {
                 type="text"
                 className={
                   errorEmail
-                    ? "text-base bg-transparent py-3.5 px-4 w-full md:w-4/6 h-10 border border-red-500 outline-0 transition-all duration-500"
-                    : "text-base bg-transparent  py-3.5 px-4 w-full md:w-4/6 h-10 border border-green  outline-0 transition-all duration-500"
+                    ? "text-base bg-transparent py-3.5 px-4 w-full md:w-full h-10 border border-red-500 outline-0 transition-all duration-500"
+                    : "text-base bg-transparent  py-3.5 px-4 w-full md:w-full h-10 border border-green  outline-0 transition-all duration-500"
                 }
                 id="email1"
                 name="email"
@@ -125,7 +125,7 @@ const AboutComponent = (props: Props) => {
           </div>
           <button
             type="submit"
-            className="bg-blue text-green font-xCompressed mb-6 md:mb-0  border border-green w-full md:w-3/6 uppercase tracking-[12px] mt-1  bg-white bg-opacity-20 hover:bg-opacity-40 font-semibold py-1 md:py-[1.2vh] md:px-[7vh] z-2 text-2xl md:text-xl  "
+            className="fontCompress  mt-6  font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
           >
             {loading ? (
               <div className="loader ease-linear rounded-full border-4 border-t-4 border-white h-6 w-6"></div>

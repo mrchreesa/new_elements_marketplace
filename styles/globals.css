@@ -114,3 +114,6 @@ input[type="checkbox"]:checked:after {
      * left: 0;
      */
 }
+[aria-current]:not([aria-current="false"]) {
+  opacity: 1;
+}
