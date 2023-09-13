@@ -207,21 +207,7 @@ export default function ProfileMenu() {
                     </Link>
                   )}
                 </Menu.Item>
-                <Menu.Item>
-                  {({ active }) => (
-                    <Link
-                      href="#"
-                      className={classNames(
-                        active ? "bg-gray-400 text-green" : "text-green",
-                        "block px-4 py-2 text-xs"
-                      )}
-                    >
-                      {">"}
-                      {">"}
-                      {">"} Help
-                    </Link>
-                  )}
-                </Menu.Item>
+
                 <Menu.Item>
                   {({ active }) => (
                     <>

@@ -49,10 +49,10 @@ const EnlargeCollectedNft: FunctionComponent<Props> = ({
       >
         <>
           {listing ? (
-            <div className="relative flex max-h-[95vh] pt-4 flex-col z-12 text-ibmPlex h-full w-full   mx-5 overflow-hidden justify-between">
+            <div className="relative flex max-h-[85vh] z-21 pt-4 flex-col z-12 text-ibmPlex h-full w-full   mx-5 overflow-hidden justify-between">
               <button
                 onClick={isModalClosedEnlargeNFT}
-                className="fixed right-4 top-2 p-3 font-ibmPlex"
+                className="fixed right-4 top-2 p-3 font-ibmPlex z-21"
               >
                 <div className="w-5 border absolute rotate-45"></div>
                 <div className="w-5 border absolute -rotate-45"></div>

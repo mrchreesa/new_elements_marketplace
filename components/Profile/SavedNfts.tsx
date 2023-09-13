@@ -7,6 +7,7 @@ import {
   artistProfilePic,
   owner,
 } from "../../lib/functions";
+import Link from "next/link";
 
 type Props = {};
 
@@ -14,19 +15,16 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
   getArtist(users, nft);
   return (
     <div className="flex  flex-col h-full items-start w-min text-xs uppercase ">
-      <div className="cursor-pointer relative">
-        <Image
-          onClick={() => {
-            Router.push({
-              pathname: `/listing/${nft.id}`,
-            });
-          }}
-          src={nft.image}
-          alt="nft7"
-          width={150}
-          height={200}
-          className="max-h-[220px] md:max-h-[300px] w-[41vw] md:w-full md:min-w-[230px] mb-2 object-cover "
-        />{" "}
+      <div className="cursor-pointer relative h-full">
+        <Link href={`/listing/${nft.id}`}>
+          <Image
+            src={nft.image}
+            alt="nft7"
+            width={150}
+            height={200}
+            className="max-h-[220px] md:max-h-[300px] w-[41vw] md:w-full md:min-w-[230px] mb-2 object-cover "
+          />{" "}
+        </Link>
         <button
           onClick={() => deleteSavedNft(nft)}
           className="absolute -top-6 -right-6 border-green border rounded-full p-2 hover:brightness-50 font-ibmPlex  bg-green  font-semibold text-black   hover:border-transparent transition-all duration-100 ease-in"
@@ -53,7 +51,7 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
           <p>{nft?.title}</p>
         </div>
         {/* <div className="hidden sm:flex grow"></div> */}
-        <div className=" flex  justify-end">
+        <div className=" flex  justify-end -mr-4">
           {" "}
           <p className=" ">
             Reserve <br /> Price
@@ -82,7 +80,7 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
           /> */}
         </div>
         {/* <div className="hidden sm:flex grow"></div> */}
-        <div className=" flex text-left justify-end">
+        <div className=" flex text-left justify-end -mr-4">
           {" "}
           <p className=" ">
             Current <br /> Bid

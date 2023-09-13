@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Props = {
   successfulBidmodalOpen: boolean;
@@ -50,15 +51,12 @@ const SuccessfulBidModa: FunctionComponent<Props> = ({
                   <p className="pr-6 text-green">Successful Bid!</p>
                 </div>
               </div>
-              <button
-                onClick={() => {
-                  router.push("/");
-                }}
-                type="submit"
-                className="bg-blue flex justify-center whitespace-nowrap text-green fontCompress font-xCompressed border border-green w-full uppercase tracking-[8px] mt-3 bg-white bg-opacity-20 hover:bg-opacity-40 py-[1.2vh] px-[2vw]  z-2 text-2xl  "
+              <Link
+                href="/"
+                className="bg-green flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[8px] mt-3   hover:bg-opacity-80 py-[1.2vh] px-[2vw]  z-2 text-2xl  transition duration-200 ease-in-out"
               >
                 Back To Marketplace
-              </button>
+              </Link>
             </div>
           </div>
         </div>

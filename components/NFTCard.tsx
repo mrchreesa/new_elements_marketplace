@@ -70,8 +70,9 @@ const NFTCard: FunctionComponent<Props> = ({
       // Render a countdown
       return (
         <span>
-          Ends In <span className="mr-4" /> {hours < 10 ? "0" + hours : hours}H{" "}
-          {minutes < 10 ? "0" + minutes : minutes}M{" "}
+          Ends In <span className="mr-8" /> {hours < 10 ? "0" + hours : hours}H{" "}
+          <span className="mr-4" />
+          {minutes < 10 ? "0" + minutes : minutes}M <span className="mr-4" />
           {seconds < 10 ? "0" + seconds : seconds}S
         </span>
       );
@@ -114,7 +115,7 @@ const NFTCard: FunctionComponent<Props> = ({
                   <p>{listing?.title}</p>
                 </div>
                 <div className="hidden sm:flex grow"></div>
-                <div className=" flex text-left -mr-5 justify-end">
+                <div className=" flex text-left -mr-7 justify-end">
                   {" "}
                   <p className=" ">
                     Reserve <br /> Price
@@ -146,7 +147,7 @@ const NFTCard: FunctionComponent<Props> = ({
                   />
                 </div>
                 <div className="hidden sm:flex grow"></div>
-                <div className=" flex text-left -mr-5 justify-end">
+                <div className=" flex text-left -mr-7 justify-end">
                   {" "}
                   <p className=" ">
                     Current <br /> Bid
@@ -191,7 +192,17 @@ const NFTCard: FunctionComponent<Props> = ({
                           renderer={renderer}
                         />
                       ) : (
-                        <p className="pr-5"> place bid</p>
+                        <div
+                          onClick={() => {
+                            Router.push({
+                              pathname: `/listing/${listing.id}`,
+                            });
+                          }}
+                          className="pr-5 cursor-pointer"
+                        >
+                          {" "}
+                          place bid
+                        </div>
                       )}
                     </>
                   )}

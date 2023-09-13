@@ -40,12 +40,10 @@ export default function Header() {
   const closeMenu = () => {
     setOpen(false);
   };
-  const bg = pathname === "/apply" ? "bg-transparent" : "bg-black";
-
-  const navPath = pathname === "/apply" ? "opacity-100" : null;
+  const zIndex = pathname === "/profile" ? "z-1" : "z-20";
 
   return (
-    <Popover className="relative z-20">
+    <Popover className={`relative ${zIndex}`}>
       {({ open }) => (
         //Desktop
         <>
@@ -53,7 +51,7 @@ export default function Header() {
             <div
               className={`fixed flex h-20  xl:max-w-[1600px] left-[50%] translate-x-[-50%]  top-0 
                w-screen px-4 md:px-5 
-              lg:px-0 items-center justify-center ${bg}`}
+              lg:px-0 items-center justify-center bg-black`}
             >
               <div className="flex  items-center w-full justify-center lg:px-8 sm:items-stretch ">
                 <header className="flex items-center md:hidden">

@@ -426,13 +426,9 @@ const ProfileComponent = ({
                             className="flex md: flex-col h-full items-start w-max "
                             key={index}
                           >
-                            <div
-                              className="cursor-pointer"
-                              onClick={() => {
-                                Router.push({
-                                  pathname: `/listing/${nft.id}`,
-                                });
-                              }}
+                            <Link
+                              href={`/listing/${nft.id}`}
+                              className="cursor-pointer h-full"
                             >
                               <Image
                                 src={nft.image}
@@ -441,7 +437,7 @@ const ProfileComponent = ({
                                 height={200}
                                 className="max-h-[220px] md:max-h-[300px] w-[41vw] md:w-full md:min-w-[230px] mb-2 object-cover"
                               />{" "}
-                            </div>
+                            </Link>
                             <div className="flex flex-col w-full md:min-w-[230px] font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
                               <div className=" flex ">
                                 <div className=" flex font-bold text-green font-ibmPlex justify-center uppercase">
@@ -491,7 +487,7 @@ const ProfileComponent = ({
                             >
                               <div className="flex  flex-col h-full items-start w-auto ">
                                 <div
-                                  className="cursor-pointer"
+                                  className="cursor-pointer h-full"
                                   // onClick={() => {
                                   //   Router.push({
                                   //     pathname: `/user/${router.query.slug}/${nft.id}`,
@@ -533,6 +529,7 @@ const ProfileComponent = ({
                   </div>
                 </>
               ) : null}
+
               {/* Purchased */}
               <div className="flex flex-col">
                 <h3 className="font-bold uppercase">Purchased</h3>
@@ -546,8 +543,8 @@ const ProfileComponent = ({
                           key={index}
                         >
                           <div className="flex  flex-col h-full items-start w-auto ">
-                            <div
-                              className="cursor-pointer"
+                            <button
+                              className="cursor-pointer h-full"
                               onClick={() => isModalOpenEnlargeNFT(index)}
                             >
                               <Image
@@ -557,7 +554,7 @@ const ProfileComponent = ({
                                 height={200}
                                 className="max-h-[220px] md:max-h-[300px] w-[41vw] md:w-full md:min-w-[230px] mb-2 object-cover"
                               />{" "}
-                            </div>
+                            </button>
                             <div className="flex flex-col w-full md:min-w-[230px] font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
                               <div className=" flex ">
                                 <div className=" flex w-full">
@@ -612,7 +609,7 @@ const ProfileComponent = ({
                       </div>
                     ))
                   ) : (
-                    <p className="text-red-600 text-xs">
+                    <p className="text-red-600 text-xs mb-10">
                       You currently have no saved items
                     </p>
                   )}

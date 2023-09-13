@@ -193,8 +193,9 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
       // Render a countdown
       return (
         <span>
-          Ends In <span className="mr-4" /> {hours < 10 ? "0" + hours : hours}H{" "}
-          {minutes < 10 ? "0" + minutes : minutes}M{" "}
+          Ends In <span className="mr-8" /> {hours < 10 ? "0" + hours : hours}H{" "}
+          <span className="mr-4" />
+          {minutes < 10 ? "0" + minutes : minutes}M <span className="mr-4" />
           {seconds < 10 ? "0" + seconds : seconds}S
         </span>
       );
@@ -231,7 +232,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                         <p>{listing?.title}</p>
                       </div>
                       <div className="hidden sm:flex grow"></div>
-                      <div className=" flex text-left justify-end">
+                      <div className=" flex text-left justify-end -mr-5">
                         {" "}
                         <p className="">
                           Reserve <br /> Price
@@ -262,7 +263,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                       </div>
 
                       <div className="hidden sm:flex grow"></div>
-                      <div className=" flex text-left justify-end">
+                      <div className=" flex text-left justify-end -mr-5">
                         {" "}
                         <p className="">
                           Current <br /> Bid
@@ -296,7 +297,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                 listing.seller == authedProfile?.address ? (
                   <div className="font-ibmPlex w-full md:min-w-1 flex items-center justify-between">
                     <button
-                      className=" text-green font-xCompressed  w-full border border-green uppercase tracking-[8px] py-1 bg-white bg-opacity-20 hover:bg-opacity-30 font-semibold text-xl  "
+                      className=" text-black font-xCompressed  w-full  uppercase tracking-[8px] py-1 bg-green hover:bg-opacity-80 font-semibold text-2xl  transition duration-200 ease-in-out"
                       onClick={listing.timeElapse && isModalEndOpen}
                     >
                       {listing.timeElapse

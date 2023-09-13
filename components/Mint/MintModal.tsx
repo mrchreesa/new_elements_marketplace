@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Props = {
   modalOpen: boolean;
@@ -47,15 +48,12 @@ const MintModal: FunctionComponent<Props> = ({ modalOpen, isModalClosed }) => {
                   <p className="pr-6 text-green">Successfully minted!</p>
                 </div>
               </div>
-              <button
-                onClick={() => {
-                  router.push("/profile");
-                }}
-                type="submit"
-                className="bg-blue whitespace-nowrap flex justify-center text-green fontCompress font-xCompressed border border-green w-full uppercase tracking-[8px] mt-3 bg-white bg-opacity-20 hover:bg-opacity-40 py-[1.2vh] px-[2vw] md:px-[6vw] z-2 text-2xl  "
+              <Link
+                href="/profile"
+                className="bg-green flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[8px] mt-3   hover:bg-opacity-80 py-[1.2vh] px-[2vw]  z-2 text-2xl  transition duration-200 ease-in-out"
               >
                 Back To Profile
-              </button>
+              </Link>
             </div>
           </div>
         </div>

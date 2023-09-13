@@ -117,10 +117,10 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                 )}
 
                 <div className="flex flex-col w-full font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
-                  <div className=" grid grid-cols-2 md:grid-cols-3 w-full mt-3">
-                    <div className=" lg:flex text-left">
+                  <div className=" grid grid-cols-4 sm:grid-cols-5 gap-6 w-full mt-3">
+                    <div className=" lg:flex text-left col-span-2">
                       {" "}
-                      <p className="pr-6 pb-2 lg:pb-0">
+                      <p className="pr-6 pb-2 lg:pb-0 ">
                         Reserve <br /> Price
                       </p>
                       <p className="font-bold ">
@@ -128,45 +128,19 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                       </p>
                     </div>
                     <div className="hidden md:flex grow"></div>
-                    <div className=" lg:flex text-left ">
+                    <div className=" lg:flex text-left col-span-2 justify-end">
                       {" "}
-                      <p className="pr-6 pb-2 lg:pb-0">
+                      <p className="pr-6 pb-2 lg:pb-0 ">
                         Winning <br /> Bid
                       </p>
-                      <p className="font-bold text-green">
-                        {listing.Bid} <br /> ETH
-                      </p>
+                      <div className="flex text-left ">
+                        <p className="font-bold text-green ">
+                          {listing.Bid} <br /> ETH
+                        </p>
+                      </div>
                     </div>
                   </div>
 
-                  {/* <div className=" flex mt-3">
-                    <div className=" flex w-full fontIbm">
-                      <div className=" flex text-left">
-                        {" "}
-                        <p className="pr-6 font-bold text-green">
-                          Input <br /> Amount
-                        </p>
-                        <input
-                          type="number"
-                          name="bidAmount"
-                          pattern="[0-9]+"
-                          placeholder="0.00  ETH"
-                          onChange={(e) => setBidAmount(e.target.value)}
-                          className="border bg-transparent w-2/5 pl-2 focus:outline-green"
-                        />
-                      </div>
-                      <div className="flex grow"></div>
-                      <div className=" flex text-left">
-                        {" "}
-                        <p className="pr-6 font-bold text-green ">
-                          Your <br /> Balance
-                        </p>
-                        <p className="font-bold">
-                          {balance} <br /> ETH
-                        </p>
-                      </div>
-                    </div>
-                  </div> */}
                   {listing.timeElapse ? (
                     <>
                       {loadingBid ? (
@@ -179,7 +153,7 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                       ) : (
                         <button
                           onClick={endBid}
-                          className="fontCompress text-green mt-6 border border-green font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 bg-white bg-opacity-20 hover:bg-opacity-30 font-semibold text-xl  "
+                          className="text-black mt-6  font-xxCompressed w-[100%] uppercase tracking-[3px] py-1 bg-green hover:bg-opacity-80 font-semibold text-xl  transition duration-200 ease-in-out"
                         >
                           claim
                         </button>

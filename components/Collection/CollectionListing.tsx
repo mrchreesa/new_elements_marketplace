@@ -141,8 +141,8 @@ const CollectionListing = ({ user, users }: any) => {
 
   return (
     <>
-      <div className="flex flex-col realtive h-full items-center container lg:w-[98dvw]  mt-[6.5rem]  overflow-x-hidden justify-between">
-        <div className="flex justify-center realtive w-full lg:w-3/4">
+      <div className="relative flex w-screen overflow-hidden sm:mt-24 max-w-[1600px] flex-col items-center content-center">
+        <div className="flex justify-center realtive w-full ">
           {/* <div className="absolute translate-x-[100%] lg:translate-x-1 lg:right-[70%] xl:translate-x-0 xl:right-1/2  left-0 hidden md:block ">
             <Link
               href="/"
@@ -151,7 +151,7 @@ const CollectionListing = ({ user, users }: any) => {
               {"<<<"} Back
             </Link>
           </div> */}
-          <div className="flex flex-col h-full items-center justify-center">
+          <div className="flex flex-col h-full items-center justify-center mt-10">
             <div className="flex flex-col h-full items-center justify-center font-ibmPlex">
               {listing && (
                 <Image
@@ -191,13 +191,15 @@ const CollectionListing = ({ user, users }: any) => {
               <p className="mx-4 md:mx-0">{listing?.description as string}</p>
             </div>
             {loading ? (
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-4 lg:mx-10 mb-10">
+              <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-10 lg:mx-10 mb-10 overflow-hidden">
+                <NFTCardSkeleton />
+
                 <NFTCardSkeleton />
 
                 <NFTCardSkeleton />
               </div>
             ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2  gap-14 sm:mx-8 mb-10">
+              <div className="grid grid-cols-1  mt-10 sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
                 {listings &&
                   listings.map((listing: any, index: number) => (
                     <motion.div
