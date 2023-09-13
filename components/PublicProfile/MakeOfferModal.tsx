@@ -201,7 +201,7 @@ const MakeOfferModal: FunctionComponent<Props> = ({
                   ) : (
                     <button
                       onClick={makeOffer}
-                      className="fontCompress text-green mt-6 border border-green font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 bg-white bg-opacity-20 hover:bg-opacity-30 font-semibold text-xl  "
+                      className="fontCompress text-black mt-6 font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 bg-green hover:bg-opacity-80 font-semibold text-2xl  "
                     >
                       Make Offer
                     </button>

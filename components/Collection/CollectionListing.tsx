@@ -3,7 +3,8 @@ import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import avatar from "../../assets/avatar.gif";
 import Router from "next/router";
-import profile from "../../assets/PROFILE.png";
+import { motion, AnimatePresence } from "framer-motion";
+
 import Image from "next/image";
 import { ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "../utils/constants";
@@ -13,6 +14,8 @@ import CollectionListingCard from "./CollectionListingCard";
 import CollPlaceBidModal from "./CollPlaceBidModal";
 import CollEnlargeNFTModal from "./CollEnlargeNFTModal";
 import NFTCard from "../NFTCard";
+import { useEthersSigner } from "../utils/getSigner";
+import NFTCardSkeleton from "../LoadingSkeletons/NFTCardSkeleton";
 
 type Props = {
   listing: any;
@@ -88,40 +91,6 @@ const CollectionListing = ({ user, users }: any) => {
     }
   }
 
-  // async function makeOffer(listingId: any) {
-  //   try {
-  //     // bidAmount // The offer amount the user entered
-  //     if (typeof window !== "undefined") {
-  //       const provider = new ethers.providers.Web3Provider(
-  //         (window as CustomWindow).ethereum as any
-  //       );
-
-  //       if (listingId) {
-  //         await (window as CustomWindow)?.ethereum?.request({
-  //           method: "eth_requestAccounts",
-  //         });
-  //         const signer = provider.getSigner();
-  //         const contract = new ethers.Contract(
-  //           ContractAddress,
-  //           ContractAbi,
-  //           signer
-  //         );
-  //         const id = Number(listingId);
-  //         const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
-
-  //         // Call the contract method with value
-  //         const listingTx = await contract.makeOffer(id, {
-  //           value: valueToSend,
-  //         });
-  //         isModalClosed();
-  //       }
-  //     }
-  //   } catch (error) {
-  //     console.error(error);
-  //     alert(error);
-  //   }
-  // }
-
   const isModalOpen = () => {
     setModalOpen(true);
   };
@@ -136,18 +105,11 @@ const CollectionListing = ({ user, users }: any) => {
   const isModalClosedEnlargeNFT = () => {
     setModalOpenEnlargeNFT(false);
   };
+  const signer = useEthersSigner();
 
   const fetchlisting = async () => {
-    const provider = new ethers.providers.Web3Provider(
-      (window as CustomWindow).ethereum as any
-    );
-
     if (collectionId) {
-      await (window as CustomWindow)?.ethereum?.request({
-        method: "eth_requestAccounts",
-      });
-      const signer = provider.getSigner();
-
+      setLoading(true);
       const contract = new ethers.Contract(
         ContractAddress,
         ContractAbi,
@@ -163,11 +125,10 @@ const CollectionListing = ({ user, users }: any) => {
       setListing(collection);
       setListings(listings);
     }
+    setLoading(false);
   };
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      fetchlisting();
-    }
+    fetchlisting();
   }, []);
 
   // Successful Bid Modal
@@ -181,7 +142,7 @@ const CollectionListing = ({ user, users }: any) => {
   return (
     <>
       <div className="flex flex-col realtive h-full items-center container lg:w-[98dvw]  mt-[6.5rem]  overflow-x-hidden justify-between">
-        <div className="flex justify-center realtive w-full md:w-3/4">
+        <div className="flex justify-center realtive w-full lg:w-3/4">
           {/* <div className="absolute translate-x-[100%] lg:translate-x-1 lg:right-[70%] xl:translate-x-0 xl:right-1/2  left-0 hidden md:block ">
             <Link
               href="/"
@@ -198,7 +159,7 @@ const CollectionListing = ({ user, users }: any) => {
                   alt={listing?.title as string}
                   width={400}
                   height={600}
-                  className="w-full max-w-[250px] mt-4 object-contain rounded-[200px]"
+                  className="w-[250px] h-[160px] max-w-[250px] mt-4 object-cover rounded-[80px]"
                   onClick={isModalOpenEnlargeNFT}
                 />
               )}
@@ -229,30 +190,45 @@ const CollectionListing = ({ user, users }: any) => {
             <div className="font-ibmPlex bold text-center w-full   mt-10 pb-10  leading-5 text-xs">
               <p className="mx-4 md:mx-0">{listing?.description as string}</p>
             </div>
-            <div className="grid grid-cols-1 md:grid-cols-2 w-full gap-14 sm:mx-8 mb-10">
-              {listings &&
-                listings.map((listing: any, index: number) => (
-                  <NFTCard
-                    key={index}
-                    users={users}
-                    setLoading={setLoading}
-                    // isModalOpenEnlargeNFT={isModalOpenEnlargeNFT}
-                    // isModalOpen={isModalOpen}
-                    // setBidListing={setBidListing}
-                    listing={listing}
-                    index={index}
-                    user={user}
-                    // artistNameOrAddress={artistNameOrAddress}
-                    // artistProfilePic={artistProfilePic}
-                    // owner={owner}
-                  />
-                ))}
-              {/*             
-              <CollectionListingCard
-                isModalOpenEnlargeNFT={isModalOpenEnlargeNFT}
-                isModalOpen={isModalOpen}
-                listing={listing}
-              /> */}
+            {loading ? (
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-4 lg:mx-10 mb-10">
+                <NFTCardSkeleton />
+
+                <NFTCardSkeleton />
+              </div>
+            ) : (
+              <div className="grid grid-cols-1 md:grid-cols-2  gap-14 sm:mx-8 mb-10">
+                {listings &&
+                  listings.map((listing: any, index: number) => (
+                    <motion.div
+                      key={index}
+                      initial={{ y: 80, opacity: 0 }}
+                      animate={{ y: 0, opacity: 1 }}
+                      transition={{ delay: index * 0.1 + 0.4 }}
+                      exit={{
+                        opacity: 0,
+                        y: 90,
+                        transition: {
+                          ease: "easeInOut",
+                          delay: 1,
+                        },
+                      }}
+                    >
+                      <NFTCard
+                        key={index}
+                        users={users}
+                        setLoading={setLoading}
+                        listing={listing}
+                        index={index}
+                        user={user}
+                      />
+                    </motion.div>
+                  ))}{" "}
+              </div>
+            )}
+
+            {/*             
+            
             </div>
             <div className="flex w-full mt-6 mb-10 font-ibmPlex border-t pt-5 text-xs px-4 pd:mx-0">
               {/* <div className="flex flex-1/2 flex-col w-1/2 items-start">
@@ -263,9 +239,9 @@ const CollectionListing = ({ user, users }: any) => {
                 <button className="mb-4">VIEW METADATA {">"}</button>
                 <button className="mb-4">VIEW ON IPFS {">"}</button>
               </div> */}
-              <div className="flex-1/2  w-1/2">
-                {/* <p className="text-left mb-2">HISTORY</p> */}
-                {/* {bids.length && bids[0] != undefined ? (
+            {/* <div className="flex-1/2  w-1/2"> */}
+            {/* <p className="text-left mb-2">HISTORY</p> */}
+            {/* {bids.length && bids[0] != undefined ? (
                   bids?.map((bid: any, key: number) => (
                     <div
                       className="grid grid-cols-8  justify-between text-left mt-2"
@@ -292,8 +268,8 @@ const CollectionListing = ({ user, users }: any) => {
                 ) : (
                   <p className="text-left mt-2">No bids yet</p>
                 )} */}
-              </div>
-            </div>
+            {/* </div> */}
+            {/* </div> */}
           </div>
         </div>
       </div>

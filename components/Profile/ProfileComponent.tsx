@@ -535,7 +535,7 @@ const ProfileComponent = ({
               ) : null}
               {/* Purchased */}
               <div className="flex flex-col">
-                <h3 className="font-bold">Purchased</h3>
+                <h3 className="font-bold uppercase">Purchased</h3>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4">
                   {collectedNfts?.length ? (

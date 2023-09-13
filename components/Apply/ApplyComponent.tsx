@@ -128,9 +128,7 @@ const ApplyComponent = () => {
 
   return (
     <>
-      <div
-        className={`flex w-screen  h-screen  items-center justify-center bg-center bg-no-repeat bg-cover bg-applyPattern`}
-      >
+      <div className={`flex w-screen  h-screen  items-center justify-center`}>
         <div className="flex mb-5 w-full px-5 md:px-0 md:w-[60vw] xl:w-[40vw] max-w-[1600px] flex-col items-center uppercase text-left text-green font-ibmPlex">
           <div className=" w-full  text-xs">
             <form id="contact-form" onSubmit={handleSubmit} method="POST">
@@ -255,7 +253,7 @@ const ApplyComponent = () => {
 
               <button
                 type="submit"
-                className="bg-blue text-green font-xCompressed border border-green w-full uppercase tracking-[8px] mt-3 bg-white bg-opacity-20 hover:bg-opacity-40 py-[1.2vh] px-[7vh] z-2 text-2xl  "
+                className="bg-blue text-black font-xCompressed  w-full uppercase tracking-[8px] mt-3 bg-green hover:bg-opacity-80 py-[1.2vh] transition-all px-[7vh] z-2 text-2xl  "
               >
                 {loading ? <ButtonSpinner /> : "Submit"}
               </button>

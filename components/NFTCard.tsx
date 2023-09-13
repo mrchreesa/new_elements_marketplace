@@ -84,6 +84,7 @@ const NFTCard: FunctionComponent<Props> = ({
   const isModalClosed = () => {
     setModalOpen(false);
   };
+
   return (
     <>
       {listing ? (
@@ -113,7 +114,7 @@ const NFTCard: FunctionComponent<Props> = ({
                   <p>{listing?.title}</p>
                 </div>
                 <div className="hidden sm:flex grow"></div>
-                <div className=" flex text-left justify-end">
+                <div className=" flex text-left -mr-5 justify-end">
                   {" "}
                   <p className=" ">
                     Reserve <br /> Price
@@ -145,7 +146,7 @@ const NFTCard: FunctionComponent<Props> = ({
                   />
                 </div>
                 <div className="hidden sm:flex grow"></div>
-                <div className=" flex text-left justify-end">
+                <div className=" flex text-left -mr-5 justify-end">
                   {" "}
                   <p className=" ">
                     Current <br /> Bid

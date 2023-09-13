@@ -62,7 +62,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     <>
       {/* Content */}
       <div
-        className={`flex w-screen overflow-hidden sm:mt-24 max-w-[1600px] flex-col items-center content-center ${
+        className={`relative flex w-screen overflow-hidden sm:mt-24 max-w-[1600px] flex-col items-center content-center ${
           loading && `cursor-progress`
         }`}
       >
@@ -82,7 +82,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
                 // Otherwise, show the listings
                 listings.length && (
                   <>
-                    <div className="flex font-ibmPlex text-xs mx-4 lg:mx-8 mb-5 mt-20 sm:mt-0">
+                    <div className="fixed flex font-ibmPlex text-xs mx-4 lg:mx-8 top-12 sm:mt-0 pb-3 pt-10 w-full bg-black">
                       <button
                         onClick={() => setIsCollection(false)}
                         className={`${
@@ -101,7 +101,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
                       </button>
                     </div>
                     {!isCollection ? (
-                      <div className="grid grid-cols-1   sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
+                      <div className="grid grid-cols-1  mt-10 sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
                         {listings?.map((listing: any, index: number) => (
                           <motion.div
                             key={index}
