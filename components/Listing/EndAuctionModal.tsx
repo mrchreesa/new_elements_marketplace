@@ -153,7 +153,7 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                       ) : (
                         <button
                           onClick={endBid}
-                          className="text-black mt-6  font-xxCompressed w-[100%] uppercase tracking-[3px] py-1 bg-green hover:bg-opacity-80 font-semibold text-xl  transition duration-200 ease-in-out"
+                          className="text-black mt-6 fontCompress font-xxCompressed w-[100%] uppercase tracking-[3px] py-1 bg-green hover:bg-opacity-80 font-semibold text-xl  transition duration-200 ease-in-out"
                         >
                           claim
                         </button>

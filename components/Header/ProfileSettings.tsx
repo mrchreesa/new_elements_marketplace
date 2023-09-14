@@ -4,6 +4,8 @@ import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
 import SettingsModal from "./SettingsModal";
 import Link from "next/link";
 import { useAuthedProfile } from "../../context/UserContext";
+import SavedNfts from "../Profile/SavedNfts";
+import axios from "axios";
 
 type Props = {};
 
@@ -41,13 +43,27 @@ const ProfileSettings = (props: Props) => {
   };
 
   const handleSubmit = (e: any) => {
+    const data = {
+      email: email,
+      address: authedProfile?.address,
+    };
     setLoading(true);
     e.preventDefault();
     if (validateEmail()) {
       console.log("Verification passed!");
-      setLoading(false);
-      setEmail("");
-      isModalOpen();
+      axios
+        .post("/api/updateEmail", data)
+        .then((res) => {
+          console.log(res);
+
+          isModalOpen();
+        })
+        .catch((err) => {
+          console.log(err);
+        })
+        .finally(() => {
+          setLoading(false);
+        });
     } else {
       setLoading(false);
       console.log("Verification failed.");
@@ -60,6 +76,7 @@ const ProfileSettings = (props: Props) => {
   const isModalClosed = () => {
     setModalOpen(false);
   };
+
   return (
     <>
       <div
@@ -91,7 +108,11 @@ const ProfileSettings = (props: Props) => {
                     value={email}
                     onChange={handleChange}
                     // aria-describedby="emailHelp"
-                    placeholder="name@domain.com"
+                    placeholder={
+                      authedProfile?.email === ""
+                        ? "name@domain.com"
+                        : authedProfile?.email
+                    }
                     // required
                   />
                 </div>
@@ -167,7 +188,7 @@ const ProfileSettings = (props: Props) => {
               </div>
               <button
                 type="submit"
-                className="bg-blue text-green font-xCompressed border border-green w-full uppercase tracking-[8px] mt-3 bg-white bg-opacity-20 hover:bg-opacity-40 py-[1.2vh] px-[7vh] z-2 text-2xl  "
+                className="bg-blue text-black font-xCompressed w-full uppercase tracking-[8px] mt-3 bg-green hover:bg-opacity-80 py-[1.2vh] px-[7vh] z-2 text-2xl transition duration-200 ease-in-out"
               >
                 {loading ? <ButtonSpinner /> : "Save"}
               </button>

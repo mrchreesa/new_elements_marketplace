@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Props = {
   modalOpen: boolean;
@@ -50,15 +51,12 @@ const SettingsModal: FunctionComponent<Props> = ({
                   <p className="pr-6 text-green">Saved!</p>
                 </div>
               </div>
-              <button
-                onClick={() => {
-                  router.push("/profile");
-                }}
-                type="submit"
-                className="bg-blue whitespace-nowrap text-green fontCompress font-xCompressed border border-green w-full uppercase tracking-widest md:tracking-[8px] mt-3 bg-white bg-opacity-20 hover:bg-opacity-40 py-[1.2vh] px-[2vw] md:px-[6vw] z-2 text-2xl  "
+              <Link
+                href="/profile"
+                className="bg-green whitespace-nowrap text-black fontCompress font-xCompressed w-full uppercase tracking-widest md:tracking-[8px] mt-3 hover:bg-opacity-80 py-[1.2vh] px-[2vw] md:px-[6vw] z-2 text-2xl  transition duration-200 ease-in-out"
               >
                 Back To Profile
-              </button>
+              </Link>
             </div>
           </div>
         </div>

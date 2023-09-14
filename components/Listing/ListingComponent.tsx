@@ -38,7 +38,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   console.log(listing);
 
   getArtist(users, listing);
-  console.log(bids);
+  console.log(authedProfile);
 
   // Store the bid amount the user entered into the bidding textbox
   const [bidAmount, setBidAmount] = useState<string>("");
@@ -159,7 +159,11 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
 
   // Modal Place Bid
   const isModalOpen = () => {
-    setModalOpen(true);
+    if (authedProfile.email === "") {
+      alert("Please add your email in settings to place a bid");
+    } else {
+      setModalOpen(true);
+    }
   };
   const isModalClosed = () => {
     setModalOpen(false);

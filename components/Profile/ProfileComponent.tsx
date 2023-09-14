@@ -266,7 +266,7 @@ const ProfileComponent = ({
   const isModalClosedEnlargeNFT = () => {
     setModalOpenEnlargeNFT(false);
   };
-  console.log(listedNfts, isLoading);
+  console.log(authedProfile);
 
   return (
     <>
@@ -394,12 +394,26 @@ const ProfileComponent = ({
                   </div>
                 </div>
                 <div className="flex overflow-hidden md:w-[60%]">
-                  <Link
-                    href="/profile/mint"
-                    className=" text-black font-xCompressed w-full font-bold  tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-green hover:bg-opacity-80 py-1 lg:py-[1.2vh] text-2xl  "
-                  >
-                    LIST NEW
-                  </Link>
+                  {authedProfile?.email === "" ? (
+                    <div
+                      onClick={() => {
+                        alert(
+                          "Please add your email address to your profile settings to be able to list your NFTs"
+                        );
+                      }}
+                      className=" text-black font-xCompressed w-full font-bold  tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-green hover:bg-opacity-80 py-1 lg:py-[1.2vh] text-2xl  "
+                    >
+                      LIST NEW
+                    </div>
+                  ) : (
+                    <Link
+                      href="/profile/mint"
+                      className=" text-black font-xCompressed w-full font-bold  tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-green hover:bg-opacity-80 py-1 lg:py-[1.2vh] text-2xl  "
+                    >
+                      {" "}
+                      LIST NEW{" "}
+                    </Link>
+                  )}
                 </div>{" "}
               </div>
             )
@@ -539,7 +553,7 @@ const ProfileComponent = ({
                     collectedNfts.map((nft: any, index: number) => (
                       <div key={nft.id}>
                         <div
-                          className="grid grid-cols-2 lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
+                          className="grid grid-cols-2 h-full lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
                           key={index}
                         >
                           <div className="flex  flex-col h-full items-start w-auto ">

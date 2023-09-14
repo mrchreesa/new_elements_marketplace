@@ -61,18 +61,9 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
 
   let { listing, bids } = await nftFetch();
 
-  if (!auth) {
-    return {
-      redirect: {
-        destination: "/",
-        permanent: false,
-      },
-    };
-  } else {
-    return {
-      props: { users, listing, bids: bids || null },
-    };
-  }
+  return {
+    props: { users, listing, bids: bids || null },
+  };
 };
 
 export default ListingPage;
