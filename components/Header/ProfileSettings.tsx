@@ -16,7 +16,7 @@ const ProfileSettings = (props: Props) => {
   const [errorEmail, setErrorEmail] = React.useState(false);
   const [errorMessageEmail, setErrorMessageEmail] = React.useState("");
   const [modalOpen, setModalOpen] = useState<boolean>(false);
-  const { authedProfile } = useAuthedProfile();
+  const { authedProfile, setAuthedProfile } = useAuthedProfile();
 
   const handleChange = (e: any) => {
     const { value } = e.target;
@@ -55,8 +55,8 @@ const ProfileSettings = (props: Props) => {
         .post("/api/updateEmail", data)
         .then((res) => {
           console.log(res);
-
-          isModalOpen();
+          setAuthedProfile(res.data);
+          setEmail("");
         })
         .catch((err) => {
           console.log(err);
