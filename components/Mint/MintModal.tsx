@@ -50,7 +50,7 @@ const MintModal: FunctionComponent<Props> = ({ modalOpen, isModalClosed }) => {
               </div>
               <Link
                 href="/profile"
-                className="bg-green flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[8px] mt-3   hover:bg-opacity-80 py-[1.2vh] px-[2vw]  z-2 text-2xl  transition duration-200 ease-in-out"
+                className="bg-green flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[6px] mt-3   hover:bg-opacity-80 py-[1.2vh] px-[2vw] fontCompress  z-2 text-2xl  transition duration-200 ease-in-out"
               >
                 Back To Profile
               </Link>
