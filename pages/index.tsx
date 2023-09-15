@@ -82,7 +82,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
                 // Otherwise, show the listings
                 listings.length && (
                   <>
-                    <div className="fixed flex font-ibmPlex text-xs mx-4 lg:mx-8 top-12 sm:mt-0 pb-3 pt-10 w-full bg-black">
+                    <div className="fixed flex font-ibmPlex text-xs mx-4 lg:mx-8 top-12 sm:mt-0 pb-3 pt-10 w-full bg-black z-10">
                       <button
                         onClick={() => setIsCollection(false)}
                         className={`${
