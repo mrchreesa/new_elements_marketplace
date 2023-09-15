@@ -18,6 +18,7 @@ import {
 } from "../../lib/functions";
 import Countdown from "react-countdown";
 import { useEthersSigner } from "../utils/getSigner";
+import AddEmailModal from "./AddEmailModal";
 const { BigNumber } = require("ethers");
 
 const ListingComponent: any = ({ users, listing, bids }: any) => {
@@ -27,6 +28,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [modalOpenEnlargeNFT, setModalOpenEnlargeNFT] =
     useState<boolean>(false);
   const [modalEndOpen, setModalEndOpen] = useState<boolean>(false);
+  const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
     useState<boolean>(false);
   const { authedProfile } = useAuthedProfile();
@@ -160,7 +162,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   // Modal Place Bid
   const isModalOpen = () => {
     if (authedProfile.email === "") {
-      alert("Please add your email in settings to place a bid");
+      isAddEmailModalOpen();
     } else {
       setModalOpen(true);
     }
@@ -188,6 +190,13 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   };
   const isSuccessfulBidModalClosed = () => {
     setSuccessfulBidModal(false);
+  };
+  // Add Email Modal
+  const isAddEmailModalOpen = () => {
+    setAddEmailModalOpen(true);
+  };
+  const isAddEmailModalClosed = () => {
+    setAddEmailModalOpen(false);
   };
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
@@ -409,6 +418,10 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         <SuccessfullBidModal
           successfulBidmodalOpen={successfulBidmodalOpen}
           isSuccessfulBidModalClosed={isSuccessfulBidModalClosed}
+        />
+        <AddEmailModal
+          addEmailModalOpen={addEmailModalOpen}
+          isAddEmailModalClosed={isAddEmailModalClosed}
         />
       </>
     );
