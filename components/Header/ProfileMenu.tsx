@@ -22,6 +22,7 @@ export default function ProfileMenu() {
         .delete("/api/signIn")
         .then((res) => {
           setAddress("");
+          setAuthedProfile(null);
         })
         .catch((err) => {
           console.log(err);

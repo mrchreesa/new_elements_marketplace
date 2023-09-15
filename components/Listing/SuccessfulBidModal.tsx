@@ -55,7 +55,7 @@ const SuccessfulBidModa: FunctionComponent<Props> = ({
                 href="/"
                 className="bg-green flex justify-center whitespace-nowrap text-black fontCompress  font-xCompressed  w-full uppercase tracking-[8px] mt-3   hover:bg-opacity-80 py-[1.2vh] px-[2vw]  z-2 text-2xl  transition duration-200 ease-in-out"
               >
-                Go Back
+                Back
               </Link>
             </div>
           </div>

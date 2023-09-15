@@ -10,6 +10,7 @@ import { fetchListing } from "../utils/utils";
 import EndAuctionModal from "./EndAuctionModal";
 import SuccessfullBidModal from "./SuccessfulBidModal";
 import useAuthedProfile from "../../context/UserContext";
+import { useConnectModal } from "@rainbow-me/rainbowkit";
 import {
   getArtist,
   artistNameOrAddress,
@@ -32,6 +33,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
     useState<boolean>(false);
   const { authedProfile } = useAuthedProfile();
+  const { openConnectModal } = useConnectModal();
 
   const router = useRouter();
 
@@ -161,10 +163,14 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
 
   // Modal Place Bid
   const isModalOpen = () => {
-    if (authedProfile.email === "") {
-      isAddEmailModalOpen();
+    if (authedProfile) {
+      if (authedProfile?.email === "") {
+        isAddEmailModalOpen();
+      } else {
+        setModalOpen(true);
+      }
     } else {
-      setModalOpen(true);
+      return;
     }
   };
   const isModalClosed = () => {
@@ -295,7 +301,9 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                       <div className=" flex font-bold w-full text-green">
                         {listing.timeElapse ? null : (
                           <button
-                            onClick={isModalOpen}
+                            onClick={
+                              authedProfile ? isModalOpen : openConnectModal
+                            }
                             className="font-xCompressed  w-full  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
                           >
                             place bid
