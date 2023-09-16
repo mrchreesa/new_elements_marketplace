@@ -1,4 +1,4 @@
-export const ContractAddress = "0x11B82079a38f2AABd19De6d9c404629EdB553331";
+export const ContractAddress = "0xa58C68bDA6D48518404fF87b62090CEc43071453";
 export const ContractAbi = [
   {
     inputs: [
@@ -316,6 +316,11 @@ export const ContractAbi = [
         internalType: "uint256",
         name: "tokenId",
         type: "uint256",
+      },
+      {
+        internalType: "address",
+        name: "referral",
+        type: "address",
       },
     ],
     name: "end",
