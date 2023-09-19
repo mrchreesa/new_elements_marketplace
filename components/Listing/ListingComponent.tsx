@@ -33,8 +33,9 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
     useState<boolean>(false);
-  const [referralAddress, setReferralAddress] =
-    useState<any>(0x0000000000000000000000000000000000000000);
+  const [referralAddress, setReferralAddress] = useState<any>(
+    "0x0000000000000000000000000000000000000000"
+  );
   const { authedProfile } = useAuthedProfile();
 
   const { openConnectModal } = useConnectModal();
@@ -81,11 +82,15 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
 
         // Get referral address
-        setReferralAddress(localStorage.getItem("userAddress"));
-        console.log(referralAddress + "referralAddress");
+        if (localStorage.getItem("userAddress")) {
+          setReferralAddress(localStorage.getItem("userAddress"));
+        }
+        console.log(referralAddress + " referral address");
 
         // Call the contract method with value
-        const listingTx = await contract.bid(id, { value: valueToSend });
+        const listingTx = await contract.bid(id, referralAddress, {
+          value: valueToSend,
+        });
         await listingTx.wait();
         isModalClosed();
         setLoadingBid(false);
