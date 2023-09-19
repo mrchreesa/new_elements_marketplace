@@ -20,6 +20,7 @@ import {
 import Countdown from "react-countdown";
 import { useEthersSigner } from "../utils/getSigner";
 import AddEmailModal from "./AddEmailModal";
+import local from "next/font/local";
 const { BigNumber } = require("ethers");
 
 const ListingComponent: any = ({ users, listing, bids }: any) => {
@@ -32,7 +33,10 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
     useState<boolean>(false);
+  const [referralAddress, setReferralAddress] =
+    useState<any>(0x0000000000000000000000000000000000000000);
   const { authedProfile } = useAuthedProfile();
+
   const { openConnectModal } = useConnectModal();
 
   const router = useRouter();
@@ -76,6 +80,10 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         const id = Number(listingId);
         const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
 
+        // Get referral address
+        setReferralAddress(localStorage.getItem("userAddress"));
+        console.log(referralAddress + "referralAddress");
+
         // Call the contract method with value
         const listingTx = await contract.bid(id, { value: valueToSend });
         await listingTx.wait();
@@ -103,8 +111,6 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
           signer
         );
         const id = Number(listingId);
-        // const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
-        console.log(id);
 
         // Call the contract method with value
         const listingTx = await contract.end(id);
