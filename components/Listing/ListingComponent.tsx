@@ -21,6 +21,7 @@ import Countdown from "react-countdown";
 import { useEthersSigner } from "../utils/getSigner";
 import AddEmailModal from "./AddEmailModal";
 import local from "next/font/local";
+import ShareLinkModal from "../ShareLinkModal";
 const { BigNumber } = require("ethers");
 
 const ListingComponent: any = ({ users, listing, bids }: any) => {
@@ -32,6 +33,8 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [modalEndOpen, setModalEndOpen] = useState<boolean>(false);
   const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
+    useState<boolean>(false);
+  const [commissionModalOpen, setCommissionModalOpen] =
     useState<boolean>(false);
 
   const { authedProfile } = useAuthedProfile();
@@ -223,6 +226,16 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const isAddEmailModalClosed = () => {
     setAddEmailModalOpen(false);
   };
+  // Commission Modal
+  const isCommissionModalOpen = () => {
+    setCommissionModalOpen(true);
+  };
+  const isCommissionModalClosed = () => {
+    setCommissionModalOpen(false);
+  };
+  const handleShareWithCommission = () => {
+    isCommissionModalOpen();
+  };
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       // Render a complete state
@@ -368,12 +381,13 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
               </div>
               <div className="flex w-full mt-6 mb-10 font-ibmPlex text-xs">
                 <div className="flex flex-1/2 flex-col w-1/2 items-start">
-                  <button className="text-green mb-4">
+                  <button
+                    onClick={handleShareWithCommission}
+                    className="text-green mb-4"
+                  >
                     SHARE AND EARN 1% {">>"}
                   </button>
                   <button className="mb-4">VIEW ON ETHERSCAN {">"}</button>
-                  <button className="mb-4">VIEW METADATA {">"}</button>
-                  <button className="mb-4">VIEW ON IPFS {">"}</button>
                 </div>
                 <div className="flex-1/2  w-1/2">
                   <p className="text-left mb-2">HISTORY</p>
@@ -449,6 +463,12 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         <AddEmailModal
           addEmailModalOpen={addEmailModalOpen}
           isAddEmailModalClosed={isAddEmailModalClosed}
+        />
+        <ShareLinkModal
+          isModalClosed={isCommissionModalClosed}
+          modalOpen={commissionModalOpen}
+          user={authedProfile}
+          listing={listing}
         />
       </>
     );
