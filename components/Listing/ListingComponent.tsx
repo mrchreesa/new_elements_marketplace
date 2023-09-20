@@ -33,9 +33,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
     useState<boolean>(false);
-  const [referralAddress, setReferralAddress] = useState<any>(
-    "0x0000000000000000000000000000000000000000"
-  );
+
   const { authedProfile } = useAuthedProfile();
 
   const { openConnectModal } = useConnectModal();
@@ -80,17 +78,27 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         );
         const id = Number(listingId);
         const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
+        console.log(localStorage.hasOwnProperty("userAddress"));
+        let listingTx;
 
         // Get referral address
-        if (localStorage.getItem("userAddress")) {
-          setReferralAddress(localStorage.getItem("userAddress"));
-        }
-        console.log(referralAddress + " referral address");
+        if (localStorage.hasOwnProperty("userAddress")) {
+          const referralAddress = localStorage.getItem("userAddress");
+          // Call the contract method with value
+          console.log(referralAddress + "referralAddress");
 
-        // Call the contract method with value
-        const listingTx = await contract.bid(id, referralAddress, {
-          value: valueToSend,
-        });
+          listingTx = await contract.bid(id, referralAddress, {
+            value: valueToSend,
+          });
+        } else {
+          const referralAddress = "0x0000000000000000000000000000000000000000";
+
+          // Call the contract method with value
+          listingTx = await contract.bid(id, referralAddress, {
+            value: valueToSend,
+          });
+        }
+
         await listingTx.wait();
         isModalClosed();
         setLoadingBid(false);

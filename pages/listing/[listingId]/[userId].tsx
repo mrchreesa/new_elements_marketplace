@@ -18,6 +18,8 @@ const UserId = () => {
     axios
       .post(`/api/userId`, data)
       .then((res: any) => {
+        console.log(res.data.address);
+
         localStorage.setItem("userAddress", res.data.address);
         router.push(`/listing/${listingId}`);
       })

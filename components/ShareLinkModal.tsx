@@ -1,6 +1,7 @@
 import React, { useState, useCallback } from "react";
 import Modal from "react-modal";
 import { CopyToClipboard } from "react-copy-to-clipboard";
+import { useAuthedProfile } from "../context/UserContext";
 
 type Props = {};
 
@@ -11,14 +12,18 @@ const ShareLinkModal = ({
   listing,
   host,
 }: any) => {
+  const [copied, setCopied] = useState(false);
+  const { authedProfile, setAuthedProfile } = useAuthedProfile();
+  console.log("authedProfile", authedProfile);
+
   const origin =
     typeof window !== "undefined" && window.location.origin
       ? window.location.origin
       : "";
+
   const [value, setValue] = useState(
-    `${origin}/listing/${listing?.id}/${user?._id}`
+    `${origin}/listing/${listing?.id}/${authedProfile?._id}`
   );
-  const [copied, setCopied] = useState(false);
 
   const onClick = useCallback(({ target: { innerText } }: any) => {
     console.log(`Clicked on "${innerText}"!`);
