@@ -2,7 +2,7 @@ import { useState, FunctionComponent } from "react";
 import Router from "next/router";
 import Image from "next/image";
 import Countdown from "react-countdown";
-import ribbon from "../public/ribbon.png";
+
 import send from "../public/send.png";
 import axios from "axios";
 import { useAuthedProfile } from "../context/UserContext";
@@ -14,6 +14,8 @@ import {
 } from "../lib/functions";
 import ShareLinkModal from "./ShareLinkModal";
 import { useRouter } from "next/router";
+import Ribbon from "./Ribbon";
+import Send from "./Send";
 
 type Props = {
   listing: object | any;
@@ -161,22 +163,10 @@ const NFTCard: FunctionComponent<Props> = ({
                 </div>
               </div>
               <div className=" flex mt-3 -z-0">
-                <button
-                  onClick={
-                    authedProfile
-                      ? () => handleSaveToProfile()
-                      : () => alert("Please Connect Wallet")
-                  }
-                  className="outline-none   transform active:scale-y-75 transition-transform flex"
-                >
-                  <Image
-                    className=" h-5"
-                    src={ribbon}
-                    height={10}
-                    width={20}
-                    alt={""}
-                  />
-                </button>
+                <Ribbon
+                  authedProfile={authedProfile}
+                  handleSaveToProfile={handleSaveToProfile}
+                />
 
                 <div className="flex grow"></div>
                 <div className=" flex font-bold text-green">
@@ -210,22 +200,10 @@ const NFTCard: FunctionComponent<Props> = ({
                 <div className="flex grow"></div>
 
                 <div className="font-bold flex">
-                  <button
-                    onClick={
-                      authedProfile
-                        ? () => handleShareWithCommission()
-                        : () => alert("Please Connect Wallet")
-                    }
-                    className="outline-none   transform active:scale-y-75 transition-transform flex"
-                  >
-                    <Image
-                      className="ml-3 h-5"
-                      src={send}
-                      height={10}
-                      width={20}
-                      alt={""}
-                    />
-                  </button>
+                  <Send
+                    authedProfile={authedProfile}
+                    handleShareWithCommission={handleShareWithCommission}
+                  />
                 </div>
               </div>
             </div>
