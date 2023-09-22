@@ -22,6 +22,7 @@ import NFTCardSkeleton from "../LoadingSkeletons/NFTCardSkeleton";
 import { list } from "@material-tailwind/react";
 import Countdown from "react-countdown";
 import EnlargeCollectedNft from "./EnlargeCollectedNft";
+import AddEmailModal from "../Listing/AddEmailModal";
 
 type Props = {
   cropperOpen: boolean;
@@ -47,6 +48,8 @@ const ProfileComponent = ({
   const [modalNftIndex, setModalNftIndex] = useState<number>(0);
   const [authedProfile, setAuthedProfile] = useState<any>(user);
   const [modalOpenEnlargeNFT, setModalOpenEnlargeNFT] = useState(false);
+  const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
+
   // const { setAuthedProfile } = useAuthedProfile();
 
   let { isArtist } = authedProfile;
@@ -266,6 +269,14 @@ const ProfileComponent = ({
   const isModalClosedEnlargeNFT = () => {
     setModalOpenEnlargeNFT(false);
   };
+
+  // Add Email Modal
+  const isAddEmailModalOpen = () => {
+    setAddEmailModalOpen(true);
+  };
+  const isAddEmailModalClosed = () => {
+    setAddEmailModalOpen(false);
+  };
   console.log(authedProfile);
 
   return (
@@ -397,11 +408,9 @@ const ProfileComponent = ({
                   {authedProfile?.email === "" ? (
                     <div
                       onClick={() => {
-                        alert(
-                          "Please add your email address to your profile settings to be able to list your NFTs"
-                        );
+                        isAddEmailModalOpen();
                       }}
-                      className=" text-black font-xCompressed w-full font-bold  tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-green hover:bg-opacity-80 py-1 lg:py-[1.2vh] text-2xl  "
+                      className=" text-black cursor-pointer font-xCompressed w-full font-bold  tracking-[10px] md:tracking-[12px] lg:w-[40%] mt-8 mb-5 md:my-10 bg-green hover:bg-opacity-80 py-1 lg:py-[1.2vh] text-2xl  "
                     >
                       LIST NEW
                     </div>
@@ -649,6 +658,10 @@ const ProfileComponent = ({
         modalOpenEnlargeNFT={modalOpenEnlargeNFT}
         collectedNfts={collectedNfts}
         nftModalIndex={modalNftIndex}
+      />
+      <AddEmailModal
+        addEmailModalOpen={addEmailModalOpen}
+        isAddEmailModalClosed={isAddEmailModalClosed}
       />
     </>
   );

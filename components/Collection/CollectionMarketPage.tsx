@@ -10,17 +10,10 @@ const CollectionMarketPage = ({ users }: any) => {
   const [listings, setListings] = useState<any>([]);
 
   const fetchlisting = async () => {
-    // const provider = new ethers.providers.Web3Provider(
-    //   (window as CustomWindow).ethereum as any
-    // );
-
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.NEXT_PUBLIC_RPC_URL
     );
 
-    // await (window as CustomWindow)?.ethereum?.request({
-    //   method: "eth_requestAccounts",
-    // });
     const signer = provider.getSigner();
 
     const contract = new ethers.Contract(
@@ -30,19 +23,16 @@ const CollectionMarketPage = ({ users }: any) => {
     );
 
     const collectionTx = await contract.fetchCollections();
-    // console.log(collectionTx);
     const res = await fetchcontractListings(collectionTx);
     setListings(res);
   };
   useEffect(() => {
-    if (typeof window !== "undefined") {
-      fetchlisting();
-    }
+    fetchlisting();
   }, []);
 
   return (
     <AnimatePresence>
-      <div className="grid grid-cols-1   sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
+      <div className="grid grid-cols-1 mt-10  sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
         {listings?.map((listing: any, index: any) => (
           <motion.div
             key={index}

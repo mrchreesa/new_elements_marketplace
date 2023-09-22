@@ -16,21 +16,14 @@ import ShareLinkModal from "./ShareLinkModal";
 import { useRouter } from "next/router";
 import Ribbon from "./Ribbon";
 import Send from "./Send";
+import Link from "next/link";
 
 type Props = {
   listing: object | any;
   setLoading: Function;
   users: object | any;
-  index: number;
-  user: any;
 };
-const NFTCard: FunctionComponent<Props> = ({
-  listing,
-  setLoading,
-  users,
-  index,
-  user,
-}) => {
+const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   getArtist(users, listing);
@@ -41,7 +34,7 @@ const NFTCard: FunctionComponent<Props> = ({
     setLoading(true);
     const data = {
       nft: listing,
-      address: user.address,
+      address: authedProfile?.address,
     };
     axios
       .post("/api/saveNft", data)
@@ -94,12 +87,8 @@ const NFTCard: FunctionComponent<Props> = ({
         <div className="flex flex-col h-full px-4 md:px-0 overflow-hidden justify-between ">
           <div className="flex flex-col h-full">
             {/* <div className="flex grow"></div> */}
-            <div
-              onClick={() => {
-                Router.push({
-                  pathname: `/listing/${listing.id}`,
-                });
-              }}
+            <Link
+              href={`/listing/${listing.id}`}
               className=" overflow-hidden h-full flex min-h-[370px] max-h-[450px]  xl:max-h-[580px] justify-center items-center"
             >
               <Image
@@ -109,7 +98,7 @@ const NFTCard: FunctionComponent<Props> = ({
                 height={400}
                 className="w-full  object-cover cursor-pointer"
               />
-            </div>
+            </Link>
 
             <div className="flex flex-col font-ibmPlex mb-16 uppercase text-xs text-[#e4e8eb] ">
               <div className=" grid grid-cols-4 sm:grid-cols-5 gap-6 w-full mt-3">
@@ -131,12 +120,8 @@ const NFTCard: FunctionComponent<Props> = ({
                     <br /> ETH
                   </p>
                 </div>
-                <div
-                  onClick={() => {
-                    Router.push({
-                      pathname: `user/${_id}`,
-                    });
-                  }}
+                <Link
+                  href={`/user/${_id}`}
                   className="font-bold text-left flex cursor-pointer  mt-3 col-span-2"
                 >
                   <p> BY @{artistNameOrAddress}</p>
@@ -147,7 +132,7 @@ const NFTCard: FunctionComponent<Props> = ({
                     width={25}
                     alt={""}
                   />
-                </div>
+                </Link>
                 <div className="hidden sm:flex grow"></div>
                 <div className=" flex text-left -mr-7 justify-end">
                   {" "}
@@ -213,7 +198,7 @@ const NFTCard: FunctionComponent<Props> = ({
       <ShareLinkModal
         isModalClosed={isModalClosed}
         modalOpen={modalOpen}
-        user={user}
+        user={authedProfile}
         listing={listing}
       />
     </>

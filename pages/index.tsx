@@ -34,6 +34,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     const res = await fetchListings({ contract, listingTx });
     return res;
   };
+
   let listings: any = [];
   const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting());
 
@@ -50,7 +51,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     <>
       {/* Content */}
       <div
-        className={`relative flex w-screen overflow-hidden sm:mt-24 max-w-[1600px] flex-col items-center content-center ${
+        className={`relative flex w-screen overflow-hidden mt-24 max-w-[1600px] flex-col items-center content-center ${
           loading && `cursor-progress`
         }`}
       >
@@ -111,8 +112,6 @@ const Home: NextPage = ({ user, users, auth }: any) => {
                                 listing={listing}
                                 setLoading={setLoading}
                                 users={users}
-                                index={index}
-                                user={user}
                               />
                             </>
                           </motion.div>

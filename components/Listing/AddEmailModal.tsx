@@ -45,12 +45,12 @@ const AddEmailModal: FunctionComponent<Props> = ({
             <div className="flex flex-col h-full">
               <div className=" overflow-hidden h-full flex flex-col justify-center items-center mb-3">
                 <p className="pb-3 text-green font-ibmPlex text-xs">
-                  Please add your email before placing a bid
+                  Please add your email
                 </p>
 
                 <Link
                   href="/profile/settings"
-                  className="font-xCompressed fontCompress w-full  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
+                  className="font-xCompressed fontCompress w-full px-10  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
                 >
                   To Settings{" "}
                 </Link>

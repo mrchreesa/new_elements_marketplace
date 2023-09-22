@@ -4,6 +4,7 @@ import Image from "next/image";
 import avatar from "../../assets/avatar.gif";
 import ribbon from "../../assets/ribbon.png";
 import send from "../../assets/send.png";
+import Link from "next/link";
 
 type Props = {
   listing: any;
@@ -28,12 +29,8 @@ const CollectionCard: FunctionComponent<Props> = ({ listing, users }: any) => {
         <div className="flex flex-col h-full px-4 md:px-0 overflow-hidden justify-between">
           <div className="flex flex-col h-full">
             {/* <div className="flex grow"></div> */}
-            <div
-              onClick={() => {
-                Router.push({
-                  pathname: `/collection/${listing.id}`,
-                });
-              }}
+            <Link
+              href={`/collection/${listing.id}`}
               className=" overflow-hidden h-full flex min-h-[370px] max-h-[450px]  xl:max-h-[580px] justify-center items-center mb-3"
             >
               <Image
@@ -43,7 +40,7 @@ const CollectionCard: FunctionComponent<Props> = ({ listing, users }: any) => {
                 height={400}
                 className="w-full  object-cover cursor-pointer"
               />
-            </div>
+            </Link>
 
             <div className="flex flex-col font-ibmPlex mb-16 uppercase text-xs text-[#e4e8eb] ">
               <div className=" flex ">
@@ -61,12 +58,8 @@ const CollectionCard: FunctionComponent<Props> = ({ listing, users }: any) => {
               </div>
 
               <div className=" flex mt-3">
-                <div
-                  onClick={() => {
-                    Router.push({
-                      pathname: `/user/${owner._id}`,
-                    });
-                  }}
+                <Link
+                  href={`/user/${owner._id}`}
                   className="font-bold flex cursor-pointer"
                 >
                   <p>BY @{artistNameOrAddress}</p>
@@ -77,7 +70,7 @@ const CollectionCard: FunctionComponent<Props> = ({ listing, users }: any) => {
                     width={25}
                     alt={""}
                   />
-                </div>
+                </Link>
 
                 <div className="flex grow"></div>
                 <div className=" flex text-left">
@@ -88,7 +81,7 @@ const CollectionCard: FunctionComponent<Props> = ({ listing, users }: any) => {
                   <p className="font-bold text-green">{listing?.Tokensymbol}</p>
                 </div>
               </div>
-              <div className=" flex mt-3">
+              {/* <div className=" flex mt-3">
                 <div className="font-bold flex">
                   <Image
                     className=" h-5"
@@ -102,7 +95,6 @@ const CollectionCard: FunctionComponent<Props> = ({ listing, users }: any) => {
                 <div className="flex grow"></div>
                 <div className=" flex font-bold text-green">
                   {" "}
-                  {/* <p className="pr-5">ENDS IN</p> <p> 10H 22M 09S</p> */}
                 </div>
                 <div className="flex grow"></div>
 
@@ -115,7 +107,7 @@ const CollectionCard: FunctionComponent<Props> = ({ listing, users }: any) => {
                     alt={""}
                   />
                 </div>
-              </div>
+              </div> */}
             </div>
           </div>
         </div>

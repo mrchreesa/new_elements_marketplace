@@ -4,6 +4,7 @@ import { useState, useEffect } from "react";
 import avatar from "../../assets/avatar.gif";
 import Router from "next/router";
 import { motion, AnimatePresence } from "framer-motion";
+import { useAuthedProfile } from "../../context/UserContext";
 
 import Image from "next/image";
 import { ethers } from "ethers";
@@ -14,14 +15,15 @@ import CollectionListingCard from "./CollectionListingCard";
 import CollPlaceBidModal from "./CollPlaceBidModal";
 import CollEnlargeNFTModal from "./CollEnlargeNFTModal";
 import NFTCard from "../NFTCard";
-import { useEthersSigner } from "../utils/getSigner";
 import NFTCardSkeleton from "../LoadingSkeletons/NFTCardSkeleton";
+import Link from "next/link";
+import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
 
 type Props = {
   listing: any;
 };
 
-const CollectionListing = ({ user, users }: any) => {
+const CollectionListing = ({ users }: any) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalOpenEnlargeNFT, setModalOpenEnlargeNFT] =
     useState<boolean>(false);
@@ -34,6 +36,8 @@ const CollectionListing = ({ user, users }: any) => {
   const [listings, setListings] = useState<any>(null);
   const [bidListing, setBidListing] = useState<any>(null);
   const [loading, setLoading] = useState(false);
+
+  const { authedProfile, setAuthedProfile } = useAuthedProfile();
 
   const router = useRouter();
   const { collectionId } = router.query as { collectionId: string };
@@ -52,51 +56,53 @@ const CollectionListing = ({ user, users }: any) => {
 
     artistProfilePic = owner?.profilePicture ? owner.profilePicture : avatar;
   }
-  async function createBidOrOffer(listingId: any) {
-    setLoadingBid(true);
-    try {
-      // bidAmount // The offer amount the user entered
-      if (typeof window !== "undefined") {
-        const provider = new ethers.providers.Web3Provider(
-          (window as CustomWindow).ethereum as any
-        );
+  console.log(listing);
 
-        if (listingId) {
-          await (window as CustomWindow)?.ethereum?.request({
-            method: "eth_requestAccounts",
-          });
-          const signer = provider.getSigner();
-          const contract = new ethers.Contract(
-            ContractAddress,
-            ContractAbi,
-            signer
-          );
-          const id = Number(listingId);
-          const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
+  // async function createBidOrOffer(listingId: any) {
+  //   setLoadingBid(true);
+  //   try {
+  //     // bidAmount // The offer amount the user entered
+  //     if (typeof window !== "undefined") {
+  //       const provider = new ethers.providers.Web3Provider(
+  //         (window as CustomWindow).ethereum as any
+  //       );
 
-          // Call the contract method with value
-          const listingTx = await contract.bid(id, { value: valueToSend });
-          await listingTx.wait();
+  //       if (listingId) {
+  //         await (window as CustomWindow)?.ethereum?.request({
+  //           method: "eth_requestAccounts",
+  //         });
+  //         const signer = provider.getSigner();
+  //         const contract = new ethers.Contract(
+  //           ContractAddress,
+  //           ContractAbi,
+  //           signer
+  //         );
+  //         const id = Number(listingId);
+  //         const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
 
-          isModalClosed();
-          setLoadingBid(false);
-          isSuccessfulBidModalOpen();
-        }
-      }
-    } catch (error) {
-      console.error(error);
-      alert(error);
-      isModalClosed();
-      setLoadingBid(false);
-    }
-  }
+  //         // Call the contract method with value
+  //         const listingTx = await contract.bid(id, { value: valueToSend });
+  //         await listingTx.wait();
 
-  const isModalOpen = () => {
-    setModalOpen(true);
-  };
-  const isModalClosed = () => {
-    setModalOpen(false);
-  };
+  //         isModalClosed();
+  //         setLoadingBid(false);
+  //         isSuccessfulBidModalOpen();
+  //       }
+  //     }
+  //   } catch (error) {
+  //     console.error(error);
+  //     alert(error);
+  //     isModalClosed();
+  //     setLoadingBid(false);
+  //   }
+  // }
+
+  // const isModalOpen = () => {
+  //   setModalOpen(true);
+  // };
+  // const isModalClosed = () => {
+  //   setModalOpen(false);
+  // };
 
   // Modal Enlarge NFT
   const isModalOpenEnlargeNFT = () => {
@@ -105,15 +111,18 @@ const CollectionListing = ({ user, users }: any) => {
   const isModalClosedEnlargeNFT = () => {
     setModalOpenEnlargeNFT(false);
   };
-  const signer = useEthersSigner();
 
   const fetchlisting = async () => {
     if (collectionId) {
       setLoading(true);
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.NEXT_PUBLIC_RPC_URL
+      );
+
       const contract = new ethers.Contract(
         ContractAddress,
         ContractAbi,
-        signer
+        provider
       );
       const id = Number(collectionId);
       const collectionTx = await contract.fetchCollection(id);
@@ -132,12 +141,12 @@ const CollectionListing = ({ user, users }: any) => {
   }, []);
 
   // Successful Bid Modal
-  const isSuccessfulBidModalOpen = () => {
-    setSuccessfulBidModal(true);
-  };
-  const isSuccessfulBidModalClosed = () => {
-    setSuccessfulBidModal(false);
-  };
+  // const isSuccessfulBidModalOpen = () => {
+  //   setSuccessfulBidModal(true);
+  // };
+  // const isSuccessfulBidModalClosed = () => {
+  //   setSuccessfulBidModal(false);
+  // };
 
   return (
     <>
@@ -153,39 +162,43 @@ const CollectionListing = ({ user, users }: any) => {
           </div> */}
           <div className="flex flex-col h-full items-center justify-center mt-10">
             <div className="flex flex-col h-full items-center justify-center font-ibmPlex">
-              {listing && (
-                <Image
-                  src={listing?.image as string}
-                  alt={listing?.title as string}
-                  width={400}
-                  height={600}
-                  className="w-[250px] h-[160px] max-w-[250px] mt-4 object-cover rounded-[80px]"
-                  onClick={isModalOpenEnlargeNFT}
-                />
-              )}
-              <h1 className="italic mt-2 text-xl">{listing?.title}</h1>
-              <div className="flex text-xs mt-2">
-                COLLECTION BY{" "}
-                <div
-                  onClick={() => {
-                    Router.push({
-                      pathname: `/user/${owner?._id}`,
-                    });
-                  }}
-                  className="font-bold pl-2 flex cursor-pointer"
-                >
-                  <p>@{artistNameOrAddress}</p>
+              {loading ? (
+                <div className="mt-10">
+                  <ButtonSpinner />
+                </div>
+              ) : (
+                <>
                   {listing && (
                     <Image
-                      className="ml-3 -mt-1 h-6  object-cover rounded-full"
-                      src={artistProfilePic}
-                      height={0}
-                      width={25}
-                      alt="profile"
+                      src={listing?.image as string}
+                      alt={listing?.title as string}
+                      width={400}
+                      height={600}
+                      className="w-[250px] h-[160px] max-w-[250px] mt-4 object-cover rounded-[80px]"
+                      // onClick={isModalOpenEnlargeNFT}
                     />
                   )}
-                </div>
-              </div>
+                  <h1 className="italic mt-2 text-xl">{listing?.title}</h1>
+                  <div className="flex text-xs mt-2">
+                    COLLECTION BY{" "}
+                    <Link
+                      href={`/user/${owner?._id}`}
+                      className="font-bold pl-2 flex cursor-pointer"
+                    >
+                      <p>@{artistNameOrAddress}</p>
+                      {listing && (
+                        <Image
+                          className="ml-3 -mt-1 h-6  object-cover rounded-full"
+                          src={artistProfilePic}
+                          height={0}
+                          width={25}
+                          alt="profile"
+                        />
+                      )}
+                    </Link>
+                  </div>
+                </>
+              )}
             </div>
             <div className="font-ibmPlex bold text-center w-full   mt-10 pb-10  leading-5 text-xs">
               <p className="mx-4 md:mx-0">{listing?.description as string}</p>
@@ -221,8 +234,6 @@ const CollectionListing = ({ user, users }: any) => {
                         users={users}
                         setLoading={setLoading}
                         listing={listing}
-                        index={index}
-                        user={user}
                       />
                     </motion.div>
                   ))}{" "}
@@ -275,7 +286,7 @@ const CollectionListing = ({ user, users }: any) => {
           </div>
         </div>
       </div>
-      <CollPlaceBidModal
+      {/* <CollPlaceBidModal
         loadingBid={loadingBid}
         bidAmount={bidAmount}
         setBidAmount={setBidAmount}
@@ -293,7 +304,7 @@ const CollectionListing = ({ user, users }: any) => {
       <SuccessfulBidModal
         successfulBidmodalOpen={successfulBidmodalOpen}
         isSuccessfulBidModalClosed={isSuccessfulBidModalClosed}
-      />
+      /> */}
     </>
   );
 };
