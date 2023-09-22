@@ -101,7 +101,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
             </Link>
 
             <div className="flex flex-col font-ibmPlex mb-16 uppercase text-xs text-[#e4e8eb] ">
-              <div className=" grid grid-cols-4 sm:grid-cols-5 gap-6 w-full mt-3">
+              <div className=" grid grid-cols-4 sm:grid-cols-5 gap-3 w-full mt-3">
                 <div className="text-left col-span-2">
                   <p>{listing?.title}</p>
                 </div>
@@ -122,7 +122,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                 </div>
                 <Link
                   href={`/user/${_id}`}
-                  className="font-bold text-left flex cursor-pointer  mt-3 col-span-2"
+                  className="font-bold text-left flex cursor-pointer col-span-2"
                 >
                   <p> BY @{artistNameOrAddress}</p>
                   <Image
