@@ -27,10 +27,10 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
         </Link>
         <button
           onClick={() => deleteSavedNft(nft)}
-          className="absolute -top-6 -right-6 border-green border rounded-full p-2 hover:brightness-50 font-ibmPlex  bg-green  font-semibold text-black   hover:border-transparent transition-all duration-100 ease-in"
+          className="absolute -top-6 -right-6 border-green border p-1 rounded-full hover:brightness-50 font-ibmPlex  bg-green  font-semibold text-black   hover:border-transparent transition-all duration-100 ease-in"
         >
           <svg
-            className="h-6 w-6"
+            className="h-5 w-5"
             xmlns="http://www.w3.org/2000/svg"
             fill="none"
             viewBox="0 0 24 24"
