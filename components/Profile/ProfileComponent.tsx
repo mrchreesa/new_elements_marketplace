@@ -364,9 +364,9 @@ const ProfileComponent = ({
                   </div>
                   <div className="flex grow md:hidden"></div>
 
-                  <div className="flex flex-col items-end md:items-center mr-2 md:mr-10 w-16">
+                  <div className="flex flex-col items-end md:items-center mr-2 md:mr-10">
                     <h1 className="text-green font-xxCompressed -mb-2 text-8xl lg:text-9xl text-center">
-                      0.0
+                      0.00
                     </h1>
                     <p className="text-xs">
                       PROFIT
@@ -394,9 +394,9 @@ const ProfileComponent = ({
                     </p>
                   </div>
                   <div className="flex grow md:hidden"></div>
-                  <div className="flex flex-col mr-2 md:mr-10 w-16 items-end md:items-center">
+                  <div className="flex flex-col mr-2 md:mr-10 items-end md:items-center">
                     <h1 className="text-green font-xxCompressed -mb-2 text-8xl lg:text-9xl text-center">
-                      0.0
+                      0.00
                     </h1>
                     <p className="text-xs">
                       P/L

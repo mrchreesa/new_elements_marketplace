@@ -22,6 +22,7 @@ import { useEthersSigner } from "../utils/getSigner";
 import AddEmailModal from "./AddEmailModal";
 import local from "next/font/local";
 import ShareLinkModal from "../ShareLinkModal";
+import Link from "next/link";
 const { BigNumber } = require("ethers");
 
 const ListingComponent: any = ({ users, listing, bids }: any) => {
@@ -277,8 +278,8 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                     className="w-full mb-2 object-contain cursor-pointer"
                     onClick={isModalOpenEnlargeNFT}
                   />{" "}
-                  <div className="flex flex-col font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] mt-3">
-                    <div className=" grid grid-cols-4 sm:grid-cols-5 gap-6 w-full mt-3">
+                  <div className="flex flex-col font-ibmPlex  uppercase text-xs text-[#e4e8eb] mt-1">
+                    <div className=" grid grid-cols-4 sm:grid-cols-5 gap-3 w-full mt-2 mb-1">
                       <div className="text-left col-span-2">
                         <p>{listing?.title}</p>
                       </div>
@@ -295,12 +296,8 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                         </p>
                       </div>
 
-                      <div
-                        onClick={() => {
-                          router.push({
-                            pathname: `/user/${owner?._id}`,
-                          });
-                        }}
+                      <Link
+                        href={`/user/${owner?._id}`}
                         className="font-bold text-left flex cursor-pointer  mt-3 col-span-2"
                       >
                         <p> BY @{artistNameOrAddress}</p>
@@ -311,7 +308,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                           width={25}
                           alt={""}
                         />
-                      </div>
+                      </Link>
 
                       <div className="hidden sm:flex grow"></div>
                       <div className=" flex text-left justify-end -mr-5">
@@ -376,7 +373,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                   )}
                 </div>
               </div>
-              <div className="font-ibmPlex bold text-center w-full   mt-10 pb-10 border-b leading-5 text-xs">
+              <div className="font-ibmPlex bold text-center w-full   mt-14 pb-14 border-b leading-5 text-xs">
                 <p className="md:w-[50vw]">{listing?.description}</p>
               </div>
               <div className="flex w-full mt-6 mb-10 font-ibmPlex text-xs">

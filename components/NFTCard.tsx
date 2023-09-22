@@ -167,17 +167,13 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                           renderer={renderer}
                         />
                       ) : (
-                        <div
-                          onClick={() => {
-                            Router.push({
-                              pathname: `/listing/${listing.id}`,
-                            });
-                          }}
-                          className="pr-5 cursor-pointer"
+                        <Link
+                          href={`/listing/${listing.id}`}
+                          className="cursor-pointer"
                         >
                           {" "}
                           place bid
-                        </div>
+                        </Link>
                       )}
                     </>
                   )}
