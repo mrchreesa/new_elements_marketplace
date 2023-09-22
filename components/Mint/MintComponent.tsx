@@ -194,6 +194,26 @@ const MintComponent = ({ user }: Props) => {
   return (
     <>
       <div className="flex w-screen  xl:max-w-[1600px] px-5 md:px-2 flex-col md:flex-row items-center md:items-start  mt-28  justify-center bg-black overflow-hidden">
+        <div className="md:basis-1/2 md:p-2 flex justify-start  md:items-start  md:mx-4 w-full mt-8 md:mt-0">
+          {!isCollection ? (
+            <SingleNFT
+              handleChange={handleChange}
+              handleImageChange={handleImageChange}
+              formValues={formValues}
+              image={image}
+              collections={authedProfile?.collections}
+              collection={collection}
+              setCollection={setCollection}
+            />
+          ) : (
+            <Collection
+              handleChangeCollection={handleChangeCollection}
+              handleImageChangeCollection={handleImageChangeCollection}
+              formValuesCollection={formValuesCollection}
+              imageCollection={imageCollection}
+            />
+          )}
+        </div>
         <div className="md:basis-1/2 mt-5 md:mt-0 md:p-2 w-full font-ibmPlex bold text-left md:m-4  text-sm ">
           <div className="font-bold">
             <p className="mb-4 ">Hello!</p>
@@ -224,7 +244,7 @@ const MintComponent = ({ user }: Props) => {
               type="radio"
             />
           </div>
-          <p className="mb-4 text-[13px]">
+          <p className="mb-12 text-[13px]">
             Please select if you would like us to list <br /> a singular image
             or a collection
           </p>
@@ -232,7 +252,7 @@ const MintComponent = ({ user }: Props) => {
             <button
               onClick={mint}
               type="submit"
-              className="bg-blue text-black flex flex-col items-center mb-6 md:mb-0 w-full md:w-3/6 uppercase tracking-[10px] mt-1  bg-green hover:bg-opacity-80 transition duration-300 ease-in-out font-semibold py-1 md:py-[1.2vh] md:px-[7vh] z-2 text-2xl md:text-xl  "
+              className="bg-blue text-black flex flex-col items-center mb-6 md:mb-0 w-full md:w-3/6 uppercase tracking-[10px] mt-1  bg-green hover:bg-opacity-80 transition duration-300 ease-in-out py-1 md:py-[1vh] md:px-[7vh] z-2 text-2xl   "
             >
               {loading ? (
                 <>
@@ -252,31 +272,11 @@ const MintComponent = ({ user }: Props) => {
                 <p className="font-compressed">Mint</p>
               )}
             </button>
-            <p className="text-[10px] w-3/6">
+            <p className="text-[10px] w-3/6 mt-2">
               By pressing sumbit you agree to our terms and conditions laid out{" "}
               <button className="underline"> here </button>
             </p>
           </div>
-        </div>
-        <div className="md:basis-1/2 md:p-2 flex justify-center  md:items-start md:justify-end md:mx-4 w-full mt-8 md:mt-0">
-          {!isCollection ? (
-            <SingleNFT
-              handleChange={handleChange}
-              handleImageChange={handleImageChange}
-              formValues={formValues}
-              image={image}
-              collections={authedProfile?.collections}
-              collection={collection}
-              setCollection={setCollection}
-            />
-          ) : (
-            <Collection
-              handleChangeCollection={handleChangeCollection}
-              handleImageChangeCollection={handleImageChangeCollection}
-              formValuesCollection={formValuesCollection}
-              imageCollection={imageCollection}
-            />
-          )}
         </div>
         {/* Mobile */}
         <div className="w-full md:hidden my-6">
