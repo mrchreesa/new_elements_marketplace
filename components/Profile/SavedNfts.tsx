@@ -59,7 +59,8 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
         </div>
         <div className=" flex text-left justify-end">
           <p className="font-bold ">
-            {nft?.price == 0 ? nft?.price + ".00" : nft?.price} <br /> ETH
+            {nft?.price == 0 ? nft?.price + ".00" : nft?.price} <br />{" "}
+            <span className="flex justify-end"> ETH </span>
           </p>
         </div>
         <div
@@ -88,7 +89,8 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
         </div>
         <div className=" flex text-left justify-end">
           <p className="font-bold text-green">
-            {nft.Bid == 0 ? nft.Bid + ".00" : nft.Bid} <br /> ETH
+            {nft.Bid == 0 ? nft.Bid + ".00" : nft.Bid} <br />{" "}
+            <span className="flex justify-end"> ETH</span>
           </p>
         </div>
       </div>

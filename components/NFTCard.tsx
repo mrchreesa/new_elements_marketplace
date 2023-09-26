@@ -117,7 +117,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                     {listing?.price == 0
                       ? listing?.price + ".00"
                       : listing?.price}{" "}
-                    <br /> ETH
+                    <br /> <span className="flex justify-end"> ETH </span>
                   </p>
                 </div>
                 <Link
@@ -143,7 +143,8 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                 <div className=" flex text-left justify-end">
                   <p className="font-bold text-green">
                     {listing.Bid == 0 ? listing.Bid + ".00" : listing.Bid}{" "}
-                    <br /> ETH
+                    <br />
+                    <span className="flex justify-end"> ETH</span>
                   </p>
                 </div>
               </div>
