@@ -153,7 +153,7 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                     <div className=" flex text-left justify-end">
                       <p className="font-bold text-green">
                         {listing.Bid == 0 ? listing.Bid + ".00" : listing.Bid}{" "}
-                        <br /> ETH
+                        <br /> <span className="flex justify-end"> ETH</span>
                       </p>
                     </div>
 
@@ -180,7 +180,8 @@ const PlaceBidModal: FunctionComponent<Props> = ({
                     </div>
                     <div className=" flex text-left justify-end">
                       <p className="font-bold">
-                        {balance} <br /> ETH
+                        {balance} <br />{" "}
+                        <span className="flex justify-end"> ETH</span>
                       </p>
                     </div>
                   </div>

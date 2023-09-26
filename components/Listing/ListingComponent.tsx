@@ -46,10 +46,8 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
 
   // De-construct listingId out of the router.query.
   const { listingId } = router.query as { listingId: string };
-  console.log(listing);
 
   getArtist(users, listing);
-  console.log(authedProfile);
 
   // Store the bid amount the user entered into the bidding textbox
   const [bidAmount, setBidAmount] = useState<string>("");
@@ -237,14 +235,19 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const handleShareWithCommission = () => {
     isCommissionModalOpen();
   };
+
+  const Completionist = () => (
+    <span className="text-sm  mt-4">Auction Ended</span>
+  );
+
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       // Render a complete state
-      return <> {listing.timeElapse ? <span> Auction Ended</span> : null}</>;
+      return <Completionist />;
     } else {
       // Render a countdown
       return (
-        <span>
+        <span className="text-sm mt-4">
           Ends In <span className="mr-8" /> {hours < 10 ? "0" + hours : hours}H{" "}
           <span className="mr-4" />
           {minutes < 10 ? "0" + minutes : minutes}M <span className="mr-4" />
@@ -362,14 +365,16 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                 <div className=" flex font-bold text-green font-ibmPlex justify-center uppercase">
                   {listing.timeElapse ? (
                     <>
-                      <p className="pr-5 mt-2">Auction ended</p>
+                      <p className="pr-5">Auction ended</p>
                     </>
                   ) : (
                     <>
-                      <Countdown
-                        date={Date.now() + listing.endTime * 1000}
-                        renderer={renderer}
-                      />
+                      {listing.endTime != 0 || listing.endTime != "" ? (
+                        <Countdown
+                          date={Date.now() + listing.endTime * 1000}
+                          renderer={renderer}
+                        />
+                      ) : null}
                     </>
                   )}
                 </div>

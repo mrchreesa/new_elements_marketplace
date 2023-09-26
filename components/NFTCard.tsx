@@ -80,6 +80,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   const isModalClosed = () => {
     setModalOpen(false);
   };
+  console.log(listing);
 
   return (
     <>

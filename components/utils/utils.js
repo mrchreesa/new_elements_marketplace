@@ -162,10 +162,8 @@ export const fetchListing = async ({ contract, listingTx }) => {
     );
     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
     const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-    time = `${hours > 1 ? hours + "H," : ""}${
-      minutes > 1 ? minutes + "M," : ""
-    }${seconds > 1 ? seconds : ""}`;
-    console.log(difference);
+    const sumUp = hours * 3600 + minutes * 60 + seconds;
+    time = sumUp > 0 ? sumUp : "";
   }
 
   const tokenUrl = await contract.tokenURI(listingTx.tokenId);
