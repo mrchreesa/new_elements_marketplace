@@ -90,7 +90,7 @@ export default function Header() {
                           </Link>
                         ))}{" "}
                       </div>
-                      <div className="flex mb-1 xl:ml-[10%] md:mb-0 md:mt-1 justify-center">
+                      <div className="flex mb-1 ml-0 lg:ml-[2%] xl:ml-[10%] md:mb-0 md:mt-1 justify-center">
                         <ProfileMenu />
                       </div>
                     </div>
