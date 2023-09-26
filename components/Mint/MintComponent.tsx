@@ -214,7 +214,7 @@ const MintComponent = ({ user }: Props) => {
             />
           )}
         </div>
-        <div className="md:basis-1/2 mt-5 md:mt-0 md:p-2 w-full font-ibmPlex bold text-left md:m-4  text-sm ">
+        <div className="md:basis-[60%] mt-5 md:mt-0 md:p-2 w-full font-ibmPlex bold text-left md:m-4  text-sm ">
           <div className="font-bold">
             <p className="mb-4 ">Hello!</p>
             <p className="mb-4 ">

@@ -25,7 +25,7 @@ const Ribbon = ({ authedProfile, handleSaveToProfile }: any) => {
             alert("Please Connect Wallet");
           }
         }}
-        className="outline-none   transform active:scale-y-75 transition-transform flex"
+        className="outline-none -m-[2px]  transform active:scale-y-75 transition-transform flex"
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
