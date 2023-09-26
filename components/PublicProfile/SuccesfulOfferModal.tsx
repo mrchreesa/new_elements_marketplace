@@ -1,6 +1,7 @@
 import React, { FunctionComponent } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Props = {
   successfulOfferModalOpen: boolean;
@@ -50,15 +51,13 @@ const SuccessfulOfferdModal: FunctionComponent<Props> = ({
                   <p className="pr-6 text-green">Successful Offer!</p>
                 </div>
               </div>
-              <button
-                onClick={() => {
-                  router.push("/");
-                }}
+              <Link
+                href="/"
                 type="submit"
-                className="bg-blue whitespace-nowrap text-green fontCompress font-xCompressed border border-green w-full uppercase tracking-[8px] mt-3 bg-white bg-opacity-20 hover:bg-opacity-40 py-[1.2vh] px-[2vw]  z-2 text-2xl  "
+                className="bg-green  mt-6 fontCompress flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[8px] hover:bg-opacity-80 py-[1.2vh] px-[2vw]  z-2 text-2xl  "
               >
-                Back To Marketplace
-              </button>
+                Back
+              </Link>
             </div>
           </div>
         </div>

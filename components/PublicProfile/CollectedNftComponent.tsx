@@ -1,69 +1,61 @@
 import React from "react";
-import type { NextPage } from "next";
 import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
-import { marketplaceContractAddress } from "../../addresses";
-import styles from "../../styles/Home.module.css";
-import profile from "../../assets/PROFILE.png";
 import Image from "next/image";
 import Link from "next/link";
-
-import { ethers } from "ethers";
-import { ContractAbi, ContractAddress } from "../utils/constants";
-import { fetchListing } from "../utils/utils";
+import { useAuthedProfile } from "../../context/UserContext";
 import MakeOfferModal from "./MakeOfferModal";
 import SuccessfulOfferdModal from "./SuccesfulOfferModal";
-const { BigNumber } = require("ethers");
+import ShareLinkModal from "../ShareLinkModal";
 
-type Props = {};
-
-const CollectedNftComponent = (props: Props) => {
+const CollectedNftComponent = ({ bids, listing }: any) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [successfulOfferModalOpen, setSuccessfulOfferModalOpen] =
     useState<boolean>(false);
-  const [listing, setListing] = useState<any>(null);
+  const [modalReferralOpen, setModalReferralOpen] = useState<boolean>(false);
+  // const [listing, setListing] = useState<any>(null);
   // Next JS Router hook to redirect to other pages and to grab the query from the URL (listingId)
   const router = useRouter();
-
+  const { authedProfile, setAuthedProfile } = useAuthedProfile();
   // De-construct listingId out of the router.query.
   // This means that if the user visits /listing/0 then the listingId will be 0.
   // If the user visits /listing/1 then the listingId will be 1.
   const listingId = router.query.collectedNftId;
-  // console.log(listingId);
+  console.log(bids);
 
-  const fetchlisting = async () => {
-    const provider = new ethers.providers.Web3Provider(
-      (window as CustomWindow).ethereum as any
-    );
+  // const fetchlisting = async () => {
+  //   const provider = new ethers.providers.Web3Provider(
+  //     (window as CustomWindow).ethereum as any
+  //   );
 
-    if (listingId) {
-      await (window as CustomWindow)?.ethereum?.request({
-        method: "eth_requestAccounts",
-      });
-      const signer = provider.getSigner();
+  //   if (listingId) {
+  //     await (window as CustomWindow)?.ethereum?.request({
+  //       method: "eth_requestAccounts",
+  //     });
+  //     const signer = provider.getSigner();
 
-      const contract = new ethers.Contract(
-        ContractAddress,
-        ContractAbi,
-        signer
-      );
-      const id = Number(listingId);
-      const listingTx = await contract.fetchNFT(id);
-      // console.log(listingTx)
-      const res = await fetchListing({ contract, listingTx });
-      // Get the latest block number
-      const toBlock = await provider.getBlockNumber();
-      const fromBlock = 0;
-      const tokenId = BigNumber.from(listingId);
-      setListing(res);
-    }
-  };
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-      fetchlisting();
-    }
-  }, []);
-  console.log(listing);
+  //     const contract = new ethers.Contract(
+  //       ContractAddress,
+  //       ContractAbi,
+  //       signer
+  //     );
+  //     const id = Number(listingId);
+  //     const listingTx = await contract.fetchNFT(id);
+  //     // console.log(listingTx)
+  //     const res = await fetchListing({ contract, listingTx });
+  //     // Get the latest block number
+  //     const toBlock = await provider.getBlockNumber();
+  //     const fromBlock = 0;
+  //     const tokenId = BigNumber.from(listingId);
+  //     setListing(res);
+  //   }
+  // };
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     fetchlisting();
+  //   }
+  // }, []);
+  // console.log(listing);
   // Modal Make Offer
   const isModalOpen = () => {
     setModalOpen(true);
@@ -78,6 +70,18 @@ const CollectedNftComponent = (props: Props) => {
   };
   const isSuccessfullOfferModalClosed = () => {
     setSuccessfulOfferModalOpen(false);
+  };
+
+  // Modal Share Link
+  const isModalReferralOpen = () => {
+    setModalReferralOpen(true);
+  };
+  const isModalReferralClosed = () => {
+    setModalReferralOpen(false);
+  };
+
+  const handleShareWithCommission = () => {
+    isModalReferralOpen();
   };
 
   if (listing) {
@@ -130,21 +134,12 @@ const CollectedNftComponent = (props: Props) => {
                       </div>
 
                       <div className="flex grow"></div>
-                      {/* <div className=" flex text-left">
-                        {" "}
-                        <p className="pr-6 ">
-                          Current <br /> Bid
-                        </p>
-                        <p className="font-bold text-green">
-                          {listing.Bid} <br /> ETH
-                        </p>
-                      </div> */}
                     </div>
                     <div className=" flex mt-3">
                       <div className="flex grow"></div>
                       <div className="w-full flex font-bold text-green uppercase">
                         <button
-                          className=" text-green font-xCompressed  w-full border border-green uppercase tracking-[8px] py-1 bg-white bg-opacity-20 hover:bg-opacity-30 font-semibold text-xl  "
+                          className="bg-blue text-black flex flex-col items-center mb-6 md:mb-0 w-full font-xCompressed uppercase tracking-[10px] mt-1  bg-green hover:bg-opacity-80 transition duration-300 ease-in-out py-1 md:py-[1vh] md:px-[7vh] z-2 text-2xl   "
                           onClick={isModalOpen}
                         >
                           Make Offer
@@ -154,37 +149,64 @@ const CollectedNftComponent = (props: Props) => {
                     </div>
                   </div>
                 </div>
-                {/* <div className="font-ibmPlex w-full md:min-w-1 flex items-center justify-between">
-                  <button
-                    className=" text-green font-xCompressed  w-full border border-green uppercase tracking-[8px] py-1 bg-white bg-opacity-20 hover:bg-opacity-30 font-semibold text-xl  "
-                    onClick={isModalOpen}
-                  >
-                    {
-                      listing.timeElapse ?
-                        listing.sold ?
-                          "ENDED"
-                          :
-                          "END NOW"
-                        :
-                        "place bid"
-                    }
-                  </button>
-                </div> */}
               </div>
               <div className="font-ibmPlex bold text-center w-full   mt-10 pb-10 border-b leading-5 text-xs">
                 <p className="md:w-[50vw]">{listing?.description}</p>
               </div>
               <div className="flex w-full mt-6 mb-10 font-ibmPlex text-xs">
                 <div className="flex flex-1/2 flex-col w-1/2 items-start">
-                  <button className="text-green mb-4">
+                  <button
+                    className="text-green mb-4"
+                    onClick={() => {
+                      if (authedProfile) {
+                        handleShareWithCommission();
+                      } else {
+                        alert("Please Connect Wallet");
+                      }
+                    }}
+                  >
                     SHARE AND EARN 1% {">>"}
                   </button>
                   <button className="mb-4">VIEW ON ETHERSCAN {">"}</button>
-                  <button className="mb-4">VIEW METADATA {">"}</button>
-                  <button className="mb-4">VIEW ON IPFS {">"}</button>
                 </div>
                 <div className="flex-1/2  w-1/2">
                   <p className="text-left mb-2">HISTORY</p>
+                  {bids?.length && bids[0] != undefined ? (
+                    bids?.map((bid: any, key: number) => (
+                      <div
+                        className="grid grid-cols-8  justify-between text-left mt-2"
+                        key={key}
+                      >
+                        <div className="col-span-5 flex">
+                          {/* <Image
+                            src={profile}
+                            width={30}
+                            height={10}
+                            alt="profile picture"
+                            className="hidden md:block h-fit"
+                            key={key}
+                          /> */}
+
+                          <p className=" w-1/2 md:w-full">
+                            Bid by{" "}
+                            <span className="font-bold">
+                              @
+                              {bid?.sender?.slice(0, 6) +
+                                "..." +
+                                bid?.sender?.slice(36, 40)}
+                            </span>{" "}
+                            {/* <br /> Jan 15, 2023 at 7.31pm */}
+                          </p>
+                        </div>
+                        <div className="flex flex-grow col-span-2"></div>
+                        <p className="font-bold text-green">
+                          {bid?.amount} <br /> ETH
+                        </p>
+                      </div>
+                    ))
+                  ) : (
+                    <p className="text-left mt-2">No bids yet</p>
+                  )}
                 </div>
               </div>
             </div>
@@ -200,6 +222,12 @@ const CollectedNftComponent = (props: Props) => {
         <SuccessfulOfferdModal
           successfulOfferModalOpen={successfulOfferModalOpen}
           isSuccessfulOfferModalClosed={isSuccessfullOfferModalClosed}
+        />
+        <ShareLinkModal
+          isModalClosed={isModalReferralClosed}
+          modalOpen={modalReferralOpen}
+          user={authedProfile}
+          listing={listing}
         />
       </>
     );

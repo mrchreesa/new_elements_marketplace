@@ -1,4 +1,4 @@
-export const ContractAddress = "0xb298F4b6709a0722858Fb15063BfB72a101Eb1a2";
+export const ContractAddress = "0xc536802FBfE572F9A9D2A819a52Fd404B6C0c1AD";
 export const ContractAbi = [
   {
     inputs: [
@@ -811,6 +811,25 @@ export const ContractAbi = [
         internalType: "uint256",
         name: "",
         type: "uint256",
+      },
+    ],
+    stateMutability: "view",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "gethighestBidder",
+    outputs: [
+      {
+        internalType: "address",
+        name: "",
+        type: "address",
       },
     ],
     stateMutability: "view",

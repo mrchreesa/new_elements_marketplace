@@ -181,7 +181,7 @@ const MakeOfferModal: FunctionComponent<Props> = ({
                       />
                     </div>
                     <div className="flex grow"></div>
-                    <div className=" flex text-left">
+                    <div className=" flex text-left justify-end">
                       {" "}
                       <p className="pr-6 font-bold text-green ">
                         Your <br /> Balance
@@ -201,7 +201,7 @@ const MakeOfferModal: FunctionComponent<Props> = ({
                   ) : (
                     <button
                       onClick={makeOffer}
-                      className="bg-green flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[8px] mt-3   hover:bg-opacity-80 py-[1.2vh] px-[2vw]  z-2 text-2xl  "
+                      className="bg-green  mt-6 fontCompress flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[8px] hover:bg-opacity-80 py-[1.2vh] px-[2vw]  z-2 text-2xl  "
                     >
                       Make Offer
                     </button>
