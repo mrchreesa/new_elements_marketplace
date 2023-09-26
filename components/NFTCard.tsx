@@ -154,7 +154,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                 />
 
                 <div className="flex grow"></div>
-                <div className=" flex font-bold text-green items-end">
+                <div className="-mb-[2px] flex font-bold text-green items-end">
                   {listing.timeElapse ? (
                     <>
                       <p className="pr-5">Auction ended</p>
