@@ -534,7 +534,10 @@ const ProfileComponent = ({
                                       </p>
                                       <div className="flex grow"></div>
                                       <p className="font-bold text-green">
-                                        {nft.price} <br /> ETH
+                                        {nft.price} <br />{" "}
+                                        <span className="flex justify-end">
+                                          ETH
+                                        </span>
                                       </p>
                                     </div>
                                   </div>
@@ -587,7 +590,11 @@ const ProfileComponent = ({
                                   </p>
                                   <div className="flex grow"></div>
                                   <p className="font-bold text-green">
-                                    {nft.price} <br /> ETH
+                                    {nft.price} <br />{" "}
+                                    <span className="flex justify-end">
+                                      {" "}
+                                      ETH
+                                    </span>
                                   </p>
                                 </div>
                               </div>
