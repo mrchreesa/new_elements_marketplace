@@ -100,6 +100,7 @@ export const fetchListings = async (data) => {
       // console.log(id);
       const tokenUrl = await contract.tokenURI(id);
       let Bid = await contract.gethighestBid(response.tokenId);
+      let highestBidder = await contract.gethighestBidder(response.tokenId);
       Bid = Number(Bid) / 1e18;
       const { image, title, description } =
         (await readIPFSContent(tokenUrl)) ?? {};
@@ -109,6 +110,7 @@ export const fetchListings = async (data) => {
         image: image,
         price: Number(response.price) / 1e18,
         Bid: Bid,
+        highestBidder: highestBidder,
         isPrimary: response.isPrimary,
         collectionId: Number(response.collectionId),
         seller: response.seller,
@@ -168,6 +170,8 @@ export const fetchListing = async ({ contract, listingTx }) => {
 
   const tokenUrl = await contract.tokenURI(listingTx.tokenId);
   let Bid = await contract.gethighestBid(listingTx.tokenId);
+  let highestBidder = await contract.gethighestBidder(listingTx.tokenId);
+
   Bid = Number(Bid) / 1e18;
   const { image, title, description } = await readIPFSContent(tokenUrl);
   const nft = {
@@ -176,6 +180,7 @@ export const fetchListing = async ({ contract, listingTx }) => {
     image: image,
     price: Number(listingTx.price) / 1e18,
     Bid: Bid,
+    highestBidder: highestBidder,
     isPrimary: listingTx.isPrimary,
     collectionId: Number(listingTx.collectionId),
     seller: listingTx.seller,

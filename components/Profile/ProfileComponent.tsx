@@ -49,7 +49,7 @@ const ProfileComponent = ({
   const [authedProfile, setAuthedProfile] = useState<any>(user);
   const [modalOpenEnlargeNFT, setModalOpenEnlargeNFT] = useState(false);
   const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
-
+  const [pendingNfts, setPendingNfts] = useState<any>([]);
   // const { setAuthedProfile } = useAuthedProfile();
 
   let { isArtist } = authedProfile;
@@ -59,6 +59,21 @@ const ProfileComponent = ({
     router.replace(router.asPath);
     setLoading(false);
   };
+  console.log(collectedNfts);
+
+  //check if user has pending nfts
+  useEffect(() => {
+    let pendingNfts: any[] = [];
+    listings?.forEach((nft: any) => {
+      if (
+        nft.highestBidder == authedProfile.address &&
+        collectedNfts.map((collectedNft: any) => collectedNft.id !== nft.id)
+      ) {
+        pendingNfts.push(nft);
+        setPendingNfts(pendingNfts);
+      }
+    });
+  }, [listings]);
 
   useEffect(() => {
     const { savedNfts } = authedProfile;
@@ -117,6 +132,7 @@ const ProfileComponent = ({
       // refreshData();
     });
   };
+  console.log(pendingNfts);
 
   const [picture, setPicture] = useState<Props>({
     cropperOpen: false,
@@ -561,8 +577,8 @@ const ProfileComponent = ({
                 <h3 className="font-bold uppercase">Purchased</h3>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4">
-                  {collectedNfts?.length ? (
-                    collectedNfts.map((nft: any, index: number) => (
+                  {collectedNfts?.length || pendingNfts.length ? (
+                    (collectedNfts.map((nft: any, index: number) => (
                       <div key={nft.id}>
                         <div
                           className="grid grid-cols-2 h-full lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
@@ -610,7 +626,46 @@ const ProfileComponent = ({
                           </div>
                         </div>
                       </div>
-                    ))
+                    )),
+                    pendingNfts.map((nft: any, index: number) => (
+                      <div key={nft.id}>
+                        <div
+                          className="grid grid-cols-2 h-full lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
+                          key={index}
+                        >
+                          <div className="flex  flex-col h-full items-start w-auto ">
+                            <button
+                              className="cursor-pointer h-full"
+                              onClick={() => isModalOpenEnlargeNFT(index)}
+                            >
+                              <Image
+                                src={nft.image}
+                                alt="nft7"
+                                width={150}
+                                height={200}
+                                className="max-h-[220px] md:max-h-[300px] w-[41vw] md:w-full md:min-w-[230px] mb-2 object-cover"
+                              />{" "}
+                            </button>
+                            <div className="flex flex-col w-full md:min-w-[230px] font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
+                              <div className=" flex ">
+                                <div className=" flex w-full">
+                                  {" "}
+                                  <p className="pr-6 ">Pending...</p>
+                                  <div className="flex grow"></div>
+                                  {/* <p className="font-bold text-green">
+                                    {nft.price} <br />{" "}
+                                    <span className="flex justify-end">
+                                      {" "}
+                                      ETH
+                                    </span>
+                                  </p> */}
+                                </div>
+                              </div>
+                            </div>
+                          </div>
+                        </div>
+                      </div>
+                    )))
                   ) : (
                     <p className="text-red-600 text-xs">
                       You currently have no purchased items
