@@ -59,7 +59,7 @@ const SingleNFT = ({
   // console.log(collection);
 
   return (
-    <div className="flex flex-col items-center justify-center md:w-3/4 ">
+    <div className="flex flex-col items-center justify-center md:w-[85%] ">
       <label
         htmlFor="dropzone-file"
         className="flex flex-col items-center  justify-center w-full h-80 border-green border cursor-pointer bg-gray-50 dark:hover:bg-neutral-700 dark:bg-neutral-800 hover:bg-gray-100 transition duration-300 ease-in-out "
