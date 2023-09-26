@@ -259,7 +259,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
       <>
         <div className="flex flex-col realtive h-full items-center container lg:w-[98dvw]  mt-[6.5rem]  overflow-x-hidden justify-between">
           <div className="flex justify-center realtive w-3/4">
-            <div className="absolute translate-x-[100%] lg:translate-x-1 lg:right-[70%] xl:translate-x-0 xl:right-1/2  left-0 hidden md:block -z-0">
+            <div className="absolute translate-x-[100%] lg:translate-x-1 lg:right-[70%] xl:translate-x-0 xl:right-1/2  left-0 hidden md:block ">
               <button
                 onClick={() => router.back()}
                 className="font-ibmPlex cursor-pointer uppercase font-bold text-green text-xs -z-10"
@@ -292,7 +292,8 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                       </div>
                       <div className=" flex text-left justify-end">
                         <p className="font-bold ">
-                          {listing.price} <br /> ETH
+                          {listing.price} <br />{" "}
+                          <span className="flex justify-end"> ETH </span>
                         </p>
                       </div>
 
@@ -320,7 +321,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                       <div className=" flex text-left justify-end">
                         <p className="font-bold text-green">
                           {listing.Bid == 0 ? listing.Bid + ".00" : listing.Bid}{" "}
-                          <br /> ETH
+                          <br /> <span className="flex justify-end"> ETH </span>
                         </p>
                       </div>
                     </div>
@@ -416,8 +417,9 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                           </p>
                         </div>
                         <div className="flex flex-grow col-span-2"></div>
-                        <p className="font-bold text-green">
-                          {bid?.amount} <br /> ETH
+                        <p className="font-bold text-green text-right">
+                          {bid?.amount} <br />
+                          <span className="flex justify-end"> ETH</span>
                         </p>
                       </div>
                     ))

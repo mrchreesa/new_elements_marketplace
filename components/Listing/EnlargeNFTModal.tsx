@@ -15,7 +15,7 @@ const EnlargeNFTModal: FunctionComponent<Props> = ({
 }) => {
   const customStyles = {
     overlay: {
-      backgroundColor: "rgb(25, 25, 25, 0.85)",
+      backgroundColor: "rgb(0,0,0)",
     },
     content: {
       zIndex: "20",
@@ -43,7 +43,7 @@ const EnlargeNFTModal: FunctionComponent<Props> = ({
       >
         <>
           {listing ? (
-            <div className="relative flex max-h-[95vh] pt-4 flex-col z-12 text-ibmPlex h-full w-full   mx-5 overflow-hidden justify-between">
+            <div className="relative flex max-h-[95vh] pt-4 flex-col z-20 text-ibmPlex h-auto w-full   mx-5 overflow-hidden justify-between">
               <button
                 onClick={isModalClosedEnlargeNFT}
                 className="fixed right-4 top-2 p-3 font-ibmPlex"

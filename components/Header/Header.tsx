@@ -73,21 +73,24 @@ export default function Header() {
 
                 <div className="basis-[56%] flex  justify-between">
                   <div className=" w-full items-center">
-                    <div className="flex w-full items-start font-xxCompressed justify-end md:justify-between">
-                      {navigation.map((item) => (
-                        <Link
-                          key={item.name}
-                          href={item.href}
-                          className={classNames(
-                            "text-blue opacity-70 hover:opacity-100 focus:opacity-100",
-                            "px-3 rounded-md md:text-dynamic font-medium tracking-wide hidden md:flex"
-                          )}
-                          aria-current={item.current ? "page" : undefined}
-                        >
-                          {item.name}
-                        </Link>
-                      ))}{" "}
-                      <div className="flex mb-1 md:mb-0 md:mt-1 justify-center">
+                    <div className="flex">
+                      <div className="flex w-full items-start font-xxCompressed justify-end md:justify-between">
+                        {navigation.map((item) => (
+                          <Link
+                            key={item.name}
+                            href={item.href}
+                            className={classNames(
+                              // item.name === "About Us" ? "mr-12" : "mr-0",
+                              "text-blue opacity-70 hover:opacity-100 focus:opacity-100",
+                              "px-3 rounded-md md:text-dynamic font-medium tracking-wide hidden md:flex"
+                            )}
+                            aria-current={item.current ? "page" : undefined}
+                          >
+                            {item.name}
+                          </Link>
+                        ))}{" "}
+                      </div>
+                      <div className="flex mb-1 xl:ml-[10%] md:mb-0 md:mt-1 justify-center">
                         <ProfileMenu />
                       </div>
                     </div>
