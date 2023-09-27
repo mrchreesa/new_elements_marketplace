@@ -1,11 +1,14 @@
 import Image from "next/image";
 import React, { useEffect, useState } from "react";
 import banner from "../../assets/banner.png";
+import avatar from "../../assets/avatar.gif";
 
 import star from "../../assets/star.png";
 import { useAuthedProfile } from "../../context/UserContext";
 
 import Router, { useRouter } from "next/router";
+import Countdown from "react-countdown";
+import Link from "next/link";
 
 type Props = {
   user: any;
@@ -17,7 +20,22 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const { setAuthedProfile, authedProfile } = useAuthedProfile();
   const router = useRouter();
-  // console.log(user);
+
+  const renderer = ({ hours, minutes, seconds, completed }: any) => {
+    if (completed) {
+      // Render a complete state
+      return null;
+    } else {
+      // Render a countdown
+      return (
+        <span>
+          Ends In <span className="mr-4" /> {hours < 10 ? "0" + hours : hours}H{" "}
+          {minutes < 10 ? "0" + minutes : minutes}M{" "}
+          {seconds < 10 ? "0" + seconds : seconds}S
+        </span>
+      );
+    }
+  };
 
   return (
     <div
@@ -40,7 +58,7 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
           <label className="" htmlFor="input-profile">
             <Image
               className="border border-green rounded-full  bg-black z-10 object-center object-cover aspect-square"
-              src={user?.profilePicture}
+              src={user?.profilePicture || avatar}
               width={70}
               height={70}
               alt="profile"
@@ -73,7 +91,10 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
                     className="flex md: flex-col h-full items-start w-max "
                     key={index}
                   >
-                    <div className="">
+                    <Link
+                      href={`/listing/${nft.id}`}
+                      className="cursor-pointer h-full"
+                    >
                       <Image
                         src={nft.image}
                         alt="nft7"
@@ -81,15 +102,28 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
                         height={200}
                         className="max-h-[220px] md:max-h-[300px] w-[41vw] md:w-full md:min-w-[230px] mb-2 object-cover"
                       />{" "}
-                    </div>
+                    </Link>
                     <div className="flex flex-col w-full md:min-w-[230px] font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
                       <div className=" flex ">
-                        <div className=" flex w-full">
-                          {" "}
-                          <p className="pr-6 ">
-                            Reserve NOt
-                            <br /> met
-                          </p>
+                        <div className=" flex w-full  text-green font-ibmPlex justify-center uppercase">
+                          {nft.timeElapse ? (
+                            <>
+                              <p>Auction ended</p>
+                            </>
+                          ) : (
+                            <>
+                              {nft.endTime != 0 || nft.endTime != "" ? (
+                                <Countdown
+                                  date={Date.now() + nft.endTime * 1000}
+                                  renderer={renderer}
+                                />
+                              ) : nft.bid ? (
+                                <p>Auction in progress</p>
+                              ) : (
+                                <p>Reserve NOt met</p>
+                              )}
+                            </>
+                          )}
                           <div className="flex grow"></div>
                         </div>
                       </div>
