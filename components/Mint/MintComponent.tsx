@@ -13,6 +13,7 @@ import { submitToIpfs } from "../utils/utils";
 import { ContractAbi, ContractAddress } from "../utils/constants";
 import Web3 from "web3";
 import { useEthersSigner } from "../utils/getSigner";
+import MintCollectionModal from "./MintCollectionModal";
 type Props = {
   user: any;
 };
@@ -26,6 +27,8 @@ const MintComponent = ({ user }: Props) => {
   const [isCollection, setIsCollection] = useState(false);
   const [collection, setCollection] = useState<any>(null);
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [modalCollectionOpen, setModalCollectionOpen] =
+    useState<boolean>(false);
   const { setAuthedProfile } = useAuthedProfile();
   const authedProfile = user;
   const initialMintValues = {
@@ -128,11 +131,10 @@ const MintComponent = ({ user }: Props) => {
         );
 
         const collectionCreated = await collectionCreatedTx.wait();
-        console.log(collectionCreated);
 
         // Update user database
         setLoadingToDeploy(false);
-        isModalOpen();
+        isModalCollectionOpen();
       } catch (e) {
         console.log(e);
         alert("Something went wrong, please try again later.");
@@ -182,14 +184,21 @@ const MintComponent = ({ user }: Props) => {
     setFile(null);
   };
 
-  // Modal
+  // Modal Single NFT
   const isModalOpen = () => {
     setModalOpen(true);
   };
   const isModalClosed = () => {
     setModalOpen(false);
   };
-  console.log(formValues);
+  // Modal Collection
+  const isModalCollectionOpen = () => {
+    setModalCollectionOpen(true);
+  };
+  const isModalCollectionClosed = () => {
+    setModalCollectionOpen(false);
+    setIsCollection(false);
+  };
 
   return (
     <>
@@ -252,7 +261,9 @@ const MintComponent = ({ user }: Props) => {
             <button
               onClick={mint}
               type="submit"
-              className="bg-blue text-black flex flex-col items-center mb-6 md:mb-0 w-full md:w-3/6 uppercase tracking-[10px] mt-1  bg-green hover:bg-opacity-80 transition duration-300 ease-in-out py-1 md:py-[1vh] md:px-[7vh] z-2 text-2xl   "
+              className={`bg-blue text-black flex flex-col items-center mb-6 md:mb-0 w-full md:w-3/6 uppercase tracking-[10px] mt-1  bg-green hover:bg-opacity-80 transition duration-300 ease-in-out py-1 md:py-[1vh] md:px-[7vh] z-2 text-2xl ${
+                loadingToDeploy ? `animate-pulse` : ``
+              }`}
             >
               {loading ? (
                 <>
@@ -310,6 +321,10 @@ const MintComponent = ({ user }: Props) => {
         </div>
       </div>
       <MintModal isModalClosed={isModalClosed} modalOpen={modalOpen} />
+      <MintCollectionModal
+        isModalCollectionClosed={isModalCollectionClosed}
+        modalCollectionOpen={modalCollectionOpen}
+      />
     </>
   );
 };
