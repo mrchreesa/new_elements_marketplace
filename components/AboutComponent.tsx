@@ -125,7 +125,7 @@ const AboutComponent = (props: Props) => {
           </div>
           <button
             type="submit"
-            className="fontCompress  mt-6  font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
+            className="fontCompress mb-10 mt-6  font-xxCompressed w-[100%] uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
           >
             {loading ? (
               <div className="loader ease-linear rounded-full border-4 border-t-4 border-white h-6 w-6"></div>

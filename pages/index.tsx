@@ -51,7 +51,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     <>
       {/* Content */}
       <div
-        className={`relative flex w-screen overflow-hidden mt-24 max-w-[1600px] flex-col items-center content-center ${
+        className={`relative flex w-screen overflow-hidden mt-20 md:mt-24 max-w-[1600px] flex-col items-center content-center ${
           loading && `cursor-progress`
         }`}
       >
@@ -89,37 +89,39 @@ const Home: NextPage = ({ user, users, auth }: any) => {
                         COLLECTIONS{" "}
                       </button>
                     </div>
-                    {!isCollection ? (
-                      <div className="grid grid-cols-1  mt-10 sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
-                        {listings?.map((listing: any, index: number) => (
-                          <motion.div
-                            key={index}
-                            initial={{ y: 80, opacity: 0 }}
-                            animate={{ y: 0, opacity: 1 }}
-                            transition={{ delay: index * 0.1 + 0.4 }}
-                            exit={{
-                              opacity: 0,
-                              y: 90,
-                              transition: {
-                                ease: "easeInOut",
-                                delay: 1,
-                              },
-                            }}
-                          >
-                            <>
-                              <NFTCard
-                                key={index}
-                                listing={listing}
-                                setLoading={setLoading}
-                                users={users}
-                              />
-                            </>
-                          </motion.div>
-                        ))}
-                      </div>
-                    ) : (
-                      <CollectionMarketPage users={users} />
-                    )}
+                    <div className="mt-32 md:mt-10">
+                      {!isCollection ? (
+                        <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
+                          {listings?.map((listing: any, index: number) => (
+                            <motion.div
+                              key={index}
+                              initial={{ y: 80, opacity: 0 }}
+                              animate={{ y: 0, opacity: 1 }}
+                              transition={{ delay: index * 0.1 + 0.4 }}
+                              exit={{
+                                opacity: 0,
+                                y: 90,
+                                transition: {
+                                  ease: "easeInOut",
+                                  delay: 1,
+                                },
+                              }}
+                            >
+                              <>
+                                <NFTCard
+                                  key={index}
+                                  listing={listing}
+                                  setLoading={setLoading}
+                                  users={users}
+                                />
+                              </>
+                            </motion.div>
+                          ))}
+                        </div>
+                      ) : (
+                        <CollectionMarketPage users={users} />
+                      )}
+                    </div>
                   </>
                 )
               )

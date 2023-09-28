@@ -33,11 +33,11 @@ function DropDownMenu({ openMenu, closeMenu }: Props) {
   };
 
   return (
-    <div className="relative z-2  lg:hidden">
+    <div className="relative z-2 lg:hidden">
       <AnimatePresence>
         {openMenu && (
           <motion.div
-            className="absolute px-4 pt-6 inset-y-0 font-xxCompressed tracking-widest
+            className="absolute top-0 px-4 pt-6 inset-y-0 font-xxCompressed tracking-widest
             flex flex-col  w-screen h-screen bg-mobileBg bg-no-repeat bg-cover text-white z-10 overflow-hidden"
             variants={item}
             initial={{ height: 0, opacity: 0 }}
