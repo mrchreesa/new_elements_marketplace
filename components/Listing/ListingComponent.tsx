@@ -256,13 +256,12 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
       );
     }
   };
-  console.log(listing);
 
   if (listing) {
     return (
       <>
-        <div className="flex flex-col realtive h-full items-center container lg:w-[98dvw]  mt-[6.5rem]  overflow-x-hidden justify-between">
-          <div className="flex justify-center realtive w-3/4">
+        <div className="flex flex-col realtive h-full items-center container lg:w-[98dvw]   overflow-x-hidden justify-between">
+          <div className="flex justify-center realtive w-3/4 mt-[6.5rem] ">
             <div className="absolute translate-x-[100%] lg:translate-x-1 lg:right-[70%] xl:translate-x-0 xl:right-1/2  left-0 hidden md:block ">
               <button
                 onClick={() => router.back()}
@@ -273,7 +272,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
             </div>
             <div className="flex flex-col h-full items-center justify-center">
               <div className="w-full lg:w-max">
-                <div className=" min-w-[350px]  lg:max-w-[50vw] cursor-pointer">
+                <div className=" min-w-[370px]  lg:max-w-[50vw] cursor-pointer">
                   <Image
                     src={listing?.image as string}
                     alt={listing?.title as string}

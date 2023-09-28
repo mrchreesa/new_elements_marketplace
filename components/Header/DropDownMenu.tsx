@@ -37,7 +37,7 @@ function DropDownMenu({ openMenu, closeMenu }: Props) {
       <AnimatePresence>
         {openMenu && (
           <motion.div
-            className="absolute top-0 px-4 pt-6 inset-y-0 font-xxCompressed tracking-widest
+            className="absolute top-0 left-[50%] translate-x-[-50%] px-4 pt-6 inset-y-0 font-xxCompressed tracking-widest
             flex flex-col  w-screen h-screen bg-mobileBg bg-no-repeat bg-cover text-white z-10 overflow-hidden"
             variants={item}
             initial={{ height: 0, opacity: 0 }}
