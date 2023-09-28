@@ -5,7 +5,7 @@ const key = process.env.NEXT_PUBLIC_RECAPTCHAV3_SITE_KEY;
 const Apply = () => {
   return (
     <GoogleReCaptchaProvider
-      reCaptchaKey={key || ""}
+      reCaptchaKey={key as string}
       scriptProps={{
         async: false,
         defer: false,

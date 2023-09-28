@@ -65,7 +65,7 @@ export default function Header() {
                 </header>
                 <div className="flex  items-center basis-[48%]">
                   <Link href="/">
-                    <h1 className="text-3xl whitespace-nowrap lg:text-dynamicXl font-compressed">
+                    <h1 className="text-4xl md:text-3xl ml-2 md:ml-0 whitespace-nowrap lg:text-dynamicXl font-compressed">
                       NEW ELEMENTS
                     </h1>
                   </Link>
