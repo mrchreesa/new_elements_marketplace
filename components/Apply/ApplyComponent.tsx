@@ -253,7 +253,7 @@ const ApplyComponent = () => {
 
               <button
                 type="submit"
-                className="bg-blue text-black font-xCompressed  w-full uppercase tracking-[8px] mt-3 bg-green hover:bg-opacity-80 py-[1.2vh] transition-all px-[7vh] z-2 text-2xl  "
+                className="bg-blue text-black font-xCompressed mb-6 w-full uppercase tracking-[8px] mt-3 bg-green hover:bg-opacity-80 py-[1.2vh] transition-all px-[7vh] z-2 text-2xl  "
               >
                 {loading ? <ButtonSpinner /> : "Submit"}
               </button>

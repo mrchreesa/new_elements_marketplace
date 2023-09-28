@@ -1,6 +1,7 @@
 import React, { useState, useEffect, FunctionComponent } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
+import Link from "next/link";
 
 type Props = {
   modalOpen: boolean;
@@ -53,15 +54,13 @@ const ApplySubmitModal: FunctionComponent<Props> = ({
                   </p>
                 </div>
               </div>
-              <button
-                onClick={() => {
-                  router.push("/");
-                }}
+              <Link
+                href="/"
                 type="submit"
                 className="bg-blue whitespace-nowrap text-green fontCompress font-xCompressed border border-green w-full uppercase tracking-[8px] mt-3 bg-white bg-opacity-20 hover:bg-opacity-40 py-[1.2vh] px-[2vw] md:px-[6vw] z-2 text-2xl  "
               >
                 Back To Market
-              </button>
+              </Link>
             </div>
           </div>
         </div>
