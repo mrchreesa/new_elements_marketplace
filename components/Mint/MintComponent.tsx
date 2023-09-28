@@ -202,8 +202,8 @@ const MintComponent = ({ user }: Props) => {
 
   return (
     <>
-      <div className="flex w-screen  xl:max-w-[1600px] px-5 md:px-2 flex-col md:flex-row items-center md:items-start  mt-28  justify-center bg-black overflow-hidden">
-        <div className="md:basis-1/2 md:p-2 flex justify-start  md:items-start  md:mx-4 w-full mt-8 md:mt-0">
+      <div className="flex w-screen  xl:max-w-[1600px] px-5 md:px-2 flex-col md:flex-row items-center md:items-start    justify-center bg-black overflow-hidden">
+        <div className="md:basis-1/2 md:p-2 flex justify-start mt-28  md:items-start  md:mx-4 w-full md:mt-0">
           {!isCollection ? (
             <SingleNFT
               handleChange={handleChange}
