@@ -365,7 +365,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                 <div className=" flex font-bold text-green font-ibmPlex justify-center uppercase">
                   {listing.timeElapse ? (
                     <>
-                      <p className="pr-5 mt-4">Auction ended</p>
+                      <p className="pr-5 mt-4 text-sm">Auction ended</p>
                     </>
                   ) : (
                     <>
