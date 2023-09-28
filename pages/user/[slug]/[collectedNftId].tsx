@@ -35,7 +35,7 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
     const id = Number(query.collectedNftId);
 
     const listingTx = await contract.fetchNFT(id);
-    // console.log(listingTx)
+    // console.log(listingTx);
     let listing = await fetchListing({ contract, listingTx });
     // let listing = 1;
     // Get the latest block number
@@ -48,9 +48,7 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
       .queryFilter(contract.filters.Bid(), fromBlock, toBlock)
       .then((events) => {
         events.map((event: any) => {
-          // console.log(Number(event.args.listingId), query.listingId);
-
-          if (Number(event.args.listingId) == query.listingId) {
+          if (Number(event.args.listingId) == id) {
             const { sender, amount } = event?.args;
             const formattedAmount = Number(amount) / 1e18;
             // console.log(sender, formattedAmount);
@@ -58,7 +56,7 @@ export const getServerSideProps = async ({ req, res, query }: any) => {
           }
         });
       });
-
+    console.log(bids);
     return { listing, bids };
   };
 

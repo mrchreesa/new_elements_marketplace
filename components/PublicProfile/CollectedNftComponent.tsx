@@ -21,41 +21,7 @@ const CollectedNftComponent = ({ bids, listing }: any) => {
   // This means that if the user visits /listing/0 then the listingId will be 0.
   // If the user visits /listing/1 then the listingId will be 1.
   const listingId = router.query.collectedNftId;
-  console.log(bids);
 
-  // const fetchlisting = async () => {
-  //   const provider = new ethers.providers.Web3Provider(
-  //     (window as CustomWindow).ethereum as any
-  //   );
-
-  //   if (listingId) {
-  //     await (window as CustomWindow)?.ethereum?.request({
-  //       method: "eth_requestAccounts",
-  //     });
-  //     const signer = provider.getSigner();
-
-  //     const contract = new ethers.Contract(
-  //       ContractAddress,
-  //       ContractAbi,
-  //       signer
-  //     );
-  //     const id = Number(listingId);
-  //     const listingTx = await contract.fetchNFT(id);
-  //     // console.log(listingTx)
-  //     const res = await fetchListing({ contract, listingTx });
-  //     // Get the latest block number
-  //     const toBlock = await provider.getBlockNumber();
-  //     const fromBlock = 0;
-  //     const tokenId = BigNumber.from(listingId);
-  //     setListing(res);
-  //   }
-  // };
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     fetchlisting();
-  //   }
-  // }, []);
-  // console.log(listing);
   // Modal Make Offer
   const isModalOpen = () => {
     setModalOpen(true);
@@ -199,8 +165,9 @@ const CollectedNftComponent = ({ bids, listing }: any) => {
                           </p>
                         </div>
                         <div className="flex flex-grow col-span-2"></div>
-                        <p className="font-bold text-green">
-                          {bid?.amount} <br /> ETH
+                        <p className="font-bold text-green text-right">
+                          {bid?.amount} <br />{" "}
+                          <span className="flex justify-end"> ETH</span>
                         </p>
                       </div>
                     ))
