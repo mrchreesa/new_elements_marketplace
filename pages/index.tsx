@@ -51,7 +51,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     <>
       {/* Content */}
       <div
-        className={`relative flex w-screen overflow-hidden mt-20 md:mt-24 max-w-[1600px] flex-col items-center content-center ${
+        className={`relative flex w-screen overflow-hidden md:mt-24 max-w-[1600px] flex-col items-center content-center ${
           loading && `cursor-progress`
         }`}
       >
