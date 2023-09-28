@@ -43,29 +43,6 @@ export const submitToIpfs = async (collectionData) => {
   }
 };
 
-// export const convertUnitTimestamp = (unixTimestamp) => {
-//     // Convert Unix timestamp to a Date object
-//     const date = new Date(unixTimestamp * 1000);
-
-//     // // Get the current date
-//     const currentDate = new Date();
-
-//     // Calculate the difference in milliseconds between the current date and the target date
-//     const difference = date.getTime() - currentDate.getTime();
-
-//     // Calculate the remaining time in days, hours, minutes, and seconds
-//     const hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
-//     const minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
-//     const seconds = Math.floor((difference % (1000 * 60)) / 1000);
-
-//     // Display the countdown
-//     const aDay = days === 1 ? true : false;
-//     return `${hours <= 0 ? `${hours}:` :""}: ${minutes <= 0 ? `${minutes}M:` :""}${seconds <= 0 ? `${seconds}S:` :""}`;
-
-// }
-// const formated = new Date("00:04:10");
-
-// console.log(formated);
 export const fetchListings = async (data) => {
   const { contract, listingTx } = data;
   let mainNfts = [];

@@ -165,6 +165,7 @@ const MintComponent = ({ user }: Props) => {
         );
         // Wait for the transaction to be mined
         await approveTx.wait();
+        console.log(approveTx);
 
         // setLoading(false);
         isModalOpen();
