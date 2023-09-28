@@ -52,13 +52,15 @@ const AboutComponent = (props: Props) => {
       );
     }
   };
+
   const handleChange = (e: any) => {
     const { value, name } = e.target;
     setFormValues({ ...formValues, [name]: value });
   };
+
   return (
-    <div className="flex w-full  xl:max-w-[1600px] px-5 md:px-2 flex-col md:flex-row-reverse items-center md:items-start  mt-28  justify-center bg-black overflow-hidden">
-      <div className="md:basis-1/2 md:p-2 flex justify-center  md:items-start md:justify-end md:mx-4 w-full">
+    <div className="flex w-full  xl:max-w-[1600px] px-5 md:px-2 flex-col md:flex-row-reverse items-center md:items-start    justify-center bg-black overflow-hidden">
+      <div className="md:basis-1/2 md:p-2 flex justify-center mt-28 md:items-start md:justify-end md:mx-4 w-full">
         <Image src={nft} height={420} width={400} alt={""} />
       </div>
       <div className="md:basis-1/2 mt-5 md:mt-0 md:p-2 font-ibmPlex bold text-left md:m-4  text-sm ">
