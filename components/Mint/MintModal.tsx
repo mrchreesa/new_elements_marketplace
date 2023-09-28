@@ -39,7 +39,7 @@ const MintModal: FunctionComponent<Props> = ({ modalOpen, isModalClosed }) => {
         onRequestClose={isModalClosed}
         ariaHideApp={false}
       >
-        <div className="flex flex-col z-12 h-full w-full md:w-[70%] my-10 mx-5 overflow-hidden justify-between ">
+        <div className="flex flex-col z-12 h-full w-[70vw] md:w-[70%] my-10 mx-5 overflow-hidden justify-between ">
           <div className="flex flex-col h-full">
             <div className="flex flex-col w-full font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
               <div className=" flex w-full fontIbm">
