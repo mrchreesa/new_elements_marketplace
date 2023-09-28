@@ -1,12 +1,10 @@
-import React, { use, useEffect, useState } from "react";
+import React, { useState } from "react";
 import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
 import SingleNFT from "./SingleNFT";
 import Collection from "./Collection";
 import axios from "axios";
 import MintModal from "./MintModal";
 import { useAuthedProfile } from "../../context/UserContext";
-import contractABI from "../../contracts/collectionContractABI";
-import { contractBytecode } from "../../contracts/collectionContractBytecode";
 import { ethers } from "ethers";
 import router from "next/router";
 import { submitToIpfs } from "../utils/utils";
@@ -204,7 +202,17 @@ const MintComponent = ({ user }: Props) => {
   return (
     <>
       <div className="flex w-screen  xl:max-w-[1600px] px-5 md:px-2 flex-col md:flex-row items-center md:items-start    justify-center bg-black overflow-hidden">
-        <div className="md:basis-1/2 md:p-2 flex justify-start mt-28  md:items-start  md:mx-4 w-full md:mt-0">
+        <div className="font-bold md:hidden mt-28 md:mt-0 text-left font-ibmPlex">
+          <p className="mb-4 ">Hello!</p>
+          <p className="mb-4 ">
+            We are really excited to list your artwork on our Web3 marketplace.
+          </p>
+          <p className=" mb-4">
+            Please fill out all the information below so we can list your
+            artwork in our marketplace!
+          </p>
+        </div>
+        <div className="md:basis-1/2 md:p-2 flex justify-start md:mt-28  md:items-start  md:mx-4 w-full ">
           {!isCollection ? (
             <SingleNFT
               handleChange={handleChange}
@@ -225,7 +233,7 @@ const MintComponent = ({ user }: Props) => {
           )}
         </div>
         <div className="md:basis-[60%] mt-5 md:mt-0 md:p-2 w-full font-ibmPlex bold text-left md:m-4  text-sm ">
-          <div className="font-bold">
+          <div className="font-bold hidden md:mt-28 md:block">
             <p className="mb-4 ">Hello!</p>
             <p className="mb-4 ">
               We are really excited to list your artwork on our Web3
