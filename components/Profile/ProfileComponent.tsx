@@ -298,11 +298,11 @@ const ProfileComponent = ({
   return (
     <>
       <div
-        className={`flex flex-col w-full max-w-[1590px]  px-4 md:px-3 lg:px-6 mt-20 md:mt-24  bg-black overflow-hidden ${
+        className={`flex flex-col w-full max-w-[1590px]  px-4 md:px-3 lg:px-6  md:mt-24  bg-black overflow-hidden ${
           loading && `cursor-progress`
         }`}
       >
-        <div className="flex flex-col w-full overflow-hidden font-ibmPlex ">
+        <div className="flex flex-col w-full mt-20 md:mt-0 overflow-hidden font-ibmPlex ">
           <Banner
             authedProfile={authedProfile}
             setBannerPicture={setBannerPicture}
