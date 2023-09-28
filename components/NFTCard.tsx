@@ -27,6 +27,8 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
 
   getArtist(users, listing);
+  console.log(owner);
+
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
   const router = useRouter();
 
