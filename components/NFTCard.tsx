@@ -52,7 +52,9 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   const handleShareWithCommission = () => {
     isModalOpen();
   };
-  const { _id } = owner;
+
+  const { _id } = owner || {};
+
   // Countdown
 
   const Completionist = () => <span>Auction Ended</span>;

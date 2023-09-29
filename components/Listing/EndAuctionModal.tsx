@@ -18,14 +18,10 @@ const PlaceBidModal: FunctionComponent<Props> = ({
   modalEndOpen,
   isModalEndClosed,
   listing,
-
   endBid,
   resale,
   loadingBid,
 }) => {
-  // const [isOpenModal, setIsOpenModal] = useState(true);
-  // const [isLoading, setIsLoading] = useState(false);
-
   const customStyles = {
     overlay: {
       backgroundColor: "rgb(25, 25, 25, 0.85)",
@@ -46,43 +42,44 @@ const PlaceBidModal: FunctionComponent<Props> = ({
     },
   };
   // initializing state for balance
-  const [balance, setBalance] = useState<number>(0);
-  const [address, setAddress] = useState<string>("");
-  const [auth, setAuth] = useState<boolean>(false);
-  const getBalance = async () => {
-    if ((window as CustomWindow).ethereum) {
-      const provider = new ethers.providers.Web3Provider(
-        (window as CustomWindow).ethereum as any
-      );
-      // Request access to the user's Ethereum accounts (MetaMask, etc.)
-      const accounts = await (window as CustomWindow).ethereum.request({
-        method: "eth_requestAccounts",
-      });
+  // const [balance, setBalance] = useState<number>(0);
+  // const [address, setAddress] = useState<string>("");
+  // const [auth, setAuth] = useState<boolean>(false);
 
-      // Return the first account address
-      const address = accounts[0];
-      setAddress(address);
-      if (listing.owner !== undefined) {
-        let listingAdrress = listing.owner;
-        listingAdrress = listingAdrress.toLowerCase();
-        setAuth(listingAdrress === address);
-      }
-      // console.log(mainaddress == "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 ");
+  // const getBalance = async () => {
+  //   if ((window as CustomWindow).ethereum) {
+  //     const provider = new ethers.providers.Web3Provider(
+  //       (window as CustomWindow).ethereum as any
+  //     );
+  //     // Request access to the user's Ethereum accounts (MetaMask, etc.)
+  //     const accounts = await (window as CustomWindow).ethereum.request({
+  //       method: "eth_requestAccounts",
+  //     });
 
-      // Get the balance of the specified address
-      const balance = await provider.getBalance(address);
+  //     // Return the first account address
+  //     const address = accounts[0];
+  //     setAddress(address);
+  //     if (listing.owner !== undefined) {
+  //       let listingAdrress = listing.owner;
+  //       listingAdrress = listingAdrress.toLowerCase();
+  //       setAuth(listingAdrress === address);
+  //     }
+  //     // console.log(mainaddress == "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 ");
 
-      // Convert the balance to Ether units
-      const bal = ethers.utils.formatEther(balance);
-      const balanceInEther = Math.round(Number(bal));
+  //     // Get the balance of the specified address
+  //     const balance = await provider.getBalance(address);
 
-      setBalance(balanceInEther);
-    }
-  };
+  //     // Convert the balance to Ether units
+  //     const bal = ethers.utils.formatEther(balance);
+  //     const balanceInEther = Math.round(Number(bal));
 
-  useEffect(() => {
-    getBalance();
-  }, []);
+  //     setBalance(balanceInEther);
+  //   }
+  // };
+
+  // useEffect(() => {
+  //   getBalance();
+  // }, []);
 
   return (
     <div>

@@ -35,6 +35,7 @@ const handler = async (req: NextApiRequest, res: any) => {
         admin: true,
         superAdmin: true,
         email: "",
+        profit: 0,
       });
 
       newUser

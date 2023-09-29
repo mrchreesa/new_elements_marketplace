@@ -6,7 +6,6 @@ import PlaceBidModal from "./PlaceBidModal";
 import EnlargeNFTModal from "./EnlargeNFTModal";
 import { ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "../utils/constants";
-import { fetchListing } from "../utils/utils";
 import EndAuctionModal from "./EndAuctionModal";
 import SuccessfullBidModal from "./SuccessfulBidModal";
 import useAuthedProfile from "../../context/UserContext";
@@ -20,10 +19,9 @@ import {
 import Countdown from "react-countdown";
 import { useEthersSigner } from "../utils/getSigner";
 import AddEmailModal from "./AddEmailModal";
-import local from "next/font/local";
 import ShareLinkModal from "../ShareLinkModal";
 import Link from "next/link";
-const { BigNumber } = require("ethers");
+import axios from "axios";
 
 const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -130,6 +128,17 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         // Call the contract method with value
         const listingTx = await contract.end(id);
         await listingTx.wait();
+        axios
+          .post("/api/addProfit", {
+            address: authedProfile.address,
+            bid: listing.Bid,
+          })
+          .then((response: any) => {
+            console.log(response);
+          })
+          .catch((error: any) => {
+            console.log(error);
+          });
       }
     } catch (error) {
       console.error(error);
@@ -335,11 +344,19 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                         {listing.timeElapse ? null : (
                           <button
                             onClick={
-                              authedProfile ? isModalOpen : openConnectModal
+                              listing.timeElapse
+                                ? isModalEndOpen
+                                : authedProfile
+                                ? isModalOpen
+                                : openConnectModal
                             }
                             className="font-xCompressed  w-full  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
                           >
-                            place bid
+                            {listing.timeElapse
+                              ? listing.sold
+                                ? "ENDED"
+                                : "claim eth NOW"
+                              : "place bid"}
                           </button>
                         )}
                       </div>

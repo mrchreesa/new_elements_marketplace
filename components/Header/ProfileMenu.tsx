@@ -14,7 +14,7 @@ function classNames(...classes: string[]) {
 export default function ProfileMenu() {
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
   const [address, setAddress] = useState<string>("");
-  const { isConnected, isDisconnected, isConnecting } = useAccount();
+  // const { isConnected, isDisconnected, isConnecting } = useAccount();
 
   const { disconnect } = useDisconnect({
     onSuccess(data) {

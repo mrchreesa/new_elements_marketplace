@@ -382,7 +382,7 @@ const ProfileComponent = ({
 
                   <div className="flex flex-col items-end md:items-center mr-2 md:mr-10">
                     <h1 className="text-green font-xxCompressed -mb-2 text-8xl lg:text-9xl text-center">
-                      0.00
+                      {authedProfile?.profit}
                     </h1>
                     <p className="text-xs">
                       PROFIT
