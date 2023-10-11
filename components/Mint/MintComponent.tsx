@@ -2,7 +2,7 @@ import React, { useState } from "react";
 import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
 import SingleNFT from "./SingleNFT";
 import Collection from "./Collection";
-import axios from "axios";
+import { Alert } from "@material-tailwind/react";
 import MintModal from "./MintModal";
 import { useAuthedProfile } from "../../context/UserContext";
 import { ethers } from "ethers";
@@ -12,6 +12,8 @@ import { ContractAbi, ContractAddress } from "../utils/constants";
 import Web3 from "web3";
 import { useEthersSigner } from "../utils/getSigner";
 import MintCollectionModal from "./MintCollectionModal";
+import ErrorModal from "./ErrorModal";
+import { reset } from "viem/dist/types/actions/test/reset";
 type Props = {
   user: any;
 };
@@ -27,6 +29,8 @@ const MintComponent = ({ user }: Props) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalCollectionOpen, setModalCollectionOpen] =
     useState<boolean>(false);
+  const [modalErrorOpen, setModalErrorOpen] = useState<boolean>(false);
+
   const { setAuthedProfile } = useAuthedProfile();
   const authedProfile = user;
   const initialMintValues = {
@@ -84,6 +88,17 @@ const MintComponent = ({ user }: Props) => {
     router.replace(router.asPath);
   };
 
+  const resetForm = () => {
+    setLoadingToDeploy(false);
+    setLoading(false);
+    setFormValues(initialMintValues);
+    setFormValuesCollection(initialCollectionValues);
+    setCollection("");
+    setImage("");
+    setImageCollection("");
+    setFile(null);
+  };
+
   // Minting NFT
   const signer = useEthersSigner();
 
@@ -105,82 +120,96 @@ const MintComponent = ({ user }: Props) => {
     let collectionImage = {
       file,
     };
-    console.log(singleNFTData);
 
-    // Deploy Collection Contract
     if (isCollection) {
-      const tokenUrl = await submitToIpfs(collectionData);
-
-      try {
-        setLoadingToDeploy(true);
-        // Initialize the contract with the signer
-        const contract = new ethers.Contract(
-          ContractAddress,
-          ContractAbi,
-          signer
-        );
-
+      if (
+        collectionData.collectionName == "" ||
+        collectionData.description == "" ||
+        collectionData.image == null ||
+        collectionData.tokensymbol == ""
+      ) {
         setLoading(false);
-        // console.log(tokenUrl, collectionData.tokensymbol);
+        isModalErrorOpen();
+      } else {
+        // Deploy Collection Contract
+        const tokenUrl = await submitToIpfs(collectionData);
 
-        const collectionCreatedTx = await contract.createCollection(
-          tokenUrl,
-          collectionData.tokensymbol
-        );
+        try {
+          setLoadingToDeploy(true);
+          // Initialize the contract with the signer
+          const contract = new ethers.Contract(
+            ContractAddress,
+            ContractAbi,
+            signer
+          );
 
-        const collectionCreated = await collectionCreatedTx.wait();
+          setLoading(false);
+          // console.log(tokenUrl, collectionData.tokensymbol);
 
-        // Update user database
-        setLoadingToDeploy(false);
-        isModalCollectionOpen();
-      } catch (e) {
-        console.log(e);
-        alert("Something went wrong, please try again later.");
+          const collectionCreatedTx = await contract.createCollection(
+            tokenUrl,
+            collectionData.tokensymbol
+          );
+
+          const collectionCreated = await collectionCreatedTx.wait();
+
+          // Update user database
+          setLoadingToDeploy(false);
+          isModalCollectionOpen();
+          resetForm();
+        } catch (e) {
+          console.log(e);
+          alert("Something went wrong, please try again later.");
+          resetForm();
+        }
       }
     } else {
-      // Mint Single NFT Contract
-      const tokenUrl = await submitToIpfs(singleNFTData);
+      // Single NFT Contract MINT
 
-      try {
-        setLoadingToDeploy(true);
-        // console.log(tokenUrl);
-
-        // Initialize the contract with the signer
-        const contract = new ethers.Contract(
-          ContractAddress,
-          ContractAbi,
-          signer
-        );
-
+      if (
+        singleNFTData.name == "" ||
+        singleNFTData.description == "" ||
+        singleNFTData.image == null ||
+        formValues.reservePrice == ""
+      ) {
         setLoading(false);
-        // console.log(singleNFTData.name, tokenUrl, formValues.reservePrice);
+        isModalErrorOpen();
+      } else {
+        const tokenUrl = await submitToIpfs(singleNFTData);
 
-        // await contract.approveArtist(address);
-        const approveTx = await contract.createListing(
-          singleNFTData.collectionId,
-          tokenUrl,
-          Web3.utils.toWei(formValues.reservePrice, "ether")
-        );
-        // Wait for the transaction to be mined
-        await approveTx.wait();
-        console.log(approveTx);
+        try {
+          setLoadingToDeploy(true);
+          // console.log(tokenUrl);
 
-        // setLoading(false);
-        isModalOpen();
-      } catch (e) {
-        console.log(e);
+          // Initialize the contract with the signer
+          const contract = new ethers.Contract(
+            ContractAddress,
+            ContractAbi,
+            signer
+          );
 
-        alert("Something went wrong, please try again later.");
+          setLoading(false);
+          // console.log(singleNFTData.name, tokenUrl, formValues.reservePrice);
+
+          // await contract.approveArtist(address);
+          const approveTx = await contract.createListing(
+            singleNFTData.collectionId,
+            tokenUrl,
+            Web3.utils.toWei(formValues.reservePrice, "ether")
+          );
+          // Wait for the transaction to be mined
+          await approveTx.wait();
+          console.log(approveTx);
+          resetForm();
+          // setLoading(false);
+          isModalOpen();
+        } catch (e) {
+          console.log(e);
+          alert("Something went wrong, please try again later.");
+          resetForm();
+        }
       }
     }
-    setLoadingToDeploy(false);
-    setLoading(false);
-    setFormValues(initialMintValues);
-    setFormValuesCollection(initialCollectionValues);
-    setCollection("");
-    setImage("");
-    setImageCollection("");
-    setFile(null);
   };
 
   // Modal Single NFT
@@ -197,6 +226,14 @@ const MintComponent = ({ user }: Props) => {
   const isModalCollectionClosed = () => {
     setModalCollectionOpen(false);
     setIsCollection(false);
+  };
+
+  // Error Collection
+  const isModalErrorOpen = () => {
+    setModalErrorOpen(true);
+  };
+  const isModalErrorClosed = () => {
+    setModalErrorOpen(false);
   };
 
   return (
@@ -333,6 +370,10 @@ const MintComponent = ({ user }: Props) => {
       <MintCollectionModal
         isModalCollectionClosed={isModalCollectionClosed}
         modalCollectionOpen={modalCollectionOpen}
+      />
+      <ErrorModal
+        isModalErrorClosed={isModalErrorClosed}
+        modalErrorOpen={modalErrorOpen}
       />
     </>
   );

@@ -62,6 +62,8 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
 
   // Renderer callback with condition
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
+    console.log(completed);
+
     if (completed) {
       // Render a complete state
       return <Completionist />;

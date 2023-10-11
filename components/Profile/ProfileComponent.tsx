@@ -397,7 +397,7 @@ const ProfileComponent = ({
 
                     <p className="text-xs">
                       TOTAL
-                      <br /> COLLECTED
+                      <br /> PURCHASED
                     </p>
                   </div>
                   <div className="flex flex-col mr-10 w-16">
@@ -442,7 +442,48 @@ const ProfileComponent = ({
                 </div>{" "}
               </div>
             )
-          ) : null}
+          ) : // if not artist
+          isLoading || !listedNfts ? (
+            <div className="flex  flex-col-reverse md:flex-col">
+              <div className="flex md:mt-5 h-full flex-wrap">
+                <ButtonSpinner />
+              </div>
+            </div>
+          ) : (
+            <div className="flex  flex-col-reverse md:flex-col">
+              <div className="flex md:mt-5 h-full flex-wrap">
+                <div className="flex flex-col mr-10 w-16">
+                  <h1 className="text-green font-xxCompressed -mb-2 text-8xl lg:text-9xl text-center">
+                    {collectedNfts?.length}
+                  </h1>
+
+                  <p className="text-xs">
+                    TOTAL
+                    <br /> PURCHASED
+                  </p>
+                </div>
+                <div className="flex flex-col mr-10 w-16">
+                  <h1 className="text-green font-xxCompressed -mb-2 text-8xl lg:text-9xl text-center">
+                    0
+                  </h1>
+                  <p className="text-xs">
+                    TOTAL
+                    <br /> FLIPPED
+                  </p>
+                </div>
+                <div className="flex grow md:hidden"></div>
+                <div className="flex flex-col mr-2 md:mr-10 items-end md:items-center">
+                  <h1 className="text-green font-xxCompressed -mb-2 text-8xl lg:text-9xl text-center">
+                    0.00
+                  </h1>
+                  <p className="text-xs">
+                    P/L
+                    <br /> IN ETH
+                  </p>
+                </div>
+              </div>
+            </div>
+          )}
           {isLoading || !listings ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:mx-5 mb-10">
               <NFTCardSkeleton />

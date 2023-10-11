@@ -1,5 +1,5 @@
 import { Router, useRouter } from "next/router";
-import { useState, useEffect } from "react";
+import { useState, useEffect, use } from "react";
 import styles from "../../styles/Home.module.css";
 import Image from "next/image";
 import PlaceBidModal from "./PlaceBidModal";
@@ -22,6 +22,7 @@ import AddEmailModal from "./AddEmailModal";
 import ShareLinkModal from "../ShareLinkModal";
 import Link from "next/link";
 import axios from "axios";
+import ErrorModal from "../Listing/ErrorModal";
 
 const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -33,8 +34,10 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
     useState<boolean>(false);
+  const [errorModalOpen, setErrorModalOpen] = useState<boolean>(false);
   const [commissionModalOpen, setCommissionModalOpen] =
     useState<boolean>(false);
+  const [isTimeElapsed, setTimeElapsed] = useState<boolean>(false);
 
   const { authedProfile } = useAuthedProfile();
 
@@ -78,7 +81,6 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         );
         const id = Number(listingId);
         const valueToSend = ethers.utils.parseEther(bidAmount); // Example: sending 1 Ether
-        console.log(localStorage.hasOwnProperty("userAddress"));
         let listingTx;
 
         // Get referral address
@@ -105,8 +107,12 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         isSuccessfulBidModalOpen();
       }
     } catch (error) {
-      console.error(error);
-      alert(error);
+      console.log(error);
+
+      isModalClosed();
+      setLoadingBid(false);
+      // isErrorModalOpen();
+
       isModalClosed();
       setLoadingBid(false);
     }
@@ -244,6 +250,13 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const handleShareWithCommission = () => {
     isCommissionModalOpen();
   };
+  // Error Modal
+  const isErrorModalOpen = () => {
+    setErrorModalOpen(true);
+  };
+  const isErrorModalClosed = () => {
+    setErrorModalOpen(false);
+  };
 
   const Completionist = () => (
     <span className="text-sm  mt-4">Auction Ended</span>
@@ -265,6 +278,37 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
       );
     }
   };
+
+  useEffect(() => {
+    if (listing.timeElapse) {
+      setTimeElapsed(true);
+    } else {
+      setTimeElapsed(false);
+    }
+  }, [listing.timeElapse]);
+
+  const rendererButton = ({ hours, minutes, seconds, completed }: any) => {
+    if (completed) {
+      setTimeElapsed(true);
+
+      // Render a complete state
+      return (
+        <button
+          onClick={isModalEndOpen}
+          className="font-xCompressed  w-full  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
+        >
+          {"claim eth NOW"}
+        </button>
+      );
+    } else {
+      // Render a countdown
+      return null;
+    }
+  };
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
 
   if (listing) {
     return (
@@ -341,30 +385,39 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                       <div className="flex grow"></div>
 
                       <div className=" flex font-bold w-full text-green">
-                        {listing.timeElapse ? null : (
+                        {!isTimeElapsed ? (
                           <button
                             onClick={
-                              listing.timeElapse
-                                ? isModalEndOpen
-                                : authedProfile
-                                ? isModalOpen
-                                : openConnectModal
+                              authedProfile ? isModalOpen : openConnectModal
                             }
                             className="font-xCompressed  w-full  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
                           >
-                            {listing.timeElapse
-                              ? listing.sold
-                                ? "ENDED"
-                                : "claim eth NOW"
-                              : "place bid"}
+                            {"place bid"}
                           </button>
+                        ) : (
+                          <Countdown
+                            date={Date.now() + listing.endTime * 1000}
+                            renderer={rendererButton}
+                          />
                         )}
+                        {/* <button
+                          onClick={
+                            isTimeElapsed
+                              ? isModalEndOpen
+                              : authedProfile
+                              ? isModalOpen
+                              : openConnectModal
+                          }
+                          className="font-xCompressed  w-full  uppercase tracking-[8px] py-1 text-black   bg-green  hover:bg-opacity-80 font-semibold text-2xl  "
+                        >
+                          {isTimeElapsed ? "claim eth NOW" : "place bid"}
+                        </button> */}
                       </div>
                       <div className="flex grow"></div>
                     </div>
                   </div>
                 </div>
-                {listing.timeElapse &&
+                {/* {listing.timeElapse &&
                 listing.seller == authedProfile?.address ? (
                   <div className="font-ibmPlex w-full md:min-w-1 flex items-center justify-between">
                     <button
@@ -378,7 +431,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                         : "place bid"}
                     </button>
                   </div>
-                ) : null}
+                ) : null} */}
                 <div className=" flex font-bold text-green font-ibmPlex justify-center uppercase">
                   {listing.timeElapse ? (
                     <>
@@ -490,6 +543,10 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
           modalOpen={commissionModalOpen}
           user={authedProfile}
           listing={listing}
+        />
+        <ErrorModal
+          isErrorModalClosed={isErrorModalClosed}
+          errorModalOpen={errorModalOpen}
         />
       </>
     );

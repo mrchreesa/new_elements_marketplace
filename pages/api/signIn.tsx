@@ -31,9 +31,9 @@ const handler = async (req: NextApiRequest, res: any) => {
         bio: "",
         username: "",
         collections: [],
-        isArtist: true,
-        admin: true,
-        superAdmin: true,
+        isArtist: false,
+        admin: false,
+        superAdmin: false,
         email: "",
         profit: 0,
       });
