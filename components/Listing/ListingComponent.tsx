@@ -40,7 +40,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [commissionModalOpen, setCommissionModalOpen] =
     useState<boolean>(false);
   const [isTimeElapsed, setTimeElapsed] = useState<boolean>(false);
-
+  const [nftHash, setNftHash] = useState<string>("");
   const { authedProfile } = useAuthedProfile();
 
   const { openConnectModal } = useConnectModal();
@@ -300,6 +300,21 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
     }
   }, [listing.timeElapse]);
 
+  useEffect(() => {
+    const data = {
+      name: listing.title,
+    };
+    axios
+      .post("/api/nftHashFetch", data)
+      .then((response) => {
+        console.log(response.data.hash);
+        setNftHash(response.data.hash);
+      })
+      .catch((error) => {
+        console.log(error);
+      });
+  }, []);
+
   const rendererButton = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
       setTimeElapsed(true);
@@ -473,7 +488,15 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
                   >
                     SHARE AND EARN 1% {">>"}
                   </button>
-                  <button className="mb-4">VIEW ON ETHERSCAN {">"}</button>
+                  <a
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    // change it to Mainnet
+                    href={`https://sepolia.etherscan.io/tx/${nftHash}`}
+                    className="mb-4"
+                  >
+                    VIEW ON ETHERSCAN {">"}
+                  </a>
                 </div>
                 <div className="flex-1/2  w-1/2">
                   <p className="text-left mb-2">HISTORY</p>

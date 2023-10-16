@@ -14,6 +14,7 @@ import { useEthersSigner } from "../utils/getSigner";
 import MintCollectionModal from "./MintCollectionModal";
 import ErrorModal from "./ErrorModal";
 import { reset } from "viem/dist/types/actions/test/reset";
+import axios from "axios";
 type Props = {
   user: any;
 };
@@ -199,7 +200,20 @@ const MintComponent = ({ user }: Props) => {
           );
           // Wait for the transaction to be mined
           await approveTx.wait();
-          console.log(approveTx);
+
+          // Update nft database
+          const data = {
+            name: singleNFTData.name,
+            hash: approveTx.hash,
+          };
+          axios
+            .post("/api/nftHash", data)
+            .then((res) => {
+              console.log(res);
+            })
+            .catch((err) => {
+              console.log(err);
+            });
           resetForm();
           // setLoading(false);
           isModalOpen();

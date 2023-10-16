@@ -6,6 +6,7 @@ import Users from "../../model/users";
 import { BigNumber, ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "../../components/utils/constants";
 import { fetchListing } from "../../components/utils/utils";
+import Nft from "../../model/nft";
 
 const ListingPage: NextPage = ({ users, listing, bids }: any) => {
   return <ListingComponent users={users} listing={listing} bids={bids} />;
