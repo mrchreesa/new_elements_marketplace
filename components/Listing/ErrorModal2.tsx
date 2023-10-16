@@ -2,13 +2,13 @@ import React, { FunctionComponent } from "react";
 import Modal from "react-modal";
 
 type Props = {
-  errorModalOpen: boolean;
-  isErrorModalClosed: () => void;
+  errorModal2Open: boolean;
+  isErrorModal2Closed: () => void;
 };
 
-const ErrorModal: FunctionComponent<Props> = ({
-  errorModalOpen,
-  isErrorModalClosed,
+const ErrorModal2: FunctionComponent<Props> = ({
+  errorModal2Open,
+  isErrorModal2Closed,
 }) => {
   const customStyles = {
     overlay: {
@@ -35,8 +35,8 @@ const ErrorModal: FunctionComponent<Props> = ({
       {" "}
       <Modal
         style={customStyles}
-        isOpen={errorModalOpen}
-        onRequestClose={isErrorModalClosed}
+        isOpen={errorModal2Open}
+        onRequestClose={isErrorModal2Closed}
         ariaHideApp={false}
       >
         <div className="flex flex-col z-12 h-full w-[70vw] md:w-[70%] my-10 mx-5 overflow-hidden items-center ">
@@ -45,7 +45,7 @@ const ErrorModal: FunctionComponent<Props> = ({
               <div className=" flex w-full fontIbm">
                 <div className=" flex text-center">
                   {" "}
-                  <p className=" text-green">Insufficient funds</p>
+                  <p className=" text-green">Less than reserve price</p>
                 </div>
               </div>
             </div>
@@ -56,4 +56,4 @@ const ErrorModal: FunctionComponent<Props> = ({
   );
 };
 
-export default ErrorModal;
+export default ErrorModal2;

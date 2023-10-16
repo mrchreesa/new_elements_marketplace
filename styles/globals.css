@@ -31,6 +31,9 @@ textarea,
 select {
   font: inherit;
 }
+body:has(.scrollDisabled) {
+  overflow: hidden;
+}
 
 :root {
   --black: #1c1e21;

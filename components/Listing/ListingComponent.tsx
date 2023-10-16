@@ -23,6 +23,7 @@ import ShareLinkModal from "../ShareLinkModal";
 import Link from "next/link";
 import axios from "axios";
 import ErrorModal from "../Listing/ErrorModal";
+import ErrorModal2 from "./ErrorModal2";
 
 const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
@@ -35,6 +36,7 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const [successfulBidmodalOpen, setSuccessfulBidModal] =
     useState<boolean>(false);
   const [errorModalOpen, setErrorModalOpen] = useState<boolean>(false);
+  const [errorModal2Open, setErrorModal2Open] = useState<boolean>(false);
   const [commissionModalOpen, setCommissionModalOpen] =
     useState<boolean>(false);
   const [isTimeElapsed, setTimeElapsed] = useState<boolean>(false);
@@ -107,13 +109,18 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         isSuccessfulBidModalOpen();
       }
     } catch (error) {
-      console.log(error);
+      const err = JSON.stringify(error);
+      if (err.includes("insufficient funds")) {
+        isErrorModalOpen();
+      } else if (err.includes("UNPREDICTABLE_GAS_LIMIT")) {
+        console.log(err);
 
-      isModalClosed();
-      setLoadingBid(false);
-      // isErrorModalOpen();
+        isErrorModal2Open();
+      } else {
+        isModalClosed();
 
-      isModalClosed();
+        // isErrorModalOpen();
+      }
       setLoadingBid(false);
     }
   }
@@ -257,7 +264,13 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
   const isErrorModalClosed = () => {
     setErrorModalOpen(false);
   };
-
+  // Error Modal 2
+  const isErrorModal2Open = () => {
+    setErrorModal2Open(true);
+  };
+  const isErrorModal2Closed = () => {
+    setErrorModal2Open(false);
+  };
   const Completionist = () => (
     <span className="text-sm  mt-4">Auction Ended</span>
   );
@@ -547,6 +560,10 @@ const ListingComponent: any = ({ users, listing, bids }: any) => {
         <ErrorModal
           isErrorModalClosed={isErrorModalClosed}
           errorModalOpen={errorModalOpen}
+        />
+        <ErrorModal2
+          isErrorModal2Closed={isErrorModal2Closed}
+          errorModal2Open={errorModal2Open}
         />
       </>
     );

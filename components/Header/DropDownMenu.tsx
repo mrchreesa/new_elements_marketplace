@@ -1,4 +1,4 @@
-import React, { useState } from "react";
+import React, { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import XMarkIcon from "@heroicons/react/24/outline/XMarkIcon";
 import Link from "next/link";
@@ -31,14 +31,20 @@ function DropDownMenu({ openMenu, closeMenu }: Props) {
       },
     },
   };
-
+  useEffect(() => {
+    if (openMenu) {
+      document.body.style.overflow = "hidden";
+    } else {
+      document.body.style.overflow = "unset";
+    }
+  }, [openMenu]);
   return (
     <div className="relative z-2 lg:hidden">
       <AnimatePresence>
         {openMenu && (
           <motion.div
             className="absolute top-0 left-[50%] translate-x-[-50%] px-4 pt-6 inset-y-0 font-xxCompressed tracking-widest
-            flex flex-col  w-screen h-screen bg-mobileBg bg-no-repeat bg-cover text-white z-10 overflow-hidden"
+            flex flex-col  w-screen h-screen bg-mobileBg bg-no-repeat bg-cover text-white z-10 overflow-hidden "
             variants={item}
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: "100vh", opacity: 1 }}
