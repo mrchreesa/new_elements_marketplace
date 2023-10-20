@@ -10,7 +10,7 @@ import Users from "../model/users";
 import connectDB from "../lib/connectDB";
 import { ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "../components/utils/constants";
-import { fetchListings } from "../components/utils/utils";
+import { fetchListings, fetCollection } from "../components/utils/utils";
 import useSWR from "swr";
 
 const Home: NextPage = ({ user, users, auth }: any) => {
@@ -32,11 +32,13 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     const listingTx = await contract.fetchListingItem();
 
     const res = await fetchListings({ contract, listingTx });
+
     return res;
   };
 
   let listings: any = [];
   const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting());
+  // console.log("data", data);
 
   if (data) {
     listings = data;

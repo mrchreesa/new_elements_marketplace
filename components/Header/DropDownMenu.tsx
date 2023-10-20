@@ -35,7 +35,7 @@ function DropDownMenu({ openMenu, closeMenu }: Props) {
     if (openMenu) {
       document.body.style.position = "fixed";
     } else {
-      document.body.style.position = "unset";
+      document.body.style.position = "";
     }
   }, [openMenu]);
   return (

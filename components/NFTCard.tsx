@@ -1,4 +1,4 @@
-import { useState, FunctionComponent } from "react";
+import { useState, FunctionComponent, useEffect } from "react";
 import Router from "next/router";
 import Image from "next/image";
 import Countdown from "react-countdown";
@@ -17,6 +17,9 @@ import { useRouter } from "next/router";
 import Ribbon from "./Ribbon";
 import Send from "./Send";
 import Link from "next/link";
+import { ethers } from "ethers";
+import { ContractAbi, ContractAddress } from "./utils/constants";
+import { fetCollection } from "./utils/utils";
 
 type Props = {
   listing: object | any;
@@ -25,9 +28,35 @@ type Props = {
 };
 const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
+  const [collection, setCollection] = useState<any>(null);
+  const { collectionId } = listing;
 
   getArtist(users, listing);
-  console.log(owner);
+
+  const fetchlisting = async () => {
+    if (collectionId) {
+      setLoading(true);
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.NEXT_PUBLIC_RPC_URL
+      );
+
+      const contract = new ethers.Contract(
+        ContractAddress,
+        ContractAbi,
+        provider
+      );
+      const id = Number(collectionId);
+      const collectionTx = await contract.fetchCollection(id);
+
+      const collection = await fetCollection(collectionTx);
+
+      setCollection(collection);
+    }
+    setLoading(false);
+  };
+  useEffect(() => {
+    fetchlisting();
+  }, []);
 
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
   const router = useRouter();
@@ -86,7 +115,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   const isModalClosed = () => {
     setModalOpen(false);
   };
-  console.log(listing);
+  // console.log(listing);
 
   return (
     <>
@@ -154,6 +183,30 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                     <span className="flex justify-end"> ETH</span>
                   </p>
                 </div>
+                {collection ? (
+                  <>
+                    <div className="font-bold text-left flex cursor-pointer col-span-2">
+                      <p> COLLECTION</p>
+                    </div>
+                    <div className="hidden sm:flex grow"></div>
+                    <div className=" flex text-left  justify-end">
+                      {" "}
+                      <p className=" ">{collection?.title}</p>
+                    </div>
+                    <Link
+                      href={`/collection/${collectionId}`}
+                      className=" flex text-left justify-end"
+                    >
+                      <Image
+                        className="ml-1 md:ml-3 -mt-1 h-6 cursor-pointer  object-cover rounded-full"
+                        src={collection?.image}
+                        height={0}
+                        width={25}
+                        alt={""}
+                      />
+                    </Link>
+                  </>
+                ) : null}
               </div>
               <div className=" flex mt-3 -z-0">
                 <Ribbon

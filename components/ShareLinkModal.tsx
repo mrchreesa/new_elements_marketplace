@@ -14,7 +14,6 @@ const ShareLinkModal = ({
 }: any) => {
   const [copied, setCopied] = useState(false);
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
-  console.log("authedProfile", authedProfile);
 
   const origin =
     typeof window !== "undefined" && window.location.origin

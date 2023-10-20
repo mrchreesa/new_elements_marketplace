@@ -6,7 +6,7 @@ export let owner: any;
 
 export const getArtist = (users: any, listing: any) => {
   owner = users.find(
-    (user: any) => user.address === listing.seller || listing.creator
+    (user: any) => user.address === listing?.seller || listing?.creator
   );
 
   artistNameOrAddress =
