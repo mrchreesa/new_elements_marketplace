@@ -22,7 +22,7 @@ type Props = {
   listing: any;
 };
 
-const CollectionListing = ({ users }: any) => {
+const CollectionListing = ({ users, listing, listings }: any) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [modalOpenEnlargeNFT, setModalOpenEnlargeNFT] =
     useState<boolean>(false);
@@ -32,51 +32,51 @@ const CollectionListing = ({ users }: any) => {
   // const [listings, setListings] = useState<any>(null);
   const [loading, setLoading] = useState(false);
 
-  const router = useRouter();
-  const { collectionId } = router.query as { collectionId: string };
+  // const router = useRouter();
+  // const { collectionId } = router.query as { collectionId: string };
 
   let artistNameOrAddress: any;
   let artistProfilePic: any;
   let owner: any;
 
-  let listing: any = null;
-  let listings: any = null;
+  // let listing: any = null;
+  // let listings: any = null;
 
-  const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting());
+  // const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting());
 
-  if (!isLoading) {
-    listing = data?.collection;
-    listings = data?.listings;
-  }
+  // if (!isLoading) {
+  //   listing = data?.collection;
+  //   listings = data?.listings;
+  // }
 
-  const fetchlisting = async () => {
-    if (collectionId) {
-      // setLoading(true);
-      const provider = new ethers.providers.JsonRpcProvider(
-        process.env.NEXT_PUBLIC_RPC_URL
-      );
+  // const fetchlisting = async () => {
+  //   if (collectionId) {
+  //     // setLoading(true);
+  //     const provider = new ethers.providers.JsonRpcProvider(
+  //       process.env.NEXT_PUBLIC_RPC_URL
+  //     );
 
-      const contract = new ethers.Contract(
-        ContractAddress,
-        ContractAbi,
-        provider
-      );
-      const id = Number(collectionId);
-      const collectionTx = await contract.fetchCollection(id);
-      const collection = await fetCollection(collectionTx);
+  //     const contract = new ethers.Contract(
+  //       ContractAddress,
+  //       ContractAbi,
+  //       provider
+  //     );
+  //     const id = Number(collectionId);
+  //     const collectionTx = await contract.fetchCollection(id);
+  //     const collection = await fetCollection(collectionTx);
 
-      const listingTx = await contract.fetchCollectionNFTs(collectionTx.id);
-      const listings = await fetchListings({ contract, listingTx });
+  //     const listingTx = await contract.fetchCollectionNFTs(collectionTx.id);
+  //     const listings = await fetchListings({ contract, listingTx });
 
-      return { listings, collection };
-    }
-    // setLoading(false);
-  };
+  //     return { listings, collection };
+  //   }
+  //   // setLoading(false);
+  // };
 
-  useEffect(() => {
-    setLoading(isLoading);
-  }, [isLoading]);
-  console.log(data);
+  // useEffect(() => {
+  //   setLoading(isLoading);
+  // }, [isLoading]);
+  // console.log(data);
 
   if (listing) {
     owner = users.find((user: any) => user.address === listing.creator);
@@ -104,48 +104,48 @@ const CollectionListing = ({ users }: any) => {
         <div className="flex justify-center realtive w-full ">
           <div className="flex flex-col h-full items-center justify-center mt-10">
             <div className="flex flex-col h-full items-center justify-center font-ibmPlex">
-              {loading ? (
+              {/* {loading ? (
                 <div className="mt-10">
                   <ButtonSpinner />
                 </div>
-              ) : (
-                <>
-                  {listing ? (
-                    <Image
-                      src={listing?.image as string}
-                      alt={listing?.title as string}
-                      width={400}
-                      height={600}
-                      className="w-[250px] h-[160px] max-w-[250px] mt-4 object-cover rounded-[80px]"
-                      // onClick={isModalOpenEnlargeNFT}
-                    />
-                  ) : null}
-                  <h1 className="italic mt-2 text-xl">{listing?.title}</h1>
-                  <div className="flex text-xs mt-2">
-                    COLLECTION BY{" "}
-                    <Link
-                      href={`/user/${owner?._id}`}
-                      className="font-bold pl-2 flex cursor-pointer"
-                    >
-                      <p>@{artistNameOrAddress}</p>
-                      {listing && (
-                        <Image
-                          className="ml-3 -mt-1 h-6  object-cover rounded-full"
-                          src={artistProfilePic}
-                          height={0}
-                          width={25}
-                          alt="profile"
-                        />
-                      )}
-                    </Link>
-                  </div>
-                </>
-              )}
+              ) : ( */}
+              <>
+                {listing ? (
+                  <Image
+                    src={listing?.image as string}
+                    alt={listing?.title as string}
+                    width={400}
+                    height={600}
+                    className="w-[250px] h-[160px] max-w-[250px] mt-4 object-cover rounded-[80px]"
+                    // onClick={isModalOpenEnlargeNFT}
+                  />
+                ) : null}
+                <h1 className="italic mt-2 text-xl">{listing?.title}</h1>
+                <div className="flex text-xs mt-2">
+                  COLLECTION BY{" "}
+                  <Link
+                    href={`/user/${owner?._id}`}
+                    className="font-bold pl-2 flex cursor-pointer"
+                  >
+                    <p>@{artistNameOrAddress}</p>
+                    {listing && (
+                      <Image
+                        className="ml-3 -mt-1 h-6  object-cover rounded-full"
+                        src={artistProfilePic}
+                        height={0}
+                        width={25}
+                        alt="profile"
+                      />
+                    )}
+                  </Link>
+                </div>
+              </>
+              {/* )} */}
             </div>
             <div className="font-ibmPlex bold text-center w-full   mt-10 pb-10  leading-5 text-xs">
               <p className="mx-4 md:mx-0">{listing?.description as string}</p>
             </div>
-            {loading ? (
+            {/* {loading ? (
               <div className="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3  gap-10 lg:mx-10 mb-10 overflow-hidden">
                 <NFTCardSkeleton />
 
@@ -153,34 +153,34 @@ const CollectionListing = ({ users }: any) => {
 
                 <NFTCardSkeleton />
               </div>
-            ) : (
-              <div className="grid grid-cols-1  mt-10 sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
-                {listings &&
-                  listings.map((listing: any, index: number) => (
-                    <motion.div
+            ) : ( */}
+            <div className="grid grid-cols-1  mt-10 sm:grid-cols-2 md:grid-cols-3 gap-10 md:mx-4 lg:mx-8 mb-10">
+              {listings &&
+                listings.map((listing: any, index: number) => (
+                  <motion.div
+                    key={index}
+                    initial={{ y: 80, opacity: 0 }}
+                    animate={{ y: 0, opacity: 1 }}
+                    transition={{ delay: index * 0.1 + 0.4 }}
+                    exit={{
+                      opacity: 0,
+                      y: 90,
+                      transition: {
+                        ease: "easeInOut",
+                        delay: 1,
+                      },
+                    }}
+                  >
+                    <NFTCard
                       key={index}
-                      initial={{ y: 80, opacity: 0 }}
-                      animate={{ y: 0, opacity: 1 }}
-                      transition={{ delay: index * 0.1 + 0.4 }}
-                      exit={{
-                        opacity: 0,
-                        y: 90,
-                        transition: {
-                          ease: "easeInOut",
-                          delay: 1,
-                        },
-                      }}
-                    >
-                      <NFTCard
-                        key={index}
-                        users={users}
-                        setLoading={setLoading}
-                        listing={listing}
-                      />
-                    </motion.div>
-                  ))}{" "}
-              </div>
-            )}
+                      users={users}
+                      setLoading={setLoading}
+                      listing={listing}
+                    />
+                  </motion.div>
+                ))}{" "}
+            </div>
+            {/* )} */}
 
             {/*             
             
