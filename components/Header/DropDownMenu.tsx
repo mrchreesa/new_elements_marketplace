@@ -51,13 +51,13 @@ function DropDownMenu({ openMenu, closeMenu }: Props) {
             transition={{ duration: 0 }}
             exit="exit"
           >
-            <div className="flex pl-2 pb-4">
+            <div className="flex ">
               <button
                 onClick={closeMenu}
                 className="inline-flex items-center justify-center rounded-md pr-2 text-gray-400  hover:text-gray-500 focus:outline-none"
               >
                 <span className="sr-only">Close menu</span>
-                <XMarkIcon className="h-6 w-6" aria-hidden="true" />
+                <XMarkIcon className="h-7 w-7" aria-hidden="true" />
               </button>
             </div>
             {navigation.map((item, index) => (
