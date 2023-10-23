@@ -20,6 +20,7 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
   const [loading, setLoading] = React.useState<boolean>(false);
   const { setAuthedProfile, authedProfile } = useAuthedProfile();
   const router = useRouter();
+  console.log(collectedNfts);
 
   const renderer = ({ hours, minutes, seconds, completed }: any) => {
     if (completed) {
@@ -132,25 +133,21 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
                 )
               )}
             </div>
-            {/* COLLECTED */}
+            {/* PURCHASED */}
 
             <div className="flex flex-col">
-              <h3 className="font-bold">COLLECTED</h3>
+              <h3 className="font-bold">PURCHASED</h3>
               <div className="grid grid-cols-2 lg:grid-cols-4  items-stretch gap-10 md:gap-4 mb-10 mt-4">
                 {collectedNfts.map(
                   (nft: any, index: React.Key | null | undefined) => (
                     <div
-                      className="grid grid-cols-2 lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
+                      className="grid grid-cols-2  lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
                       key={index}
                     >
                       <div className="flex  flex-col h-full items-start w-auto ">
-                        <div
-                          className="cursor-pointer"
-                          onClick={() => {
-                            Router.push({
-                              pathname: `/user/${router.query.slug}/${nft.id}`,
-                            });
-                          }}
+                        <Link
+                          href={`/user/${router.query.slug}/${nft.id}`}
+                          className="cursor-pointer h-full"
                         >
                           <Image
                             src={nft.image}
@@ -159,7 +156,7 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
                             height={200}
                             className="max-h-[220px] md:max-h-[300px] w-[41vw] md:w-full md:min-w-[230px] mb-2 object-cover"
                           />{" "}
-                        </div>
+                        </Link>
                         <div className="flex flex-col w-full md:min-w-[230px] font-ibmPlex mb-4 uppercase text-xs text-[#e4e8eb] ">
                           <div className=" flex ">
                             <div className=" flex w-full">
@@ -169,7 +166,8 @@ const PublicProfileComponent = ({ user, collectedNfts, listedNfts }: Props) => {
                               </p>
                               <div className="flex grow"></div>
                               <p className="font-bold text-green">
-                                1.1 <br /> ETH
+                                {nft.price} <br />{" "}
+                                <span className="flex justify-end">ETH</span>
                               </p>
                             </div>
                           </div>

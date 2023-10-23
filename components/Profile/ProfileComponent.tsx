@@ -484,7 +484,7 @@ const ProfileComponent = ({
               </div>
             </div>
           )}
-          {isLoading || !listings ? (
+          {!listings ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:mx-5 mb-10">
               <NFTCardSkeleton />
 
@@ -759,7 +759,7 @@ const ProfileComponent = ({
       <EnlargeCollectedNft
         isModalClosedEnlargeNFT={isModalClosedEnlargeNFT}
         modalOpenEnlargeNFT={modalOpenEnlargeNFT}
-        collectedNfts={collectedNfts}
+        collectedNfts={pendingNfts}
         nftModalIndex={modalNftIndex}
       />
       <AddEmailModal

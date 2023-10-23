@@ -6,6 +6,7 @@ import { ContractAbi, ContractAddress } from "../utils/constants";
 import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
 import { useBalance, useAccount } from "wagmi";
 import { useAuthedProfile } from "../../context/UserContext";
+import { useEthersSigner } from "../utils/getSigner";
 
 type Props = {
   modalOpen: boolean;
@@ -22,7 +23,6 @@ const MakeOfferModal: FunctionComponent<Props> = ({
   listingId,
   isSuccessfullOfferModalOpen,
 }) => {
-  // const [isOpenModal, setIsOpenModal] = useState(true);
   const [isLoading, setIsLoading] = useState(false);
   const { authedProfile } = useAuthedProfile();
 
@@ -45,9 +45,6 @@ const MakeOfferModal: FunctionComponent<Props> = ({
       transform: "translate(-50%, -50%)",
     },
   };
-  // initializing state for balance
-  const [balance, setBalance] = useState<any>(0);
-  // const [address, setAddress] = useState<string>("");
   const [auth, setAuth] = useState<boolean>(false);
   const [offerAmount, setOfferAmount] = useState<string>("");
 
@@ -56,54 +53,26 @@ const MakeOfferModal: FunctionComponent<Props> = ({
     address,
   });
 
-  // const getBalance = async () => {
-
-  //     // Return the first account address
-  //     const address = accounts[0];
-  //     setAddress(address);
-  //     if (listing.owner !== undefined) {
-  //       let listingAdrress = listing.owner;
-  //       listingAdrress = listingAdrress.toLowerCase();
-  //       setAuth(listingAdrress === address);
-  //     }
-  //     // console.log(mainaddress == "0xf39fd6e51aad88f6f4ce6ab8827279cfffb92266 ");
-
-  //     // Get the balance of the specified address
-  //     const balance = await provider.getBalance(address);
-
-  //     // Convert the balance to Ether units
-  //     const bal = ethers.utils.formatEther(balance);
-
-  //     const balanceInEther = parseFloat(Number(bal).toFixed(3));
-
-  //     setBalance(balanceInEther);
-
-  // };
-
-  // useEffect(() => {
-  //   getBalance();
-  // }, []);
+  const signer = useEthersSigner();
 
   // Make Offer Function
   const makeOffer = async () => {
     setIsLoading(true);
-    try {
-      const provider = new ethers.providers.JsonRpcProvider(
-        process.env.NEXT_PUBLIC_RPC_URL
-      );
 
+    try {
       if (listingId) {
-        const signer = provider.getSigner();
         const contract = new ethers.Contract(
           ContractAddress,
           ContractAbi,
           signer
         );
         const id = Number(listingId);
+        console.log(signer);
+
         const valueToSend = ethers.utils.parseEther(offerAmount); // Example: sending 1 Ether
 
         // Call the contract method with value
-        const listingTx = await contract.makeOffer(listing.id, {
+        const listingTx = await contract.makeOffer(id, {
           value: valueToSend,
         });
         await listingTx.wait();
@@ -133,7 +102,6 @@ const MakeOfferModal: FunctionComponent<Props> = ({
           {listing ? (
             <div className="flex flex-col z-12 text-ibmPlex h-full w-full md:w-[70%]  mx-5 overflow-hidden justify-between">
               <div className="flex flex-col h-full">
-                {/* <div className="flex grow"></div> */}
                 {listing ? (
                   <div className=" overflow-hidden h-full flex justify-center items-center mb-3">
                     <Image

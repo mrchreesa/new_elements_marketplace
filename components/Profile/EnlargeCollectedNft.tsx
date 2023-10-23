@@ -16,6 +16,8 @@ const EnlargeCollectedNft: FunctionComponent<Props> = ({
   nftModalIndex,
 }) => {
   let listing = null;
+  console.log("collectedNfts", collectedNfts);
+
   if (collectedNfts) {
     listing = collectedNfts[nftModalIndex];
   }
