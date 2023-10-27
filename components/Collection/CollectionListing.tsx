@@ -100,9 +100,9 @@ const CollectionListing = ({ users, listing, listings }: any) => {
 
   return (
     <>
-      <div className="relative flex w-screen overflow-hidden  mt-24 max-w-[1600px] flex-col items-center content-center">
+      <div className="relative flex w-screen overflow-hidden   max-w-[1600px] flex-col items-center content-center">
         <div className="flex justify-center realtive w-full ">
-          <div className="flex flex-col h-full items-center justify-center mt-10">
+          <div className="flex flex-col h-full items-center justify-center mt-32">
             <div className="flex flex-col h-full items-center justify-center font-ibmPlex">
               {/* {loading ? (
                 <div className="mt-10">
