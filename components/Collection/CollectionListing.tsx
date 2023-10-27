@@ -1,13 +1,8 @@
-import { useRouter } from "next/router";
 import { useState, useEffect } from "react";
 import avatar from "../../assets/avatar.gif";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthedProfile } from "../../context/UserContext";
-
 import Image from "next/image";
-import { ethers } from "ethers";
-import { ContractAbi, ContractAddress } from "../utils/constants";
-import { fetchListings, fetCollection } from "../utils/utils";
 import SuccessfulBidModal from "../Listing/SuccessfulBidModal";
 import CollectionListingCard from "./CollectionListingCard";
 import CollPlaceBidModal from "./CollPlaceBidModal";
@@ -16,7 +11,6 @@ import NFTCard from "../NFTCard";
 import NFTCardSkeleton from "../LoadingSkeletons/NFTCardSkeleton";
 import Link from "next/link";
 import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
-import useSWR from "swr";
 
 type Props = {
   listing: any;
@@ -180,51 +174,6 @@ const CollectionListing = ({ users, listing, listings }: any) => {
                   </motion.div>
                 ))}{" "}
             </div>
-            {/* )} */}
-
-            {/*             
-            
-            </div>
-            <div className="flex w-full mt-6 mb-10 font-ibmPlex border-t pt-5 text-xs px-4 pd:mx-0">
-              {/* <div className="flex flex-1/2 flex-col w-1/2 items-start">
-                <button className="text-green mb-4">
-                  SHARE AND EARN 1% {">>"}
-                </button>
-                <button className="mb-4">VIEW ON ETHERSCAN {">"}</button>
-                <button className="mb-4">VIEW METADATA {">"}</button>
-                <button className="mb-4">VIEW ON IPFS {">"}</button>
-              </div> */}
-            {/* <div className="flex-1/2  w-1/2"> */}
-            {/* <p className="text-left mb-2">HISTORY</p> */}
-            {/* {bids.length && bids[0] != undefined ? (
-                  bids?.map((bid: any, key: number) => (
-                    <div
-                      className="grid grid-cols-8  justify-between text-left mt-2"
-                      key={key}
-                    >
-                      <div className="col-span-5 flex">
-                        
-                        <p className=" w-1/2 md:w-full">
-                          Bid by{" "}
-                          <span className="font-bold">
-                            @
-                            {bid?.sender?.slice(0, 6) +
-                              "..." +
-                              bid?.sender?.slice(36, 40)}
-                          </span>{" "}
-                        </p>
-                      </div>
-                      <div className="flex flex-grow col-span-2"></div>
-                      <p className="font-bold text-green">
-                        {bid?.amount} <br /> ETH
-                      </p>
-                    </div>
-                  ))
-                ) : (
-                  <p className="text-left mt-2">No bids yet</p>
-                )} */}
-            {/* </div> */}
-            {/* </div> */}
           </div>
         </div>
       </div>

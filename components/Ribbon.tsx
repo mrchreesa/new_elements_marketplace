@@ -29,7 +29,7 @@ const Ribbon = ({ authedProfile, handleSaveToProfile }: any) => {
         onMouseEnter={onMouseEnter}
         onMouseLeave={onMouseLeave}
       >
-        {isClicked ? (
+        {isClicked && authedProfile ? (
           <Image
             className=" h-5"
             src={ribbonSaved}
