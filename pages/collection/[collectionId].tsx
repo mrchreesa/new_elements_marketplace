@@ -15,6 +15,10 @@ const CollectionListingPage: NextPage = ({ users, listings, listing }: any) => {
 };
 
 export const getServerSideProps = async (context: any) => {
+  context.res.setHeader(
+    "Cache-Control",
+    "public, s-maxage=10, stale-while-revalidate=59"
+  );
   const fetchlisting = async () => {
     if (context.query.collectionId) {
       // setLoading(true);
@@ -39,6 +43,7 @@ export const getServerSideProps = async (context: any) => {
     }
     // setLoading(false);
   };
+
   let { listings, collection }: any = await fetchlisting();
   listings = JSON.parse(JSON.stringify(listings));
   collection = JSON.parse(JSON.stringify(collection));
