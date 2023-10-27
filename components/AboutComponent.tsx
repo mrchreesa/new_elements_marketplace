@@ -1,5 +1,5 @@
 import React, { useState } from "react";
-import nft from "../assets/nft-8.jpg";
+import nft from "../assets/nft.gif";
 import Image from "next/image";
 
 type Props = {};
@@ -60,10 +60,10 @@ const AboutComponent = (props: Props) => {
 
   return (
     <div className="flex w-full  xl:max-w-[1600px] px-5 md:px-2 flex-col md:flex-row-reverse items-center md:items-start    justify-center bg-black overflow-hidden">
-      <div className="md:basis-1/2 md:p-2 flex justify-center mt-28 md:items-start md:justify-end md:mx-4 w-full">
+      <div className="md:basis-1/2 md:p-2 flex justify-center mt-36 md:items-start md:justify-end md:mx-4 w-full">
         <Image src={nft} height={420} width={400} alt={""} />
       </div>
-      <div className="md:basis-1/2 mt-5 md:mt-0 md:p-2 font-ibmPlex bold text-left md:m-4  text-sm ">
+      <div className="md:basis-1/2 mt-5 md:mt-36 md:p-2 font-ibmPlex  bold text-left md:m-4  text-sm ">
         <p className="mb-4 "> Welcome to NEW ELEMENTS.</p>{" "}
         <p className="mb-4 ">
           The Web3 destination dedicated to fashion and beauty storytellers.
