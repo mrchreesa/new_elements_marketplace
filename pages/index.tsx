@@ -13,7 +13,7 @@ import { ContractAbi, ContractAddress } from "../components/utils/constants";
 import { fetchListings, fetCollection } from "../components/utils/utils";
 import useSWR from "swr";
 
-const Home: NextPage = ({ user, users, auth, listings }: any) => {
+const Home: NextPage = ({ user, users, auth }: any) => {
   const [isCollection, setIsCollection] = useState(false);
   const [loading, setLoading] = useState(false);
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
@@ -36,13 +36,13 @@ const Home: NextPage = ({ user, users, auth, listings }: any) => {
     return res;
   };
 
-  // let listings: any = [];
-  // const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting());
-  // // console.log("data", data);
+  let listings: any = [];
+  const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting());
+  // console.log("data", data);
 
-  // if (data) {
-  //   listings = data;
-  // }
+  if (data) {
+    listings = data;
+  }
   useEffect(() => {
     if (user) {
       setAuthedProfile(user);
@@ -61,7 +61,7 @@ const Home: NextPage = ({ user, users, auth, listings }: any) => {
           <div className="mb-5 w-full mt-32 px-1 lg:px-0">
             {
               // If the listings are loading, show a loading skeleton
-              !listings.length ? (
+              isLoading && !listings.length ? (
                 <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4 lg:mx-10 mb-10">
                   <NFTCardSkeleton />
 
@@ -142,30 +142,7 @@ export const getServerSideProps = async ({ req, res }: any) => {
   const jsonUsers = await Users.find({});
   let users = JSON.parse(JSON.stringify(jsonUsers));
 
-  res.setHeader(
-    "Cache-Control",
-    "public, s-maxage=10, stale-while-revalidate=59"
-  );
-
-  const fetchlisting = async () => {
-    const provider = new ethers.providers.JsonRpcProvider(
-      process.env.NEXT_PUBLIC_RPC_URL
-    );
-    const contract = new ethers.Contract(
-      ContractAddress,
-      ContractAbi,
-      provider
-    );
-    const listingTx = await contract.fetchListingItem();
-    const lisitngs = await fetchListings({ contract, listingTx });
-
-    return lisitngs;
-  };
-  await fetchlisting();
-  let listings: any = await fetchlisting();
-  listings = JSON.parse(JSON.stringify(listings));
-
-  return { props: { user, users, listings } };
+  return { props: { user, users } };
 };
 
 export default Home;
