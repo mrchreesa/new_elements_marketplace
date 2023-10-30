@@ -2,9 +2,7 @@ import type { NextPage } from "next";
 import { useEffect, useState } from "react";
 import { motion, AnimatePresence } from "framer-motion";
 import { useAuthedProfile } from "../context/UserContext";
-import NFTCard from "../components/NFTCard";
 import NFTCardSkeleton from "../components/LoadingSkeletons/NFTCardSkeleton";
-import CollectionMarketPage from "../components/Collection/CollectionMarketPage";
 import { getCookie } from "cookies-next";
 import Users from "../model/users";
 import connectDB from "../lib/connectDB";
@@ -12,6 +10,13 @@ import { ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "../components/utils/constants";
 import { fetchListings, fetCollection } from "../components/utils/utils";
 import useSWR from "swr";
+
+// const CollectionMarketPage = dynamic(
+//   () => import("../components/Collection/CollectionMarketPage")
+// );
+// const NFTCard = dynamic(() => import("../components/NFTCard"));
+import CollectionMarketPage from "../components/Collection/CollectionMarketPage";
+import NFTCard from "../components/NFTCard";
 
 const Home: NextPage = ({ user, users, auth }: any) => {
   const [isCollection, setIsCollection] = useState(false);
@@ -38,7 +43,8 @@ const Home: NextPage = ({ user, users, auth }: any) => {
 
   let listings: any = [];
   const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting());
-  // console.log("data", data);
+  console.log("data", data);
+  console.log(isLoading);
 
   if (data) {
     listings = data;

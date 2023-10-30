@@ -1,6 +1,6 @@
 import React from "react";
 import Image from "next/image";
-import avatar from "../../assets/avatar.gif";
+import avatar from "../../assets/nft.gif";
 import star from "../../assets/star.png";
 import AvatarEditor from "react-avatar-editor";
 

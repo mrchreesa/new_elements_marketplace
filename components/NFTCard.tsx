@@ -2,8 +2,6 @@ import { useState, FunctionComponent, useEffect } from "react";
 import Router from "next/router";
 import Image from "next/image";
 import Countdown from "react-countdown";
-
-import send from "../public/send.png";
 import axios from "axios";
 import { useAuthedProfile } from "../context/UserContext";
 import {
@@ -12,14 +10,20 @@ import {
   artistProfilePic,
   owner,
 } from "../lib/functions";
-import ShareLinkModal from "./ShareLinkModal";
 import { useRouter } from "next/router";
-import Ribbon from "./Ribbon";
-import Send from "./Send";
+import dynamic from "next/dynamic";
 import Link from "next/link";
 import { ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "./utils/constants";
 import { fetCollection } from "./utils/utils";
+
+const Ribbon = dynamic(() => import("./Ribbon"));
+const Send = dynamic(() => import("./Send"));
+const ShareLinkModal = dynamic(() => import("./ShareLinkModal"));
+
+// import ShareLinkModal from "./ShareLinkModal";
+// import Ribbon from "./Ribbon";
+// import Send from "./Send";
 
 type Props = {
   listing: object | any;

@@ -15,6 +15,7 @@ import { configureChains, createConfig, WagmiConfig } from "wagmi";
 import { mainnet, sepolia } from "wagmi/chains";
 import { alchemyProvider } from "wagmi/providers/alchemy";
 import { publicProvider } from "wagmi/providers/public";
+import { Contract } from "ethers";
 
 const alchemyKey = process.env.NEXT_PUBLIC_ALCHEMY_KEY;
 

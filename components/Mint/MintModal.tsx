@@ -2,6 +2,7 @@ import React, { useState, useEffect, FunctionComponent } from "react";
 import Modal from "react-modal";
 import { useRouter } from "next/router";
 import Link from "next/link";
+import { mutate } from "swr";
 
 type Props = {
   modalOpen: boolean;
@@ -30,6 +31,9 @@ const MintModal: FunctionComponent<Props> = ({ modalOpen, isModalClosed }) => {
       transform: "translate(-50%, -50%)",
     },
   };
+  const revalidateData = () => {
+    mutate("fetcher");
+  };
   return (
     <div>
       {" "}
@@ -49,6 +53,7 @@ const MintModal: FunctionComponent<Props> = ({ modalOpen, isModalClosed }) => {
                 </div>
               </div>
               <Link
+                onClick={revalidateData}
                 href="/profile"
                 className="bg-green flex justify-center whitespace-nowrap text-black  font-xCompressed  w-full uppercase tracking-[6px] mt-3   hover:bg-opacity-80 py-[1.2vh] px-[2vw] fontCompress  z-2 text-2xl  transition duration-200 ease-in-out"
               >

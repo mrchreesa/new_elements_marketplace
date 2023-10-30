@@ -1,28 +1,35 @@
 import Image, { StaticImageData } from "next/image";
-import React, { useEffect, useState } from "react";
+import React, { use, useEffect, useState } from "react";
 import banner from "../../assets/banner.png";
 import profile from "../../assets/profile-2.png";
-import { useAuthedProfile } from "../../context/UserContext";
 import Link from "next/link";
 import axios from "axios";
 import Username from "./Username";
 import Bio from "./Bio";
-import Router from "next/router";
 import router from "next/router";
-import AdminLoginButton from "./AdminLoginButton";
 import Banner from "./Banner";
-import AcceptOfferModal from "./AcceptOfferModal";
-import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
 import { ethers } from "ethers";
 import { ContractAbi, ContractAddress } from "../utils/constants";
 import ipfs from "../utils/Ipfs";
 import SavedNfts from "./SavedNfts";
 import ProfileImage from "./ProfileImage";
 import NFTCardSkeleton from "../LoadingSkeletons/NFTCardSkeleton";
-import { list } from "@material-tailwind/react";
 import Countdown from "react-countdown";
-import EnlargeCollectedNft from "./EnlargeCollectedNft";
-import AddEmailModal from "../Listing/AddEmailModal";
+import dynamic from "next/dynamic";
+
+const AdminLoginButton = dynamic(() => import("./AdminLoginButton"));
+const AcceptOfferModal = dynamic(() => import("./AcceptOfferModal"));
+const ButtonSpinner = dynamic(
+  () => import("../LoadingSkeletons/ButtonSpinner")
+);
+const EnlargeCollectedNft = dynamic(() => import("./EnlargeCollectedNft"));
+const AddEmailModal = dynamic(() => import("../Listing/AddEmailModal"));
+
+// import AdminLoginButton from "./AdminLoginButton";
+// import AcceptOfferModal from "./AcceptOfferModal";
+// import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
+// import EnlargeCollectedNft from "./EnlargeCollectedNft";
+// import AddEmailModal from "../Listing/AddEmailModal";
 
 type Props = {
   cropperOpen: boolean;
@@ -53,13 +60,30 @@ const ProfileComponent = ({
   // const { setAuthedProfile } = useAuthedProfile();
 
   let { isArtist } = authedProfile;
+  // let collectedNfts: any = null;
+  // let listedNfts: any = null;
+  // let soldNfts: any = null;
+  // let offers: any = null;
+  // let listings: any = null;
+
+  // if (!isLoading) {
+  //   collectedNfts = data?.collectedNfts;
+  //   listedNfts = data?.listedNfts;
+  //   soldNfts = data?.soldNfts;
+  //   offers = data?.offers;
+  //   listings = data?.listings;
+  // }
+  console.log(isLoading);
+
+  console.log("data", data);
+  console.log("collectedNfts", collectedNfts);
 
   // Rehydrate data from server
   const refreshData = () => {
     router.replace(router.asPath);
     setLoading(false);
   };
-  console.log(collectedNfts);
+  // console.log(collectedNfts);
 
   //check if user has pending nfts
   useEffect(() => {
@@ -67,7 +91,8 @@ const ProfileComponent = ({
     listings?.forEach((nft: any) => {
       if (
         nft.highestBidder == authedProfile.address &&
-        collectedNfts.map((collectedNft: any) => collectedNft.id !== nft.id)
+        collectedNfts.map((collectedNft: any) => collectedNft.id !== nft.id) &&
+        nft.timeElapse
       ) {
         pendingNfts.push(nft);
         setPendingNfts(pendingNfts);
@@ -106,9 +131,9 @@ const ProfileComponent = ({
           nft: objectsNotInBoth[0],
           address: authedProfile.address,
         };
-        console.log(data.nft);
-        console.log(listings);
-        console.log(savedNfts);
+        // console.log(data.nft);
+        // console.log(listings);
+        // console.log(savedNfts);
 
         axios
           .put("/api/saveNft", data)
@@ -121,6 +146,7 @@ const ProfileComponent = ({
       }
     }
   }, [isLoading]);
+
   const deleteSavedNft = (nft: any) => {
     const data = {
       nft: nft,
@@ -132,7 +158,6 @@ const ProfileComponent = ({
       // refreshData();
     });
   };
-  console.log(pendingNfts);
 
   const [picture, setPicture] = useState<Props>({
     cropperOpen: false,
@@ -214,27 +239,22 @@ const ProfileComponent = ({
   const accept = async (nftId: number, highestBidder: any) => {
     setLoadingOffer(true);
     try {
-      if (typeof window !== "undefined") {
-        const provider = new ethers.providers.Web3Provider(
-          (window as CustomWindow).ethereum as any
-        );
-        await (window as CustomWindow)?.ethereum?.request({
-          method: "eth_requestAccounts",
-        });
-        const signer = provider.getSigner();
-        const contract = new ethers.Contract(
-          ContractAddress,
-          ContractAbi,
-          signer
-        );
-        // Call the contract method with value
-        const listingTx = await contract.acceptOffer(nftId, highestBidder);
-        console.log("listingTx", listingTx);
-        await listingTx.wait();
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.NEXT_PUBLIC_RPC_URL
+      );
 
-        setLoadingOffer(false);
-        isModalClosed();
-      }
+      const contract = new ethers.Contract(
+        ContractAddress,
+        ContractAbi,
+        provider
+      );
+      // Call the contract method with value
+      const listingTx = await contract.acceptOffer(nftId, highestBidder);
+      console.log("listingTx", listingTx);
+      await listingTx.wait();
+
+      setLoadingOffer(false);
+      isModalClosed();
     } catch (error) {
       console.error(error);
       alert(error);
@@ -293,7 +313,6 @@ const ProfileComponent = ({
   const isAddEmailModalClosed = () => {
     setAddEmailModalOpen(false);
   };
-  console.log(authedProfile);
 
   return (
     <>
@@ -341,7 +360,7 @@ const ProfileComponent = ({
             <AdminLoginButton authedProfile={authedProfile} />
           ) : null}
           {isArtist ? ( // if artist
-            isLoading || !listedNfts ? (
+            isLoading || !data ? (
               <>
                 <div className="flex  flex-col-reverse md:flex-col">
                   <div className="flex md:mt-5 h-full flex-wrap">
@@ -443,7 +462,7 @@ const ProfileComponent = ({
               </div>
             )
           ) : // if not artist
-          isLoading || !listedNfts ? (
+          isLoading || !data ? (
             <div className="flex  flex-col-reverse md:flex-col">
               <div className="flex md:mt-5 h-full flex-wrap">
                 <ButtonSpinner />
@@ -484,7 +503,7 @@ const ProfileComponent = ({
               </div>
             </div>
           )}
-          {!listings ? (
+          {isLoading || !data ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:mx-5 mb-10">
               <NFTCardSkeleton />
 
@@ -523,7 +542,9 @@ const ProfileComponent = ({
                                 <div className=" flex font-bold text-green font-ibmPlex justify-center uppercase">
                                   {nft.timeElapse ? (
                                     <>
-                                      <p>Auction ended claim your eth</p>
+                                      <p>
+                                        Auction ended <br /> claim your eth
+                                      </p>
                                     </>
                                   ) : (
                                     <>
@@ -540,7 +561,7 @@ const ProfileComponent = ({
                                     </>
                                   )}
                                 </div>{" "}
-                                <div className=" flex w-full"> </div>
+                                {/* <div className=" flex w-full"> </div> */}
                               </div>
                             </div>
                           </div>

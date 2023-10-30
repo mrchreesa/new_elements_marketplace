@@ -32,7 +32,6 @@ export const AuthedProfileProvider = ({ children }: Props) => {
     axios
       .post("/api/signIn", userData)
       .then((res) => {
-        console.log(res);
         setAuthedProfile(res.data.user);
       })
       .catch((err) => {
@@ -58,7 +57,6 @@ export const AuthedProfileProvider = ({ children }: Props) => {
       getAdrress();
     }
   }, [walletClient]);
-  console.log(address);
 
   return (
     <AuthedProfileContext.Provider value={value}>

@@ -2,20 +2,21 @@ import Users from "../../model/users";
 import connectDB from "../../lib/connectDB";
 import type { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
-import banner1 from "../../assets/Banners/banner1.jpeg";
-import banner2 from "../../assets/Banners/banner2.jpg";
-import banner3 from "../../assets/Banners/banner3.jpg";
-import banner4 from "../../assets/Banners/banner4.jpeg";
-import banner5 from "../../assets/Banners/banner5.jpeg";
+import banner from "../../assets/nft.gif";
+// import banner1 from "../../assets/Banners/banner1.jpeg";
+// import banner2 from "../../assets/Banners/banner2.jpg";
+// import banner3 from "../../assets/Banners/banner3.jpg";
+// import banner4 from "../../assets/Banners/banner4.jpeg";
+// import banner5 from "../../assets/Banners/banner5.jpeg";
 
 const handler = async (req: NextApiRequest, res: any) => {
   await connectDB();
   console.log("Connected to Mongo");
 
   //Banners
-  const banners = [banner1, banner2, banner3, banner4, banner5];
-  const random = Math.floor(Math.random() * banners.length);
-  const randomBanner = banners[random];
+  // const banners = [banner1, banner2, banner3, banner4, banner5];
+  // const random = Math.floor(Math.random() * banners.length);
+  // const randomBanner = banners[random];
 
   //Sign In
   if (req.method === "POST") {
@@ -27,7 +28,7 @@ const handler = async (req: NextApiRequest, res: any) => {
       const newUser = new Users({
         address,
         profilePicture: "",
-        bannerPicture: randomBanner.src,
+        bannerPicture: banner.src,
         bio: "",
         username: "",
         collections: [],

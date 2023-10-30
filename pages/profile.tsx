@@ -1,26 +1,26 @@
-import React from "react";
+import React, { useEffect } from "react";
 import ProfileComponent from "../components/Profile/ProfileComponent";
 import { getCookie } from "cookies-next";
 import connectDB from "../lib/connectDB";
 import Users from "../model/users";
-import { useAuthedProfile } from "../context/UserContext";
 import { ContractAbi, ContractAddress } from "../components/utils/constants";
 import { ethers } from "ethers";
 import { fetchListings } from "../components/utils/utils";
 import useSWR from "swr";
-import { set } from "mongoose";
 
-const fetchAllNfts = async (userAddress: any) => {
-  if (typeof window !== "undefined") {
-    const provider = new ethers.providers.Web3Provider(
-      (window as CustomWindow).ethereum as any
-    );
-    await (window as CustomWindow)?.ethereum?.request({
-      method: "eth_requestAccounts",
-    });
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(ContractAddress, ContractAbi, signer);
+type Props = {
+  user: any;
+  users: any;
+  collectedNfts: any[];
+  listedNfts: any[];
+  soldNfts: any[];
+  offers: any;
+  listings: any;
+  contract: any;
+};
 
+const Profile = ({ user, users }: Props) => {
+  const fetchAllNfts = async (userAddress: any, contract: any) => {
     try {
       const listingTx = await contract.fetchListingItem();
       const listings = await fetchListings({ contract, listingTx });
@@ -30,24 +30,23 @@ const fetchAllNfts = async (userAddress: any) => {
       console.error("Error fetching NFT data:", error);
       return null;
     }
-  }
-};
-const nftFetch = async (userAddress: any) => {
-  if (typeof window !== "undefined") {
-    const provider = new ethers.providers.Web3Provider(
-      (window as CustomWindow).ethereum as any
+  };
+  const nftFetch = async (userAddress: any) => {
+    const provider = new ethers.providers.JsonRpcProvider(
+      process.env.NEXT_PUBLIC_RPC_URL
     );
-    await (window as CustomWindow)?.ethereum?.request({
-      method: "eth_requestAccounts",
-    });
-    const signer = provider.getSigner();
-    const contract = new ethers.Contract(ContractAddress, ContractAbi, signer);
+
+    const contract = new ethers.Contract(
+      ContractAddress,
+      ContractAbi,
+      provider
+    );
 
     try {
       const listingTx = await contract.filterNftByAddress(userAddress);
       const res = await fetchListings({ contract, listingTx });
 
-      const listings = await fetchAllNfts(userAddress);
+      const listings = await fetchAllNfts(userAddress, contract);
 
       const collectedNfts = [] as any;
       const listedNfts = [] as any;
@@ -120,35 +119,23 @@ const nftFetch = async (userAddress: any) => {
       console.error("Error fetching NFT data:", error);
       return null;
     }
-  }
-};
-
-type Props = {
-  user: any;
-  users: any;
-  collectedNfts: any[];
-  listedNfts: any[];
-  soldNfts: any[];
-  offers: any;
-  listings: any;
-};
-
-const Profile = ({ user, users }: Props) => {
-  const { setAuthedProfile, authedProfile } = useAuthedProfile();
-
+  };
   const { data, error, isLoading } = useSWR("fetcher", () =>
     nftFetch(user.address)
   );
 
+  console.log(data);
+  console.log(isLoading);
+
   return (
     <ProfileComponent
       user={user}
+      users={users}
       data={data}
       collectedNfts={data?.collectedNfts}
       listedNfts={data?.listedNfts}
       soldNfts={data?.soldNfts}
       offers={data?.offers}
-      users={users}
       listings={data?.listings}
       isLoading={isLoading}
     />
@@ -174,6 +161,7 @@ const getUserData = async ({ req, res }: any) => {
 
 export const getServerSideProps = async ({ req, res }: any) => {
   const { user, users } = await getUserData({ req, res });
+
   if (!user) {
     return {
       redirect: {
