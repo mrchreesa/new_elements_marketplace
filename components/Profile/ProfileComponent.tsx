@@ -313,6 +313,7 @@ const ProfileComponent = ({
   const isAddEmailModalClosed = () => {
     setAddEmailModalOpen(false);
   };
+  console.log(listedNfts);
 
   return (
     <>
@@ -360,7 +361,7 @@ const ProfileComponent = ({
             <AdminLoginButton authedProfile={authedProfile} />
           ) : null}
           {isArtist ? ( // if artist
-            isLoading || !data ? (
+            isLoading || !listedNfts ? (
               <>
                 <div className="flex  flex-col-reverse md:flex-col">
                   <div className="flex md:mt-5 h-full flex-wrap">
@@ -462,7 +463,7 @@ const ProfileComponent = ({
               </div>
             )
           ) : // if not artist
-          isLoading || !data ? (
+          isLoading || !listedNfts ? (
             <div className="flex  flex-col-reverse md:flex-col">
               <div className="flex md:mt-5 h-full flex-wrap">
                 <ButtonSpinner />
@@ -503,7 +504,7 @@ const ProfileComponent = ({
               </div>
             </div>
           )}
-          {isLoading || !data ? (
+          {isLoading || !listedNfts ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:mx-5 mb-10">
               <NFTCardSkeleton />
 

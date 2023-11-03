@@ -53,7 +53,8 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     if (user) {
       setAuthedProfile(user);
     }
-  }, []);
+  }, [user]);
+  console.log(authedProfile);
 
   return (
     <>
@@ -77,7 +78,7 @@ const Home: NextPage = ({ user, users, auth }: any) => {
                 </div>
               ) : (
                 // Otherwise, show the listings
-                listings.length && (
+                listings.length > 0 && (
                   <>
                     <div className="fixed flex font-ibmPlex text-xs mx-4 lg:mx-8 top-12 sm:mt-0 pb-3 pt-10 w-full bg-black z-10">
                       <button

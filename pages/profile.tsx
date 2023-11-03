@@ -120,8 +120,10 @@ const Profile = ({ user, users }: Props) => {
       return null;
     }
   };
-  const { data, error, isLoading } = useSWR("fetcher", () =>
-    nftFetch(user.address)
+  const { data, error, isLoading } = useSWR(
+    "fetcher",
+    () => nftFetch(user.address),
+    { refreshInterval: 5000 }
   );
 
   console.log(data);

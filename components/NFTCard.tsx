@@ -166,7 +166,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                 >
                   <p> BY @{artistNameOrAddress}</p>
                   <Image
-                    className="ml-1 md:ml-3 -mt-1 h-6 cursor-pointer  object-cover rounded-full"
+                    className="ml-1 md:ml-3 -mt-1 h-6 w-7 cursor-pointer  object-cover rounded-full"
                     src={artistProfilePic}
                     height={0}
                     width={25}
@@ -202,7 +202,7 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
                       className=" flex text-left justify-end"
                     >
                       <Image
-                        className="ml-1 md:ml-3 -mt-1 h-6 cursor-pointer  object-cover rounded-full"
+                        className="ml-1 md:ml-3 -mt-1 h-6 w-7 cursor-pointer  object-cover rounded-full"
                         src={collection?.image}
                         height={0}
                         width={25}

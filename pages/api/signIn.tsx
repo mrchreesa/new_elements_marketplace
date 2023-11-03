@@ -3,11 +3,6 @@ import connectDB from "../../lib/connectDB";
 import type { NextApiRequest, NextApiResponse } from "next";
 import cookie from "cookie";
 import banner from "../../assets/nft.gif";
-// import banner1 from "../../assets/Banners/banner1.jpeg";
-// import banner2 from "../../assets/Banners/banner2.jpg";
-// import banner3 from "../../assets/Banners/banner3.jpg";
-// import banner4 from "../../assets/Banners/banner4.jpeg";
-// import banner5 from "../../assets/Banners/banner5.jpeg";
 
 const handler = async (req: NextApiRequest, res: any) => {
   await connectDB();
