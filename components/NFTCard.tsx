@@ -33,6 +33,7 @@ type Props = {
 const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   const [modalOpen, setModalOpen] = useState<boolean>(false);
   const [collection, setCollection] = useState<any>(null);
+  const [isSaved, setIsSaved] = useState<boolean>(false);
   const { collectionId } = listing;
 
   getArtist(users, listing);
@@ -63,7 +64,15 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
   }, []);
 
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
-  const router = useRouter();
+
+  // useEffect(() => {
+  //   if (authedProfile) {
+  //     if (authedProfile?.savedNfts) {
+  //       authedProfile?.savedNfts?.find((nft: any) => nft.nft.id === listing.id);
+  //       setIsSaved(true);
+  //     }
+  //   }
+  // }, [authedProfile]);
 
   const handleSaveToProfile = () => {
     setLoading(true);
@@ -215,7 +224,10 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
               <div className=" flex mt-3 -z-0">
                 <Ribbon
                   authedProfile={authedProfile}
+                  setAuthedProfile={setAuthedProfile}
                   handleSaveToProfile={handleSaveToProfile}
+                  isSaved={isSaved}
+                  listing={listing}
                 />
 
                 <div className="flex grow"></div>

@@ -147,18 +147,6 @@ const ProfileComponent = ({
     }
   }, [isLoading]);
 
-  const deleteSavedNft = (nft: any) => {
-    const data = {
-      nft: nft,
-      address: authedProfile.address,
-    };
-    axios.put("/api/saveNft", data).then((res) => {
-      console.log(res.data);
-      setAuthedProfile(res.data);
-      // refreshData();
-    });
-  };
-
   const [picture, setPicture] = useState<Props>({
     cropperOpen: false,
     img: null,
@@ -749,11 +737,7 @@ const ProfileComponent = ({
                         key={nft.id}
                         className="flex  flex-col h-full items-start w-max "
                       >
-                        <SavedNfts
-                          nft={nft}
-                          users={users}
-                          deleteSavedNft={deleteSavedNft}
-                        />
+                        <SavedNfts nft={nft} users={users} />
                       </div>
                     ))
                   ) : (

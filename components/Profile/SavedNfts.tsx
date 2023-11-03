@@ -8,11 +8,26 @@ import {
   owner,
 } from "../../lib/functions";
 import Link from "next/link";
+import axios from "axios";
+import { useAuthedProfile } from "../../context/UserContext";
 
 type Props = {};
 
-const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
+const SavedNfts = ({ nft, users }: any) => {
+  const { authedProfile, setAuthedProfile } = useAuthedProfile();
   getArtist(users, nft);
+
+  const deleteSavedNft = (nft: any) => {
+    const data = {
+      nft: nft,
+      address: authedProfile.address,
+    };
+    axios.put("/api/saveNft", data).then((res) => {
+      console.log(res.data);
+      setAuthedProfile(res.data);
+      // refreshData();
+    });
+  };
   return (
     <div className="flex  flex-col h-full items-start w-min text-xs uppercase ">
       <div className="cursor-pointer relative h-full">
@@ -50,7 +65,6 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
         <div className="text-left col-span-2">
           <p>{nft?.title}</p>
         </div>
-        {/* <div className="hidden sm:flex grow"></div> */}
         <div className=" flex  justify-end -mr-4">
           {" "}
           <p className=" ">
@@ -72,15 +86,7 @@ const SavedNfts = ({ nft, users, deleteSavedNft }: any) => {
           className="mr-4 text-left flex cursor-pointer  mt-3 col-span-2"
         >
           <p> BY @{artistNameOrAddress}</p>
-          {/* <Image
-            className=" -mt-1 h-6 w-8 cursor-pointer  object-cover rounded-full"
-            src={artistProfilePic}
-            height={0}
-            width={30}
-            alt={""}
-          /> */}
         </div>
-        {/* <div className="hidden sm:flex grow"></div> */}
         <div className=" flex text-left justify-end -mr-4">
           {" "}
           <p className=" ">
