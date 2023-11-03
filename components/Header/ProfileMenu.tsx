@@ -88,7 +88,7 @@ export default function ProfileMenu() {
                       <button
                         onClick={openConnectModal}
                         type="button"
-                        className="text-center whitespace-nowrap w-content z-0 font-ibmPlex text-sm md:text-xs text-black   bg-green  hover:bg-opacity-80 p-2"
+                        className="text-center whitespace-nowrap  w-content z-0 font-ibmPlex text-sm md:text-dynamicSm text-black  bg-green  hover:bg-opacity-80 p-1 lg:p-2"
                       >
                         Connect Wallet
                       </button>

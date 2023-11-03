@@ -48,7 +48,7 @@ const carbon = localFont({
   variable: "--font-carbon",
 });
 const compressed = localFont({
-  src: "../public/CarbonGravity-Compressed.otf",
+  src: "../public/CarbonGravity-Compressed.woff2",
   variable: "--font-compressed",
 });
 const condensed = localFont({

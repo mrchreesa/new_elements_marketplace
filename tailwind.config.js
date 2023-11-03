@@ -64,6 +64,7 @@ module.exports = {
         mobileBg: "url('/mobileBg.png')",
       },
       fontSize: {
+        dynamicSm: "clamp(0.5rem, 1.2vw, 0.75rem)",
         dynamic: "clamp(1rem, 2.5vw, 1.75rem)",
         dynamicXl: "clamp(2rem, 2.5vw, 2.25rem)",
       },
