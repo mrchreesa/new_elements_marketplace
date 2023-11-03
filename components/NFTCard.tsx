@@ -65,15 +65,6 @@ const NFTCard: FunctionComponent<Props> = ({ listing, setLoading, users }) => {
 
   const { authedProfile, setAuthedProfile } = useAuthedProfile();
 
-  // useEffect(() => {
-  //   if (authedProfile) {
-  //     if (authedProfile?.savedNfts) {
-  //       authedProfile?.savedNfts?.find((nft: any) => nft.nft.id === listing.id);
-  //       setIsSaved(true);
-  //     }
-  //   }
-  // }, [authedProfile]);
-
   const handleSaveToProfile = () => {
     setLoading(true);
     const data = {

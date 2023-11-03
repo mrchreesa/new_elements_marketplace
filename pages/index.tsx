@@ -38,34 +38,32 @@ const Home: NextPage = ({ user, users, auth }: any) => {
     return res;
   };
 
-  let listings: any = [];
-  const { data, error, isLoading } = useSWR("fetcher", () => fetchlisting(), {
-    refreshInterval: 5000,
-  });
-  console.log("data", data);
-  console.log(isLoading);
+  // let listings: any = [];
+  const { data, error, isLoading } = useSWR(
+    ["fetchListing"],
+    () => fetchlisting(),
+    {
+      fallbackData: [],
+      refreshInterval: 10000,
+    }
+  );
 
-  if (data) {
-    listings = data;
-  }
   useEffect(() => {
-    console.log("here");
-
     if (user) {
       setAuthedProfile(user);
     }
   }, [user]);
-  console.log(authedProfile);
 
   return (
     <LandingComponent
       loading={loading}
       isLoading={isLoading}
-      listings={listings}
+      // listings={listings}
       setIsCollection={setIsCollection}
       isCollection={isCollection}
       users={users}
       setLoading={setLoading}
+      data={data}
     />
   );
 };
