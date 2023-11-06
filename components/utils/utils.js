@@ -45,6 +45,7 @@ export const submitToIpfs = async (collectionData) => {
 
 export const fetchListings = async (data) => {
   const { contract, listingTx } = data;
+  // console.log(listingTx + " listingsTX");
   let mainNfts = [];
   if (listingTx) {
     for await (const response of listingTx) {
@@ -67,14 +68,9 @@ export const fetchListings = async (data) => {
         const seconds = Math.floor((difference % (1000 * 60)) / 1000);
         const sumUp = hours * 3600 + minutes * 60 + seconds;
         time = sumUp > 0 ? sumUp : "";
-        // console.log(time);
-        //
-        // `${hours > 1 ? hours + "H," : ""}${
-        //   minutes > 1 ? minutes + "M," : ""
-        // }${seconds > 1 ? seconds : ""}`;
       }
       const id = Number(response.tokenId);
-      // console.log(id);
+      console.log(id);
       const tokenUrl = await contract.tokenURI(id);
       let Bid = await contract.gethighestBid(response.tokenId);
       let highestBidder = await contract.gethighestBidder(response.tokenId);
@@ -103,6 +99,61 @@ export const fetchListings = async (data) => {
   }
   return mainNfts;
 };
+
+export async function* fetchListingsBatch(data) {
+  const { contract, listingTx } = data;
+
+  const processListing = async (response) => {
+    try {
+      const id = Number(response.tokenId);
+      const tokenUrl = await contract.tokenURI(id);
+      const { image, title, description } = await readIPFSContent(tokenUrl);
+
+      let Bid = await contract.gethighestBid(response.tokenId);
+      let highestBidder = await contract.gethighestBidder(response.tokenId);
+      Bid = Number(Bid) / 1e18;
+
+      let timeElapse = false;
+      let time = Number(response.endTime);
+      if (time !== 0) {
+        const currentTime = Math.floor(Date.now() / 1000);
+        timeElapse = currentTime > time;
+        time = time - currentTime;
+      }
+
+      return {
+        id,
+        title,
+        image,
+        price: Number(response.price) / 1e18,
+        Bid,
+        highestBidder,
+        isPrimary: response.isPrimary,
+        collectionId: Number(response.collectionId),
+        seller: response.seller,
+        owner: response.owner,
+        details: description,
+        sold: response.sold,
+        timeElapse,
+        endTime: time,
+      };
+    } catch (error) {
+      console.error("Error processing listing:", error);
+      return null;
+    }
+  };
+
+  const processBatch = async (batch) => {
+    return Promise.all(batch.map(processListing));
+  };
+
+  for (let i = 0; i < listingTx.length; i += 3) {
+    const batch = listingTx.slice(i, i + 3);
+    const processedBatch = await processBatch(batch);
+    yield processedBatch.filter((nft) => nft !== null); // Yield only successfully processed listings
+  }
+}
+
 export const fetchcontractListings = async (collectionTx) => {
   let collections = [];
   if (collectionTx) {

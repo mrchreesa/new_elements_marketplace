@@ -1,11 +1,11 @@
-import React, { useEffect } from "react";
+import React, { useEffect, useState } from "react";
 import ProfileComponent from "../components/Profile/ProfileComponent";
 import { getCookie } from "cookies-next";
 import connectDB from "../lib/connectDB";
 import Users from "../model/users";
 import { ContractAbi, ContractAddress } from "../components/utils/constants";
 import { ethers } from "ethers";
-import { fetchListings } from "../components/utils/utils";
+import { fetchListingsBatch, fetchListings } from "../components/utils/utils";
 import useSWR from "swr";
 
 type Props = {
@@ -20,17 +20,39 @@ type Props = {
 };
 
 const Profile = ({ user, users }: Props) => {
-  const fetchAllNfts = async (userAddress: any, contract: any) => {
-    try {
-      const listingTx = await contract.fetchListingItem();
-      const listings = await fetchListings({ contract, listingTx });
+  const useFetchListingsSWR = () => {
+    const [listings, setListings] = useState<any>([]);
+    const [loaded, setLoaded] = useState(false);
 
-      return listings;
-    } catch (error) {
-      console.error("Error fetching NFT data:", error);
-      return null;
-    }
+    // Custom fetcher that works with the async generator
+    const fetcher = async () => {
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.NEXT_PUBLIC_RPC_URL
+      );
+      const contract = new ethers.Contract(
+        ContractAddress,
+        ContractAbi,
+        provider
+      );
+      const listingTx = await contract.fetchListingItem();
+      console.log("listingTx", listingTx);
+
+      for await (const batch of fetchListingsBatch({ contract, listingTx })) {
+        setListings((current: any) => [...current, ...batch]);
+      }
+      setLoaded(true); // Indicate that the loading process has completed
+    };
+
+    // useSWR hook to manage the fetching process
+    const { error } = useSWR(loaded ? null : "fetchListingsProfile", fetcher, {
+      revalidateOnFocus: false,
+    });
+
+    return { listings, error, isLoading: !loaded && !error };
   };
+  const { listings }: any = useFetchListingsSWR();
+  console.log("listings", listings);
+
   const nftFetch = async (userAddress: any) => {
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.NEXT_PUBLIC_RPC_URL
@@ -46,7 +68,7 @@ const Profile = ({ user, users }: Props) => {
       const listingTx = await contract.filterNftByAddress(userAddress);
       const res = await fetchListings({ contract, listingTx });
 
-      const listings = await fetchAllNfts(userAddress, contract);
+      // const listings = await fetchAllNfts(userAddress, contract);
 
       const collectedNfts = [] as any;
       const listedNfts = [] as any;
@@ -110,7 +132,6 @@ const Profile = ({ user, users }: Props) => {
           listedNfts,
           soldNfts,
           offers,
-          listings,
         };
       } else {
         throw new Error("Failed to fetch NFT data");
@@ -128,7 +149,6 @@ const Profile = ({ user, users }: Props) => {
 
   console.log(data);
   console.log(isLoading);
-
   return (
     <ProfileComponent
       user={user}
@@ -138,7 +158,7 @@ const Profile = ({ user, users }: Props) => {
       listedNfts={data?.listedNfts}
       soldNfts={data?.soldNfts}
       offers={data?.offers}
-      listings={data?.listings}
+      listings={listings}
       isLoading={isLoading}
     />
   );

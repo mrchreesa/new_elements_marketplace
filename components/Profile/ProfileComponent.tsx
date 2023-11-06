@@ -88,17 +88,21 @@ const ProfileComponent = ({
   //check if user has pending nfts
   useEffect(() => {
     let pendingNfts: any[] = [];
-    listings?.forEach((nft: any) => {
-      if (
-        nft.highestBidder == authedProfile.address &&
-        collectedNfts.map((collectedNft: any) => collectedNft.id !== nft.id) &&
-        nft.timeElapse
-      ) {
-        pendingNfts.push(nft);
-        setPendingNfts(pendingNfts);
-      }
-    });
-  }, [listings]);
+    if (listings && collectedNfts) {
+      listings?.forEach((nft: any) => {
+        if (
+          nft.highestBidder == authedProfile.address &&
+          collectedNfts.map(
+            (collectedNft: any) => collectedNft.id !== nft.id
+          ) &&
+          nft.timeElapse
+        ) {
+          pendingNfts.push(nft);
+          setPendingNfts(pendingNfts);
+        }
+      });
+    }
+  }, [collectedNfts]);
 
   useEffect(() => {
     const { savedNfts } = authedProfile;
