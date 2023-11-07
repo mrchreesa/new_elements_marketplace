@@ -7,6 +7,7 @@ import { ContractAbi, ContractAddress } from "../components/utils/constants";
 import { ethers } from "ethers";
 import { fetchListingsBatch, fetchListings } from "../components/utils/utils";
 import useSWR from "swr";
+import { log } from "console";
 
 type Props = {
   user: any;
@@ -50,8 +51,118 @@ const Profile = ({ user, users }: Props) => {
 
     return { listings, error, isLoading: !loaded && !error };
   };
+
   const { listings }: any = useFetchListingsSWR();
+
   console.log("listings", listings);
+
+  const useFetchListingsByAddressSWR = () => {
+    const [listingsByAddress, setListingsByAddress] = useState<any>([]);
+    const [collectedNfts, setCollectedNfts] = useState<any>([]);
+    const [listedNfts, setListedNfts] = useState<any>([]);
+    const [soldNfts, setSoldNfts] = useState<any>([]);
+    const [loaded, setLoaded] = useState(false);
+
+    // Custom fetcher that works with the async generator
+    const fetcher = async () => {
+      const provider = new ethers.providers.JsonRpcProvider(
+        process.env.NEXT_PUBLIC_RPC_URL
+      );
+      const contract = new ethers.Contract(
+        ContractAddress,
+        ContractAbi,
+        provider
+      );
+      const listingTx = await contract.filterNftByAddress(user.address);
+      console.log("listingTx", listingTx);
+
+      for await (const batch of fetchListingsBatch({ contract, listingTx })) {
+        setListingsByAddress((current: any) => [...current, ...batch]);
+        // Loop over the generator until all batches are fetched.
+
+        batch.forEach((nft: any) => {
+          if (nft.seller === nft.owner) {
+            const collectedBatch = batch.filter(
+              (batchNft) => batchNft.seller === batchNft.owner
+            );
+
+            setCollectedNfts((current: any) => {
+              const nftMap = new Map(
+                current.map((currentNft: any) => [currentNft.id, currentNft])
+              );
+
+              // Merge new NFTs, avoiding duplicates.
+              collectedBatch.forEach((batchNft) =>
+                nftMap.set(batchNft.id, batchNft)
+              );
+
+              return Array.from(nftMap.values());
+            });
+          } else if (nft.seller == user.address && !nft.sold) {
+            const listedBatch = batch.filter(
+              (batchNft) => batchNft.seller == user.address && !batchNft.sold
+            );
+
+            setListedNfts((current: any) => {
+              const nftMap = new Map(
+                current.map((currentNft: any) => [currentNft.id, currentNft])
+              );
+
+              // Merge new NFTs, avoiding duplicates.
+              listedBatch.forEach((batchNft: any) =>
+                nftMap.set(batchNft.id, batchNft)
+              );
+
+              return Array.from(nftMap.values());
+            });
+          }
+          if (nft.sold) {
+            const soldBatch = batch.filter((batchNft) => batchNft.sold);
+
+            setSoldNfts((current: any) => {
+              const nftMap = new Map(
+                current.map((currentNft: any) => [currentNft.id, currentNft])
+              );
+
+              // Merge new NFTs, avoiding duplicates.
+              soldBatch.forEach((batchNft: any) =>
+                nftMap.set(batchNft.id, batchNft)
+              );
+
+              return Array.from(nftMap.values());
+            });
+          }
+        });
+      }
+
+      setLoaded(true);
+    };
+
+    // useSWR hook to manage the fetching process
+    const { error } = useSWR(
+      loaded ? null : "fetchListingsByAddress",
+      fetcher,
+      {
+        revalidateOnFocus: false,
+      }
+    );
+
+    return {
+      listingsByAddress,
+      collectedNfts,
+      listedNfts,
+      soldNfts,
+      error,
+      isLoading: !loaded && !error,
+    };
+  };
+  const { listingsByAddress, collectedNfts, listedNfts, soldNfts } =
+    useFetchListingsByAddressSWR();
+
+  console.log("listingsByAddress", listingsByAddress);
+  console.log("collectedNfts", collectedNfts);
+  console.log("listedNfts", listedNfts);
+  console.log("soldNfts", soldNfts);
 
   const nftFetch = async (userAddress: any) => {
     const provider = new ethers.providers.JsonRpcProvider(
@@ -69,6 +180,7 @@ const Profile = ({ user, users }: Props) => {
       const res = await fetchListings({ contract, listingTx });
 
       // const listings = await fetchAllNfts(userAddress, contract);
+      console.log("res", res);
 
       const collectedNfts = [] as any;
       const listedNfts = [] as any;
@@ -154,9 +266,9 @@ const Profile = ({ user, users }: Props) => {
       user={user}
       users={users}
       data={data}
-      collectedNfts={data?.collectedNfts}
-      listedNfts={data?.listedNfts}
-      soldNfts={data?.soldNfts}
+      collectedNfts={collectedNfts}
+      listedNfts={listedNfts}
+      soldNfts={soldNfts}
       offers={data?.offers}
       listings={listings}
       isLoading={isLoading}

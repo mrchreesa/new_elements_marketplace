@@ -256,6 +256,7 @@ const ProfileComponent = ({
 
   const hasOfferForNft = (nftId: any) => {
     let hasOffer = false;
+    if (!offers) return hasOffer;
     offers.forEach((offer: any) => {
       offer.forEach((nftInfo: any) => {
         if (nftInfo.nftId === nftId) {
@@ -305,7 +306,6 @@ const ProfileComponent = ({
   const isAddEmailModalClosed = () => {
     setAddEmailModalOpen(false);
   };
-  console.log(listedNfts);
 
   return (
     <>
@@ -496,7 +496,7 @@ const ProfileComponent = ({
               </div>
             </div>
           )}
-          {isLoading || !listedNfts ? (
+          {!listedNfts ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:mx-5 mb-10">
               <NFTCardSkeleton />
 
@@ -626,14 +626,13 @@ const ProfileComponent = ({
                   </div>
                 </>
               ) : null}
-
               {/* Purchased */}
               <div className="flex flex-col">
                 <h3 className="font-bold uppercase">Purchased</h3>
 
                 <div className="grid grid-cols-2 lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4">
-                  {collectedNfts?.length || pendingNfts.length ? (
-                    (collectedNfts.map((nft: any, index: number) => (
+                  {collectedNfts.length ? (
+                    collectedNfts.map((nft: any, index: number) => (
                       <div key={nft.id}>
                         <div
                           className="grid grid-cols-2 h-full lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
@@ -681,8 +680,18 @@ const ProfileComponent = ({
                           </div>
                         </div>
                       </div>
-                    )),
-                    pendingNfts.map((nft: any, index: number) => (
+                    ))
+                  ) : (
+                    <p className="text-red-600 text-xs">
+                      You currently have no purchased items
+                    </p>
+                  )}
+                </div>
+              </div>
+              {/* Pending */}
+              <div className="grid grid-cols-2 lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4">
+                {pendingNfts?.length
+                  ? pendingNfts?.map((nft: any, index: number) => (
                       <div key={nft.id}>
                         <div
                           className="grid grid-cols-2 h-full lg:grid-cols-4 items-stretch gap-4 mb-10 mt-4"
@@ -707,30 +716,16 @@ const ProfileComponent = ({
                                   {" "}
                                   <p className="pr-6 ">Pending...</p>
                                   <div className="flex grow"></div>
-                                  {/* <p className="font-bold text-green">
-                                    {nft.price} <br />{" "}
-                                    <span className="flex justify-end">
-                                      {" "}
-                                      ETH
-                                    </span>
-                                  </p> */}
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       </div>
-                    )))
-                  ) : (
-                    <p className="text-red-600 text-xs">
-                      You currently have no purchased items
-                    </p>
-                  )}
-                </div>
+                    ))
+                  : null}
               </div>
-
               {/* SAVED */}
-
               <div className="flex flex-col">
                 <h3 className="font-bold">SAVED</h3>
 
