@@ -16,6 +16,8 @@ import ProfileImage from "./ProfileImage";
 import NFTCardSkeleton from "../LoadingSkeletons/NFTCardSkeleton";
 import Countdown from "react-countdown";
 import dynamic from "next/dynamic";
+import { useEthersSigner } from "../utils/getSigner";
+import { mutate } from "swr";
 
 const AdminLoginButton = dynamic(() => import("./AdminLoginButton"));
 const AcceptOfferModal = dynamic(() => import("./AcceptOfferModal"));
@@ -205,8 +207,9 @@ const ProfileComponent = ({
       }
     }
   };
+  const signer = useEthersSigner();
 
-  const accept = async (nftId: number, highestBidder: any) => {
+  const accept = async (nftId: number) => {
     setLoadingOffer(true);
     try {
       const provider = new ethers.providers.JsonRpcProvider(
@@ -216,11 +219,11 @@ const ProfileComponent = ({
       const contract = new ethers.Contract(
         ContractAddress,
         ContractAbi,
-        provider
+        signer
       );
       // Call the contract method with value
-      const listingTx = await contract.acceptOffer(nftId, highestBidder);
-      console.log("listingTx", listingTx);
+      const listingTx = await contract.acceptOffer(nftId);
+
       await listingTx.wait();
 
       setLoadingOffer(false);
@@ -234,13 +237,10 @@ const ProfileComponent = ({
 
   const hasOfferForNft = (nftId: any) => {
     let hasOffer = false;
-    if (!offers) return hasOffer;
-    offers.forEach((offer: any) => {
-      offer.forEach((nftInfo: any) => {
-        if (nftInfo.nftId === nftId) {
-          hasOffer = true;
-        }
-      });
+    offers?.forEach((offer: any) => {
+      if (offer.nftId === nftId) {
+        hasOffer = true;
+      }
     });
     return hasOffer;
   };
@@ -475,7 +475,7 @@ const ProfileComponent = ({
               </div>
             </div>
           )}
-          {!listedNfts.length ? (
+          {!soldNfts?.length && isLoading ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:mx-5 mb-10">
               <NFTCardSkeleton />
 
@@ -654,7 +654,11 @@ const ProfileComponent = ({
                                 >
                                   New offer
                                 </button>
-                              ) : null}
+                              ) : (
+                                <button className="text-green invisible font-compressed uppercase  tracking-[4px] w-[100%] my-2 bg-white bg-opacity-0 hover:bg-opacity-20 font-semibold text-xl">
+                                  New offer
+                                </button>
+                              )}
                             </div>
                           </div>
                         </div>

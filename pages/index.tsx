@@ -45,7 +45,8 @@ const Home: NextPage = ({ user, users, auth }: any) => {
 
     // useSWR hook to manage the fetching process
     const { error } = useSWR(loaded ? null : "fetchListings", fetcher, {
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
+      refreshInterval: 5000,
     });
 
     return { listings, error, isLoading: !loaded && !error };

@@ -6,8 +6,7 @@ import Users from "../model/users";
 import { ContractAbi, ContractAddress } from "../components/utils/constants";
 import { ethers } from "ethers";
 import { fetchListingsBatch, fetchListings } from "../components/utils/utils";
-import useSWR from "swr";
-import { log } from "console";
+import useSWR, { mutate } from "swr";
 
 type Props = {
   user: any;
@@ -46,7 +45,8 @@ const Profile = ({ user, users }: Props) => {
 
     // useSWR hook to manage the fetching process
     const { error } = useSWR(loaded ? null : "fetchListingsProfile", fetcher, {
-      revalidateOnFocus: false,
+      revalidateOnFocus: true,
+      refreshInterval: 5000,
     });
 
     return { listings, error, isLoading: !loaded && !error };
@@ -143,7 +143,8 @@ const Profile = ({ user, users }: Props) => {
       loaded ? null : "fetchListingsByAddress",
       fetcher,
       {
-        revalidateOnFocus: false,
+        revalidateOnFocus: true,
+        refreshInterval: 5000,
       }
     );
     console.log("loaded", loaded);
@@ -159,7 +160,8 @@ const Profile = ({ user, users }: Props) => {
   const { listingsByAddress, collectedNfts, listedNfts, soldNfts, isLoading } =
     useFetchListingsByAddressSWR();
 
-  const nftFetch = async (userAddress: any) => {
+  const nftFetch = async (userAddress: any, collectedNfts: any) => {
+    let offers = [] as any;
     const provider = new ethers.providers.JsonRpcProvider(
       process.env.NEXT_PUBLIC_RPC_URL
     );
@@ -171,88 +173,88 @@ const Profile = ({ user, users }: Props) => {
     );
 
     try {
-      const listingTx = await contract.filterNftByAddress(userAddress);
-      const res = await fetchListings({ contract, listingTx });
+      // const listingTx = await contract.filterNftByAddress(userAddress);
+      // const res = await fetchListings({ contract, listingTx });
 
-      // const listings = await fetchAllNfts(userAddress, contract);
-      console.log("res", res);
+      // // const listings = await fetchAllNfts(userAddress, contract);
+      // console.log("res", res);
 
-      const collectedNfts = [] as any;
-      const listedNfts = [] as any;
-      const soldNfts = [] as any;
-      const offers = [] as any;
+      // const collectedNfts = [] as any;
+      // const listedNfts = [] as any;
+      // const soldNfts = [] as any;
 
-      if (Array.isArray(res)) {
-        res.forEach((nft) => {
-          if (nft.seller === nft.owner) {
-            collectedNfts.push(nft);
-          } else {
-            listedNfts.push(nft);
+      // if (Array.isArray(res)) {
+      //   res.forEach((nft) => {
+      //     if (nft.seller === nft.owner) {
+      //       collectedNfts.push(nft);
+      //     } else {
+      //       listedNfts.push(nft);
+      //     }
+
+      //     if (nft.sold) {
+      //       soldNfts.push(nft);
+      //     }
+      //   });
+
+      await Promise.all(
+        collectedNfts.map(async (nft: any) => {
+          const offersTx = await contract.gethighestBidder(nft.id);
+          const amountTx = await contract.gethighestBid(nft.id);
+
+          const bidder = offersTx;
+          const amount = amountTx / 1e18;
+
+          // const offersArray = bidder.map((bidder: any, index: any) => ({
+          //   nftId: nft.id,
+          //   bidder,
+          //   amount,
+          // }));
+          if (amount > 0) {
+            offers.push({ bidder, amount, nftId: nft.id });
           }
 
-          if (nft.sold) {
-            soldNfts.push(nft);
-          }
-        });
+          // const combinedObjects  Array = [];
 
-        await Promise.all(
-          collectedNfts.map(async (nft: any) => {
-            const offersTx = await contract.getAllOffersForNFT(nft.id);
-            const bidder = offersTx.map((offer: any) => offer.bidder);
-            const amount = offersTx.map(
-              (offer: any) => Number(offer.amount) / 1e18
-            );
+          // const groupedObjects = offersArray.reduce(
+          //   (grouped: any, offer: any) => {
+          //     const { nftId, bidder, amount } = offer;
+          //     if (!grouped[nftId]) {
+          //       grouped[nftId] = [];
+          //     }
+          //     grouped[nftId].push({ bidder, amount });
+          //     return grouped;
+          //   },
+          //   {}
+          // );
 
-            const offersArray = bidder.map((bidder: any, index: any) => ({
-              nftId: nft.id,
-              bidder,
-              amount: amount[index],
-            }));
+          // for (const nftId in groupedObjects) {
+          //   combinedObjectsArray.push({
+          //     nftId: parseInt(nftId),
+          //     bids: groupedObjects[nftId],
+          //   });
+          // }
 
-            const combinedObjectsArray = [];
+          // offers.push(combinedObjectsArray);
+        })
+      );
 
-            const groupedObjects = offersArray.reduce(
-              (grouped: any, offer: any) => {
-                const { nftId, bidder, amount } = offer;
-                if (!grouped[nftId]) {
-                  grouped[nftId] = [];
-                }
-                grouped[nftId].push({ bidder, amount });
-                return grouped;
-              },
-              {}
-            );
-
-            for (const nftId in groupedObjects) {
-              combinedObjectsArray.push({
-                nftId: parseInt(nftId),
-                bids: groupedObjects[nftId],
-              });
-            }
-
-            offers.push(combinedObjectsArray);
-          })
-        );
-
-        return {
-          collectedNfts,
-          listedNfts,
-          soldNfts,
-          offers,
-        };
-      } else {
-        throw new Error("Failed to fetch NFT data");
-      }
+      return {
+        offers,
+      };
     } catch (error) {
       console.error("Error fetching NFT data:", error);
       return null;
     }
   };
-  const { data, error } = useSWR("fetcher", () => nftFetch(user.address), {
-    refreshInterval: 5000,
-  });
+  const { data, error } = useSWR(
+    "fetcher",
+    () => nftFetch(user.address, collectedNfts),
+    {
+      refreshInterval: 5000,
+    }
+  );
 
-  console.log(data);
+  console.log(data?.offers);
   console.log(isLoading);
   return (
     <ProfileComponent

@@ -1,7 +1,12 @@
-export const ContractAddress = "0xDf5C28b1c3deE06d2fe93BD93B78956827169eab";
+export const ContractAddress = "0x8461545b8705c1B96d431b582585cD4cCBd13131";
 export const ContractAbi = [
   {
     inputs: [
+      {
+        internalType: "address payable",
+        name: "owner",
+        type: "address",
+      },
       {
         internalType: "address payable",
         name: "_treasury",
@@ -34,6 +39,11 @@ export const ContractAbi = [
   {
     inputs: [],
     name: "NFTMARKETBase__AuctionNotEnded",
+    type: "error",
+  },
+  {
+    inputs: [],
+    name: "NFTMARKETBase__OnlyArtists",
     type: "error",
   },
   {
@@ -194,11 +204,6 @@ export const ContractAbi = [
         internalType: "uint256",
         name: "tokenId",
         type: "uint256",
-      },
-      {
-        internalType: "address",
-        name: "buyer",
-        type: "address",
       },
     ],
     name: "acceptOffer",
@@ -1069,6 +1074,19 @@ export const ContractAbi = [
       },
     ],
     name: "transferFrom",
+    outputs: [],
+    stateMutability: "nonpayable",
+    type: "function",
+  },
+  {
+    inputs: [
+      {
+        internalType: "uint256",
+        name: "tokenId",
+        type: "uint256",
+      },
+    ],
+    name: "withdrawOffer",
     outputs: [],
     stateMutability: "nonpayable",
     type: "function",

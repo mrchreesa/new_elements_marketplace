@@ -2,6 +2,9 @@ import axios from "axios";
 import router from "next/router";
 import React, { useState, Fragment } from "react";
 import ButtonSpinner from "../LoadingSkeletons/ButtonSpinner";
+import { ethers } from "ethers";
+import { ContractAbi, ContractAddress } from "../utils/constants";
+import { useEthersSigner } from "../utils/getSigner";
 
 type Props = {
   user: any;
@@ -25,10 +28,16 @@ const WhitelistComponent = ({ user, artists }: Props) => {
   const refreshData = () => {
     router.replace(router.asPath);
   };
+  const signer = useEthersSigner();
 
   const handleSubmit = async (e: any) => {
     e.preventDefault();
     setLoading(true);
+
+    const contract = new ethers.Contract(ContractAddress, ContractAbi, signer);
+    let listingTx = await contract.approveArtist(userAddress);
+    await listingTx.wait();
+    console.log("listingTx", listingTx);
     axios
       .post("/api/whitelistUser", { address: userAddress })
       .then((res) => {
@@ -51,9 +60,14 @@ const WhitelistComponent = ({ user, artists }: Props) => {
     setDeleteArtist(artist);
     setShowModal(true);
   };
-  const handleDeleteArtist = (e: any, userAddress: string) => {
+  const handleDeleteArtist = async (e: any, userAddress: string) => {
     e.preventDefault();
     setLoading(true);
+
+    const contract = new ethers.Contract(ContractAddress, ContractAbi, signer);
+    let listingTx = await contract.removeArtist(userAddress);
+    await listingTx.wait();
+
     axios
       .post("/api/deleteArtist", { address: userAddress })
       .then((res) => {

@@ -17,7 +17,7 @@ const AcceptOfferModal = ({
 }: any) => {
   let listing: any = null;
   if (collectedNfts) {
-    collectedNfts[nftModalIndex];
+    listing = collectedNfts[nftModalIndex];
   }
   // Function to find the array with nftId equal to 1
   function findArrayWithNftId(offers: any, targetNftId: number) {
@@ -25,37 +25,40 @@ const AcceptOfferModal = ({
     if (!offers) {
       return null;
     }
-    offers.forEach((nftList: any) => {
-      nftList.forEach((nftInfo: any) => {
-        if (nftInfo.nftId === targetNftId) {
-          resultArray = nftList;
-        }
-      });
-    });
-    return resultArray;
+    // offers.forEach((nftList: any) => {
+    //   nftList.forEach((nftInfo: any) => {
+    //     if (nftInfo.nftId === targetNftId) {
+    //       resultArray = nftList;
+    //     }
+    //   });
+    // });
+    return offers;
   }
   let highestOffer = 0;
   let bidder = "";
   // Call the function and get the array with nftId equals 1
   const offer = findArrayWithNftId(offers, listing?.id);
   // Function to find the highest amount in the object
-  function findHighestAmount(offer: any) {
+  function findHighestAmount(offers: any) {
     if (!offer) {
       return null;
     }
-    offer.forEach((nftInfo: any) => {
-      nftInfo.bids.forEach((bid: any) => {
-        if (bid.amount > highestOffer) {
-          highestOffer = bid.amount;
-          bidder = bid.bidder;
-        }
-      });
-    });
+    return offers;
+    // offer.forEach((nftInfo: any) => {
+    //   nftInfo.bids.forEach((bid: any) => {
+    //     if (bid.amount > highestOffer) {
+    //       highestOffer = bid.amount;
+    //       bidder = bid.bidder;
+    //     }
+    //   });
+    // });
   }
+  console.log(offers, "offers");
+  // console.log(listing, "listing");
 
   // Call the function to get the highest amount
 
-  findHighestAmount(offer);
+  findHighestAmount(offers);
 
   const customStyles = {
     overlay: {
@@ -119,7 +122,7 @@ const AcceptOfferModal = ({
                         Highest <br /> Offer
                       </p>
                       <p className="font-bold">
-                        {highestOffer} <br /> ETH
+                        {offers[0]?.amount} <br /> ETH
                       </p>
                     </div>
                     <div className="flex grow"></div>
@@ -128,7 +131,7 @@ const AcceptOfferModal = ({
                       <p className="pr-6 font-bold text-green ">
                         By <br />
                       </p>
-                      <p className="font-bold">{bidder}</p>
+                      <p className="font-bold">{offers[0]?.bidder}</p>
                     </div>
                   </div>
                   {loadingOffer ? (

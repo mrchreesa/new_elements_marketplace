@@ -35,7 +35,6 @@ export const submitToIpfs = async (collectionData) => {
       description: description,
       image: imageCd,
     };
-    console.log(data);
 
     const { cid } = await Ipfs.add(JSON.stringify(data));
     const tokenUrl = cid.toString();
@@ -70,7 +69,6 @@ export const fetchListings = async (data) => {
         time = sumUp > 0 ? sumUp : "";
       }
       const id = Number(response.tokenId);
-      console.log(id);
       const tokenUrl = await contract.tokenURI(id);
       let Bid = await contract.gethighestBid(response.tokenId);
       let highestBidder = await contract.gethighestBidder(response.tokenId);
