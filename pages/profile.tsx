@@ -146,23 +146,18 @@ const Profile = ({ user, users }: Props) => {
         revalidateOnFocus: false,
       }
     );
-
+    console.log("loaded", loaded);
     return {
       listingsByAddress,
       collectedNfts,
       listedNfts,
       soldNfts,
       error,
-      isLoading: !loaded && !error,
+      isLoading: !loaded,
     };
   };
-  const { listingsByAddress, collectedNfts, listedNfts, soldNfts } =
+  const { listingsByAddress, collectedNfts, listedNfts, soldNfts, isLoading } =
     useFetchListingsByAddressSWR();
-
-  console.log("listingsByAddress", listingsByAddress);
-  console.log("collectedNfts", collectedNfts);
-  console.log("listedNfts", listedNfts);
-  console.log("soldNfts", soldNfts);
 
   const nftFetch = async (userAddress: any) => {
     const provider = new ethers.providers.JsonRpcProvider(
@@ -253,11 +248,9 @@ const Profile = ({ user, users }: Props) => {
       return null;
     }
   };
-  const { data, error, isLoading } = useSWR(
-    "fetcher",
-    () => nftFetch(user.address),
-    { refreshInterval: 5000 }
-  );
+  const { data, error } = useSWR("fetcher", () => nftFetch(user.address), {
+    refreshInterval: 5000,
+  });
 
   console.log(data);
   console.log(isLoading);

@@ -57,33 +57,14 @@ const ProfileComponent = ({
   const [modalOpenEnlargeNFT, setModalOpenEnlargeNFT] = useState(false);
   const [addEmailModalOpen, setAddEmailModalOpen] = useState<boolean>(false);
   const [pendingNfts, setPendingNfts] = useState<any>([]);
-  // const { setAuthedProfile } = useAuthedProfile();
 
   let { isArtist } = authedProfile;
-  // let collectedNfts: any = null;
-  // let listedNfts: any = null;
-  // let soldNfts: any = null;
-  // let offers: any = null;
-  // let listings: any = null;
-
-  // if (!isLoading) {
-  //   collectedNfts = data?.collectedNfts;
-  //   listedNfts = data?.listedNfts;
-  //   soldNfts = data?.soldNfts;
-  //   offers = data?.offers;
-  //   listings = data?.listings;
-  // }
-  console.log(isLoading);
-
-  console.log("data", data);
-  console.log("collectedNfts", collectedNfts);
 
   // Rehydrate data from server
   const refreshData = () => {
     router.replace(router.asPath);
     setLoading(false);
   };
-  // console.log(collectedNfts);
 
   //check if user has pending nfts
   useEffect(() => {
@@ -135,9 +116,6 @@ const ProfileComponent = ({
           nft: objectsNotInBoth[0],
           address: authedProfile.address,
         };
-        // console.log(data.nft);
-        // console.log(listings);
-        // console.log(savedNfts);
 
         axios
           .put("/api/saveNft", data)
@@ -306,6 +284,7 @@ const ProfileComponent = ({
   const isAddEmailModalClosed = () => {
     setAddEmailModalOpen(false);
   };
+  console.log(isLoading);
 
   return (
     <>
@@ -353,7 +332,7 @@ const ProfileComponent = ({
             <AdminLoginButton authedProfile={authedProfile} />
           ) : null}
           {isArtist ? ( // if artist
-            isLoading || !listedNfts ? (
+            isLoading || !listedNfts || !collectedNfts || !soldNfts ? (
               <>
                 <div className="flex  flex-col-reverse md:flex-col">
                   <div className="flex md:mt-5 h-full flex-wrap">
@@ -455,7 +434,7 @@ const ProfileComponent = ({
               </div>
             )
           ) : // if not artist
-          isLoading || !listedNfts ? (
+          isLoading || !collectedNfts ? (
             <div className="flex  flex-col-reverse md:flex-col">
               <div className="flex md:mt-5 h-full flex-wrap">
                 <ButtonSpinner />
@@ -496,7 +475,7 @@ const ProfileComponent = ({
               </div>
             </div>
           )}
-          {!listedNfts ? (
+          {!listedNfts.length ? (
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-2 lg:mx-5 mb-10">
               <NFTCardSkeleton />
 
