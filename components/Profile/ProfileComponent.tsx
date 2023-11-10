@@ -284,7 +284,7 @@ const ProfileComponent = ({
   const isAddEmailModalClosed = () => {
     setAddEmailModalOpen(false);
   };
-  console.log(isLoading);
+  // console.log(isLoading);
 
   return (
     <>
