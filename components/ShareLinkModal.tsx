@@ -39,6 +39,7 @@ const ShareLinkModal = ({
       zIndex: "20",
       top: "50%",
       left: "50%",
+      maxWidth: "98%",
       minWidth: "40vw",
       right: "auto",
       bottom: "auto",
@@ -48,6 +49,7 @@ const ShareLinkModal = ({
       marginRight: "-50%",
       borderRadius: "25px",
       transform: "translate(-50%, -50%)",
+      overflow: "hidden",
     },
   };
   return (
@@ -60,18 +62,19 @@ const ShareLinkModal = ({
         ariaHideApp={false}
       >
         <div className="font-ibmPlex m-2">
-          <div className="flex">
+          <div className="flex flex-col md:flex-row">
             <section className="section">
               <p className="w-full h-full resize-none bg-black  text-green border px-2 py-1 text-xs ">
                 {value}{" "}
               </p>
             </section>
+
             <CopyToClipboard
               onCopy={onCopy}
               options={{ message: "Whoa!" }}
               text={value}
             >
-              <button onClick={onClick} className="ml-4">
+              <button onClick={onClick} className="mt-4 md:mt-0 md:ml-4">
                 Copy
               </button>
             </CopyToClipboard>
