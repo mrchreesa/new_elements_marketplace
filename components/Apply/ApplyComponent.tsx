@@ -129,7 +129,7 @@ const ApplyComponent = () => {
   return (
     <>
       <div className={`flex w-screen  h-screen  items-center justify-center`}>
-        <div className="flex mb-5 w-full px-5 md:px-0 md:w-[60vw] xl:w-[40vw] max-w-[1600px] flex-col items-center uppercase text-left text-green font-ibmPlex">
+        <div className="flex mb-5 mt-10 w-full px-5 md:px-0 md:w-[60vw] xl:w-[40vw] max-w-[1600px] flex-col items-center uppercase text-left text-green font-ibmPlex">
           <div className=" w-full  text-xs">
             <form id="contact-form" onSubmit={handleSubmit} method="POST">
               <h2 className="text-xs md:leading-[25px] w-5/6 md:w-full mb-12 ">
